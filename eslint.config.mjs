@@ -1,35 +1,30 @@
-import next from "eslint-config-next";
-import prettier from "eslint-config-prettier";
-import prettierPlugin from "eslint-plugin-prettier";
+import { FlatCompat } from "@eslint/eslintrc";
+import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
-import tseslint from "typescript-eslint";
-import globals from "globals";
+import reactPerf from "eslint-plugin-react-perf";
+import tsParser from "@typescript-eslint/parser";
 
-export default tseslint.config(
-  { ignores: ["dist", ".next", "node_modules"] },
+const compat = new FlatCompat();
+
+export default [
+  ...compat.extends(
+    "plugin:@typescript-eslint/strict",
+    "plugin:react-perf/recommended",
+    "plugin:prettier/recommended",
+  ),
   {
-    files: ["**/*.{ts,tsx}"],
-    extends: [...next, ...tseslint.configs.recommended, prettier],
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
     languageOptions: {
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: "module",
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
+      parser: tsParser,
+      ecmaVersion: 2021,
+      sourceType: "module",
     },
     plugins: {
+      prettier,
       react,
       "react-hooks": reactHooks,
-      prettier: prettierPlugin,
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
+      "react-perf": reactPerf,
     },
     rules: {
       "prettier/prettier": "error",
@@ -48,4 +43,4 @@ export default tseslint.config(
       "import/order": "off",
     },
   },
-);
+];
