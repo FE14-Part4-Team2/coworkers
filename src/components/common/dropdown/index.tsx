@@ -2,7 +2,7 @@ import DropDownItem from "./item";
 import DropDownMenu from "./menu";
 import DropDownTrigger from "./trigger";
 import { ReactNode } from "react";
-import useClickOutside from "@/hooks/useClickOutside";
+import useClickOutside from "@/hooks/useclickoutside";
 
 interface DropDownProps {
   onClose: () => void;
@@ -20,7 +20,6 @@ function DropDown({ onClose, children }: DropDownProps) {
   );
 }
 
-// 컴파운드 패턴으로 서브 컴포넌트 등록
 DropDown.Trigger = DropDownTrigger;
 DropDown.Menu = DropDownMenu;
 DropDown.Item = DropDownItem;
