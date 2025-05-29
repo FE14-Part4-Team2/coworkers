@@ -1,6 +1,7 @@
 "use client";
 
-import DropDown from "@/components/common/dropdown";
+import DropDown from "@/components/common/Dropdown";
+import { useCallback } from "react";
 
 // 드롭다운에 표시할 항목
 interface Option {
@@ -18,13 +19,6 @@ interface GenericDropdownProps {
   className?: string;
 }
 
-function createSelectHandler(
-  value: string,
-  handleSelect: (value: string) => void,
-) {
-  return () => handleSelect(value);
-}
-
 export default function GenericDropdown({
   options,
   selected,
@@ -37,6 +31,11 @@ export default function GenericDropdown({
   const selectedLabel =
     options.find((opt) => opt.value === selected)?.label ?? selected;
 
+  const createSelectHandler = useCallback(
+    (value: string) => () => handleSelect(value),
+    [handleSelect],
+  );
+
   return (
     <div className={`relative inline-block ${className ?? ""}`}>
       <DropDown onClose={handleClose}>
@@ -47,7 +46,7 @@ export default function GenericDropdown({
           {options.map((opt) => (
             <DropDown.Item
               key={opt.value}
-              onClick={createSelectHandler(opt.value, handleSelect)}
+              onClick={createSelectHandler(opt.value)}
             >
               {opt.label}
             </DropDown.Item>

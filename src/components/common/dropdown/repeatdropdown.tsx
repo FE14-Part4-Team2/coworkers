@@ -1,7 +1,7 @@
 "use client";
 
-import GenericDropdown from "./genericdropdown";
-import useGenericDropdown from "@/hooks/usegenericdropdown";
+import GenericDropdown from "./GenericDropdown";
+import useGenericDropdown from "@/hooks/useGenericDropdown";
 
 const options = [
   { label: "반복 안함", value: "norepeat" },

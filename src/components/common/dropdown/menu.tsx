@@ -7,7 +7,7 @@ interface DropDownMenuProps {
 }
 
 // 드롭다운 메뉴 컴포넌트
-function DropDownMenu({ children, isOpen }: DropDownMenuProps) {
+export default function DropDownMenu({ children, isOpen }: DropDownMenuProps) {
   if (!isOpen) return null;
 
   return (
@@ -16,5 +16,3 @@ function DropDownMenu({ children, isOpen }: DropDownMenuProps) {
     </div>
   );
 }
-
-export default DropDownMenu;
