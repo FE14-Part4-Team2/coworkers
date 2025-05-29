@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 
 // 드롭다운 외부 클릭 시 닫히도록 하는 커스텀 훅
-function useClickOutside(callback: () => void) {
+export default function useClickOutside(callback: () => void) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,5 +20,3 @@ function useClickOutside(callback: () => void) {
 
   return ref;
 }
-
-export default useClickOutside;
