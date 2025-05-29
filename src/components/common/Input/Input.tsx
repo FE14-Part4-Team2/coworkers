@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hasTopMargin?: boolean;
 }
 
-function Input({
+export default function Input({
   label = "",
   error = false,
   suffix = null,
@@ -46,5 +46,3 @@ function Input({
     </div>
   );
 }
-
-export default Input;

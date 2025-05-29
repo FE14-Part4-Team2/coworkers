@@ -5,7 +5,7 @@ interface ErrorMsgProps {
   className?: string;
 }
 
-function ErrorMsg({ message, className }: ErrorMsgProps) {
+export default function ErrorMsg({ message, className }: ErrorMsgProps) {
   if (!message) return null;
 
   return (
@@ -14,5 +14,3 @@ function ErrorMsg({ message, className }: ErrorMsgProps) {
     </p>
   );
 }
-
-export default ErrorMsg;

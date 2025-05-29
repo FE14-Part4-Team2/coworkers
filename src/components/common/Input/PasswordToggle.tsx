@@ -1,4 +1,6 @@
 import React from "react";
+import VisibilityIconOff from "@/assets/icons/icon-visibility_off.svg";
+import VisibilityIconOn from "@/assets/icons/icon-visibility_on.svg";
 
 interface PasswordToggleProps {
   isShow: boolean;
@@ -7,16 +9,9 @@ interface PasswordToggleProps {
 
 const PasswordToggle = React.memo(
   ({ isShow, onToggle }: PasswordToggleProps) => {
-    const iconSrc = isShow
-      ? "/icons/icon-visibility_on.svg"
-      : "/icons/icon-visibility_off.svg";
-
     return (
       <button type="button" onClick={onToggle} className="align-middle">
-        <img
-          src={iconSrc}
-          alt={isShow ? "비밀번호 가리기" : "비밀번호 보이기"}
-        />
+        {isShow ? <VisibilityIconOn /> : <VisibilityIconOff />}
       </button>
     );
   },
