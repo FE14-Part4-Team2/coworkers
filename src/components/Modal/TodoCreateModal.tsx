@@ -2,6 +2,7 @@
 
 import { useModalStore } from "@/stores/modalStore";
 import Modal from "./Modal";
+import Input from "../common/Input/Input";
 
 interface TodoCreateModalProps {
   formData: {
@@ -33,16 +34,15 @@ export default function TodoCreateModal({
       onSubmit={onSubmit}
     >
       <div className="mb-4">
-        <label className="block text-sm font-medium text-white mb-1">
-          할 일 제목
-        </label>
-        <input
+        <Input
+          id="todo-title"
           name="title"
           type="text"
+          label="할 일 제목"
           placeholder="할 일 제목을 입력해주세요."
-          className="w-full border border-gray-300 rounded px-3 py-2"
           value={formData.title}
           onChange={onChange}
+          required
         />
       </div>
 
@@ -53,7 +53,7 @@ export default function TodoCreateModal({
         <textarea
           name="memo"
           placeholder="메모를 입력해주세요."
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border border-gray-300 rounded px-3 py-2 text-black"
           value={formData.memo}
           onChange={onChange}
         />

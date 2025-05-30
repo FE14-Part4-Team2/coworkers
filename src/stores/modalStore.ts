@@ -8,6 +8,7 @@ type ModalType =
   | "profile"
   | "delete-account"
   | "logout"
+  | "password-change"
   | null;
 
 interface ModalState {

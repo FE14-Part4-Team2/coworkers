@@ -2,6 +2,7 @@
 
 import { useModalStore } from "@/stores/modalStore";
 import Modal from "./Modal";
+import Input from "../common/Input/Input";
 
 interface PasswordResetModalProps {
   value: string;
@@ -29,10 +30,10 @@ export default function PasswordResetModal({
       confirmButtonType="submit"
       onSubmit={onSubmit}
     >
-      <input
+      <Input
         type="email"
+        id="reset-email"
         placeholder="이메일을 입력하세요."
-        className="w-full border border-gray-300 rounded px-3 py-2"
         value={value}
         onChange={onChange}
         required

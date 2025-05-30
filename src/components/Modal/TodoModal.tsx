@@ -1,5 +1,6 @@
 import { useModalStore } from "@/stores/modalStore";
 import Modal from "./Modal";
+import Input from "../common/Input/Input";
 
 interface TodoModalProps {
   value: string;
@@ -24,12 +25,12 @@ export default function TodoModal({
       confirmButtonType="submit"
       onSubmit={onSubmit}
     >
-      <input
-        type="text"
+      <Input
+        id="list"
         placeholder="목록 명을 입력해주세요."
-        className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
         value={value}
         onChange={onChange}
+        required
       />
     </Modal>
   );
