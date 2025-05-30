@@ -4,12 +4,16 @@ on:
   pull_request:
     types: [opened, ready_for_review, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   assign-reviewers:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Determine reviewers
+      - name: Set reviewers based on PR author
         env:
           AUTHOR: ${{ github.actor }}
         run: |
@@ -27,13 +31,13 @@ jobs:
             exit 0
           fi
 
-          JSON=$(jq -n --argjson arr "$(echo [$(
-              for user in $REVIEWERS; do echo "\"$user\""; done | paste -sd,
-          )]" '$arr | {reviewers: .}')
+          REVIEWER_ARRAY=$(echo $REVIEWERS | sed 's/ /","/g')
+          REVIEWER_JSON="{\"reviewers\": [\"$REVIEWER_ARRAY\"]}"
 
           echo "Requesting reviewers: $REVIEWERS"
+
           curl -s -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
-            -d "$JSON"
+            -d "$REVIEWER_JSON"

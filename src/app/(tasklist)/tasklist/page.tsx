@@ -114,7 +114,7 @@ export default function ExamplePage() {
           className={buttonClass}
           onClick={() => openModal("todo-create")}
         >
-          할일 만들기 모달 열기
+          새로운 목록 추가 모달 열기
         </button>
 
         <button
