@@ -1,10 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 
+interface Team {
+  name: string;
+  img: string;
+}
+
 interface SidebarProps {
   user: {
     name: string;
-    teams: string[];
+    teams: Team[];
   };
   currentTeam: string | null;
   onClose: () => void;
@@ -26,7 +31,7 @@ export default function Sidebar({ user, onClose }: SidebarProps) {
 
       <div className="flex flex-col gap-6">
         {user.teams.map((team) => (
-          <div key={team}>{team}</div>
+          <div key={team.name}>{team.name}</div>
         ))}
 
         <Link href="/boards" className={"text-lg text-interaction-focus"}>
