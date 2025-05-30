@@ -1,5 +1,5 @@
 // import FilterDropdown from "@/components/common/dropdown/filterdropdown";
-import RepeatDropdown from "@/components/common/dropdown/repeatdropdown";
+import RepeatDropdown from "@/components/common/Dropdown/RepeatDropdown";
 
 export default function Page() {
   return (
