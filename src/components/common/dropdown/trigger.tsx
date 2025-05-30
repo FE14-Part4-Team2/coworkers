@@ -13,7 +13,7 @@ const hoverAnimation = { scale: 1.02 };
 const tapAnimation = { scale: 0.98 };
 
 // 클릭 시 드롭다운을 열고 닫는 버튼 역할
-function DropDownTrigger({ children, onClick, isOpen }: DropDownTriggerProps) {
+export default function DropDownTrigger({ children, onClick, isOpen }: DropDownTriggerProps) {
   return (
     <motion.button
       onClick={onClick}
@@ -35,4 +35,3 @@ function DropDownTrigger({ children, onClick, isOpen }: DropDownTriggerProps) {
   );
 }
 
-export default DropDownTrigger;

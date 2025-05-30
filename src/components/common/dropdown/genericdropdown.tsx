@@ -1,6 +1,6 @@
 "use client";
 
-import DropDown from "@/components/common/dropdown";
+import DropDown from "@/components/common/Dropdown";
 
 // 드롭다운에 표시할 항목
 interface Option {

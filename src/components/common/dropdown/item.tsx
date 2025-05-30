@@ -24,7 +24,7 @@ const tapAnimation = {
   transition: { duration: 0.1 },
 };
 
-function DropDownItem({ children, onClick }: DropDownItemProps) {
+export default function DropDownItem({ children, onClick }: DropDownItemProps) {
   return (
     <motion.div
       className="w-full px-1 py-1 rounded-[12px] text-md-regular text-text-primary cursor-pointer"
@@ -39,4 +39,3 @@ function DropDownItem({ children, onClick }: DropDownItemProps) {
     </motion.div>
   );
 }
-export default DropDownItem;
