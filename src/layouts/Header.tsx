@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import Sidebar from "./Sidebar";
+import DropDownMenu from "@/components/common/Dropdown/Menu";
+import DropDownItem from "@/components/common/Dropdown/Item";
 
 const mockUser = {
   name: "안해나",
@@ -17,9 +19,12 @@ export default function Header() {
   const isAuthPage = ["/login", "/sign-up"].includes(pathname);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentTeam, setCurrentTeam] = useState<string | null>(
     mockUser.teams[0] || null,
   );
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   const handleMenuClick = useCallback(() => {
     setIsSidebarOpen(true);
@@ -71,7 +76,7 @@ export default function Header() {
               <div className="hidden md:flex items-center md:gap-8 lg:gap-10">
                 {mockUser.teams.length > 1 ? (
                   <div className="flex items-center gap-2.5 cursor-pointer">
-                    <span className="text-text-primary text-md md:text-lg">
+                    <span className="whitespace-nowrap text-text-primary text-md md:text-lg">
                       {currentTeam}
                     </span>
                     <Image
@@ -87,7 +92,10 @@ export default function Header() {
                   </span>
                 )}
 
-                <Link href="/boards" className={"text-md md:text-lg"}>
+                <Link
+                  href="/boards"
+                  className={"whitespace-nowrap text-md md:text-lg"}
+                >
                   모집게시판
                 </Link>
               </div>
@@ -100,26 +108,44 @@ export default function Header() {
             {isLanding ? (
               <Link
                 href="/login"
-                className="text-text-primary text-md md:text-lg"
+                className="whitespace-nowrap text-text-primary text-md md:text-lg"
               >
                 로그인
               </Link>
             ) : (
-              <Link
-                href="/profile"
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Image
-                  src="/icons/icon-user.svg"
-                  alt="프로필"
-                  width={20}
-                  height={20}
-                  className="rounded-full cursor-pointer"
-                />
-                <span className="text-sm md:text-base text-text-primary hidden lg:inline-block">
-                  {mockUser.name}
-                </span>
-              </Link>
+              <div className="relative">
+                <button
+                  onClick={toggleMenu}
+                  className="flex gap-2 cursor-pointer"
+                >
+                  <Image
+                    src="/icons/icon-user.svg"
+                    alt="프로필"
+                    width={16}
+                    height={16}
+                    className="rounded-full cursor-pointer"
+                  />
+                  <span className="whitespace-nowrap text-sm md:text-base text-text-primary hidden lg:inline-block">
+                    {mockUser.name}
+                  </span>
+                </button>
+
+                <DropDownMenu
+                  isOpen={isMenuOpen}
+                  className="right-0 text-center"
+                >
+                  <DropDownItem>
+                    <Link href="/myhistory">마이 히스토리</Link>
+                  </DropDownItem>
+                  <DropDownItem>
+                    <Link href="/join">팀 참여</Link>
+                  </DropDownItem>
+                  <DropDownItem>
+                    <Link href="/user-setting">계정 설정</Link>
+                  </DropDownItem>
+                  <DropDownItem>로그아웃</DropDownItem>
+                </DropDownMenu>
+              </div>
             )}
           </div>
         )}
