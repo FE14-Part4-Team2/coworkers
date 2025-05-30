@@ -2,19 +2,28 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
+import { mock } from "node:test";
+
+const mockUser = {
+  name: "안해나",
+  teams: ["경영관리팀", "프로덕트팀", "마케팅팀"],
+};
 
 export default function Header() {
   const pathname = usePathname();
 
   const isLanding = pathname === "/";
-  const isAuthPage = pathname === "/login" || pathname === "/sign-up";
+  const isAuthPage = ["/login", "/sign-up"].includes(pathname);
+  const [currentTeam, setCurrentTeam] = useState<string | null>(
+    mockUser.teams[0] || null,
+  );
 
   return (
     <header
       className="flex items-center w-full h-[60px] bg-bg-secondary max-w-full 
                    px-[16px] py-[20px] md:px-[24px] md:py-[14px] lg:px-[360px] lg:py-[14px]"
     >
-      {/* 로고 */}
       <div className="flex items-center gap-10">
         <Link href="/">
           <Image
@@ -33,16 +42,33 @@ export default function Header() {
           />
         </Link>
 
-        {/* GNB 메뉴 */}
-        {!isAuthPage && !isLanding && (
-          <nav className="hidden md:flex gap-10">
-            <Link href="/dashboard">경영관리팀</Link>
-            <Link href="/boards">자유게시판</Link>
-          </nav>
+        {!isLanding && !isAuthPage && (
+          <>
+            {mockUser.teams.length > 1 ? (
+              <div className="flex items-center gap-2.5 cursor-pointer">
+                <span className="text-text-primary text-md md:text-lg">
+                  {currentTeam}
+                </span>
+                <Image
+                  src="/icons/icon-check.svg"
+                  alt="팀 선택"
+                  width={16}
+                  height={16}
+                />
+              </div>
+            ) : (
+              <span className="text-text-primary text-md md:text-lg">
+                {mockUser.teams[0]}
+              </span>
+            )}
+
+            <Link href="/boards" className={"text-md md:text-lg"}>
+              모집게시판
+            </Link>
+          </>
         )}
       </div>
 
-      {/* 오른쪽: 로그인 또는 프로필 */}
       {!isAuthPage && (
         <div className="ml-auto">
           {isLanding ? (
@@ -65,7 +91,7 @@ export default function Header() {
                 className="rounded-full cursor-pointer"
               />
               <span className="text-sm md:text-base text-text-primary">
-                안해나
+                {mockUser.name}
               </span>
             </Link>
           )}
