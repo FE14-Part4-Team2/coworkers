@@ -9,7 +9,11 @@ import DropDownItem from "@/components/common/Dropdown/Item";
 
 const mockUser = {
   name: "안해나",
-  teams: ["경영관리팀", "프로덕트팀", "마케팅팀"],
+  teams: [
+    { name: "경영관리팀", img: "/icons/icon-avatar.svg" },
+    { name: "프로덕트팀", img: "/icons/icon-avatar.svg" },
+    { name: "마케팅팀", img: "/icons/icon-avatar.svg" },
+  ],
 };
 
 export default function Header() {
@@ -19,12 +23,14 @@ export default function Header() {
   const isAuthPage = ["/login", "/sign-up"].includes(pathname);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isTeamMenuOpen, setIsTeamMenuOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentTeam, setCurrentTeam] = useState<string | null>(
-    mockUser.teams[0] || null,
+    mockUser.teams[0].name || null,
   );
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleTeamMenu = () => setIsTeamMenuOpen((prev) => !prev);
 
   const handleMenuClick = useCallback(() => {
     setIsSidebarOpen(true);
@@ -33,6 +39,9 @@ export default function Header() {
   const handleCloseSidebar = useCallback(() => {
     setIsSidebarOpen(false);
   }, []);
+
+  const itemCount = mockUser.teams.length + 1;
+  const containerHeight = `${itemCount * 46}px`;
 
   return (
     <>
@@ -75,7 +84,7 @@ export default function Header() {
             <>
               <div className="hidden md:flex items-center md:gap-8 lg:gap-10">
                 {mockUser.teams.length > 1 ? (
-                  <div className="flex items-center gap-2.5 cursor-pointer">
+                  <div className="flex items-center gap-2.5 cursor-pointer relative">
                     <span className="whitespace-nowrap text-text-primary text-md md:text-lg">
                       {currentTeam}
                     </span>
@@ -84,11 +93,45 @@ export default function Header() {
                       alt="팀 선택"
                       width={16}
                       height={16}
+                      onClick={toggleTeamMenu}
                     />
+
+                    <DropDownMenu
+                      isOpen={isTeamMenuOpen}
+                      className="absolute w-[218px] text-center h-[250px] top-full mt-7 right-0"
+                    >
+                      {mockUser.teams.map((team) => (
+                        <DropDownItem
+                          key={team.name}
+                          className="text-lg w-full h-[46px] flex items-center justify-between"
+                        >
+                          <div className="flex justify-between items-center w-full">
+                            <div className="flex items-center gap-2">
+                              <Image
+                                src={team.img}
+                                alt={team.name}
+                                width={24}
+                                height={24}
+                              />
+                              {team.name}
+                            </div>
+                            <Image
+                              src="icons/icon-kebab.svg"
+                              width={3}
+                              height={12}
+                              alt="더보기"
+                            />
+                          </div>
+                        </DropDownItem>
+                      ))}
+                      <button className="mt-2 border-t w-full h-[46px] text-center border border-white rounded-[12px] text-text-primary cursor-pointer">
+                        + 팀 추가하기
+                      </button>
+                    </DropDownMenu>
                   </div>
                 ) : (
                   <span className="text-text-primary text-md md:text-lg">
-                    {mockUser.teams[0]}
+                    {mockUser.teams[0].name}
                   </span>
                 )}
 
@@ -132,7 +175,7 @@ export default function Header() {
 
                 <DropDownMenu
                   isOpen={isMenuOpen}
-                  className="right-0 text-center"
+                  className="absolute mt-2 right-0 text-center"
                 >
                   <DropDownItem>
                     <Link href="/myhistory">마이 히스토리</Link>

@@ -17,7 +17,7 @@ export default function DropDownMenu({
 
   return (
     <div
-      className={`absolute mt-1 w-[120px] flex flex-col gap-2 px-[11px] py-[14px] rounded-[16px] bg-bg-secondary text-text-primary border border-text-primary text-md font-regular z-50 ${className}`}
+      className={`absolute mt-1 w-[120px] flex flex-col gap-2 px-[11px] py-[14px] rounded-[16px] bg-bg-secondary text-text-primary border border-[#4c4c4c] text-md font-regular z-50 ${className}`}
     >
       {children}
     </div>

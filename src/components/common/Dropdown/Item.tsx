@@ -6,12 +6,13 @@ import { motion, Variants } from "framer-motion";
 interface DropDownItemProps {
   children: ReactNode;
   onClick?: () => void;
+  className?: string;
 }
 
 const hoverAnimation: Variants = {
   hover: {
     scale: 1.02,
-    backgroundColor: "#0f172a",
+    backgroundColor: "#64748b",
     color: "#f8fafc",
     transition: {
       duration: 0.15,
@@ -24,10 +25,14 @@ const tapAnimation = {
   transition: { duration: 0.1 },
 };
 
-export default function DropDownItem({ children, onClick }: DropDownItemProps) {
+export default function DropDownItem({
+  children,
+  onClick,
+  className,
+}: DropDownItemProps) {
   return (
     <motion.div
-      className="w-full px-1 py-1 rounded-[12px] text-md-regular text-text-primary cursor-pointer"
+      className={`w-full px-1 py-1 rounded-[8px] text-md-regular text-text-primary cursor-pointer ${className}`}
       variants={hoverAnimation}
       whileHover="hover"
       whileTap={tapAnimation}
