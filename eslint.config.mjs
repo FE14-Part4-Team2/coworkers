@@ -41,6 +41,7 @@ export default [
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "import/order": "off",
+      "react-perf/jsx-no-new-function-as-prop": "off",
     },
   },
 ];

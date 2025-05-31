@@ -23,7 +23,7 @@ const config: Config = {
         regular: "400",
       },
       colors: {
-        "brand-primary": "#10b9f1",
+        "brand-primary": "#10b981",
         "brand-secondary": "#34d399",
         "brand-tertiary": "#a3e635",
         "point-purple": "#a855f7",
