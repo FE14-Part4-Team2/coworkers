@@ -25,7 +25,7 @@ export default function UserDropdown({
           height={16}
           className="rounded-full cursor-pointer"
         />
-        <span className="whitespace-nowrap text-sm md:text-base text-text-primary hidden lg:inline-block">
+        <span className="whitespace-nowrap text-md text-text-primary hidden lg:inline-block">
           {userName}
         </span>
       </button>
