@@ -32,7 +32,7 @@ export default function DropDownItem({
 }: DropDownItemProps) {
   return (
     <motion.div
-      className={`w-full px-1 py-1 rounded-[8px] text-md-regular text-text-primary cursor-pointer ${className}`}
+      className={`w-full px-1 py-1 rounded-lg text-md-regular text-text-primary cursor-pointer ${className}`}
       variants={hoverAnimation}
       whileHover="hover"
       whileTap={tapAnimation}
