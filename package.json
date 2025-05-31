@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.77.0",
+    "clsx": "^2.1.1",
     "next": "^15.1.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -44,7 +45,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-perf": "^3.3.3",
     "globals": "^16.2.0",
-    "husky": "^9.1.7",
+    "husky": "^8.0.3",
     "lint-staged": "^16.0.0",
     "postcss": "^8",
     "prettier": "^3.5.3",
