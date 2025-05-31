@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = "/api/proxy";
 
 async function fetcher<T>(
   path: string,
@@ -37,10 +37,18 @@ async function fetcher<T>(
   try {
     const response = await fetch(url, config);
 
+    if (response.status === 204) {
+      return null as unknown as T;
+    }
+
     if (!response.ok) {
-      const errorData = await response
-        .json()
-        .catch(() => ({ message: response.statusText }));
+      const text = await response.text();
+      let errorData;
+      try {
+        errorData = text ? JSON.parse(text) : { message: response.statusText };
+      } catch {
+        errorData = { message: response.statusText };
+      }
 
       if (response.status === 401) {
         // 토큰 만료 시 로직 추가
