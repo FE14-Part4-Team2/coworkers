@@ -46,7 +46,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="flex items-center w-full h-15 bg-bg-secondary max-w-full 
+        className="fixed flex items-center w-full h-15 bg-bg-secondary max-w-full 
                  px-4 py-5 sm:px-6 sm:py-3.5 lg:px-[18.75vw] lg:py-3.5
                  justify-between sm:justify-center lg:justify-between"
       >
