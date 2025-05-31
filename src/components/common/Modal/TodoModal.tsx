@@ -1,6 +1,6 @@
 import { useModalStore } from "@/stores/modalStore";
 import Modal from "./Modal";
-import Input from "../common/Input/Input";
+import Input from "../Input/Input";
 
 interface TodoModalProps {
   value: string;

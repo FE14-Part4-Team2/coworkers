@@ -2,14 +2,14 @@
 
 import { useModalStore } from "@/stores/modalStore";
 import { useState } from "react";
-import InviteModal from "@/components/Modal/InviteModal";
-import TodoModal from "@/components/Modal/TodoModal";
-import TodoCreateModal from "@/components/Modal/TodoCreateModal";
-import PasswordResetModal from "@/components/Modal/PasswordResetModal";
-import ProfileModal from "@/components/Modal/ProfileModal";
-import DeleteAccountModal from "@/components/Modal/DeleteAccountModal";
-import LogoutModal from "@/components/Modal/LogoutModal";
-import PasswordChangeModal from "@/components/Modal/PasswordChangeModal";
+import InviteModal from "@/components/common/Modal/InviteModal";
+import TodoModal from "@/components/common/Modal/TodoModal";
+import TodoCreateModal from "@/components/common/Modal/TodoCreateModal";
+import PasswordResetModal from "@/components/common/Modal/PasswordResetModal";
+import ProfileModal from "@/components/common/Modal/ProfileModal";
+import DeleteAccountModal from "@/components/common/Modal/DeleteAccountModal";
+import LogoutModal from "@/components/common/Modal/LogoutModal";
+import PasswordChangeModal from "@/components/common/Modal/PasswordChangeModal";
 
 const users = [
   {

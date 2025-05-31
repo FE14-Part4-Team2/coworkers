@@ -17,7 +17,7 @@ export default function ProfileModal({
   profileImageUrl,
   onCopy,
 }: ProfileModalProps) {
-  const { isOpen, modalType, closeModal } = useModalStore();
+  const { isOpen, modalType } = useModalStore();
 
   if (!isOpen || modalType !== "profile") return null;
 
