@@ -5,7 +5,7 @@ export default function SettingLayout({
 }) {
   return (
     <main className="min-h-screen w-full flex items-start justify-center">
-      <div className="lg:w-[800px] w-full sm:px-6 px-4 lg:pt-[100px] pt-[84px] flex flex-col items-start">
+      <div className="md:w-[792px] w-full sm:mx-6 mx-4 md:pt-[100px] pt-[84px] flex flex-col items-start">
         {children}
       </div>
     </main>
