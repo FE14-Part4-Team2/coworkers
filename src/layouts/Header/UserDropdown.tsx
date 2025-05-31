@@ -32,7 +32,7 @@ export default function UserDropdown({
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute mt-2 right-0 text-center"
+        className="w-[8.5rem] absolute mt-2 right-0 text-center"
       >
         <DropDownItem>
           <Link href="/myhistory">마이 히스토리</Link>

@@ -37,7 +37,7 @@ export default function TeamDropdown({
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute w-[13rem] text-center top-full mt-2 right-0"
+        className="absolute w-[13.5rem] text-center top-full mt-2 right-0"
       >
         {teams.map((team) => (
           <DropDownItem
