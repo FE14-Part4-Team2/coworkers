@@ -46,8 +46,8 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed flex items-center w-full h-15 bg-bg-secondary max-w-[120rem] mx-auto
-                 px-4 py-5 sm:px-6 sm:py-3.5 md:px-[22.5rem] md:py-3.5
+        className="fixed flex items-center w-full h-15 bg-bg-secondary mx-auto
+                 px-4 py-5 sm:px-6 sm:py-3.5 md:px-[18vw] md:py-3.5
                  justify-between sm:justify-center md:justify-between"
       >
         <div className="flex items-center">
