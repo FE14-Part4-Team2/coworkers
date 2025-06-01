@@ -17,9 +17,12 @@ export default function BoardBestList() {
         </div>
       </div>
       <div className="flex gap-[1.5rem]">
-        <ShortCard />
-        <ShortCard />
-        <ShortCard />
+        <ShortCard
+          date="2025.06.17"
+          title="6월에 같이 팀하면서 일정 관리하고 공유하실 분!"
+          writer="이나경"
+          likes={10}
+        />
       </div>
     </>
   );

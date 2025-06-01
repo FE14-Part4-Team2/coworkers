@@ -10,8 +10,13 @@ export default function BoardList() {
           <FilterDropdown />
         </div>
         <div className="flex gap-4">
-          <LongCard />
-          <LongCard />
+          <LongCard
+            date="2025.06.17"
+            title="6월에 같이 팀하면서 일정 관리하고 공유하실 분!"
+            writer="이나경"
+            content="같이 공부하실 분 구함요"
+            likes={10}
+          />
         </div>
       </div>
     </>
