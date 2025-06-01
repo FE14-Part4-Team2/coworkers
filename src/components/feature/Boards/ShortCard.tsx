@@ -15,8 +15,8 @@ export default function ShortCard() {
 
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
-          <span className="flex gap-2 text-md text-text-disabled">
-            2025-06-17
+          <span className="flex gap-3 text-md text-text-disabled">
+            2025.06.17
           </span>
           <Image
             src="/icons/icon-bookmark2.svg"
@@ -27,13 +27,19 @@ export default function ShortCard() {
           />
         </div>
 
-        <div className="mt-3 text-lg text-text-secondary mb-4">
+        <div className="mt-3 text-lg text-text-tertiary mb-4">
           6월에 같이 팀하면서 일정 관리하고 공유하실 분!
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex gap-3 items-center">
+          <Image
+            src="/icons/icon-profile-default.svg"
+            alt="작성자"
+            width={25}
+            height={25}
+          />
           <div className="text-sm text-text-Primary ">이나경</div>
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-1 items-center ml-auto">
             <Image
               src="/icons/icon-heart.svg"
               alt="하트"
