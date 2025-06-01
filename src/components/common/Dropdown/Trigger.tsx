@@ -21,7 +21,7 @@ export default function DropDownTrigger({
   return (
     <motion.button
       onClick={onClick}
-      className={`flex justify-between items-center w-[120px] px-4 py-3 rounded-[12px] text-text-primary text-md font-regular transition
+      className={`flex justify-between items-center w-[7.5rem] px-4 py-3 rounded-xl text-text-primary text-md font-regular transition
         ${isOpen ? "bg-bg-tertiary" : "bg-bg-secondary"}
       `}
       whileHover={hoverAnimation}

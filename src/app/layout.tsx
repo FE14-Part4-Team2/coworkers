@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Header from "@/layouts/Header/Header";
 
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} font-pretendard`}>
-      <body className="bg-bg-primary text-white">{children}</body>
+      <body className="bg-bg-primary text-white">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
