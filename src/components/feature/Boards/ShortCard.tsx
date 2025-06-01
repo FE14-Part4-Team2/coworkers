@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 
-export default function MyDataCard() {
+export default function ShortCard() {
   return (
-    <div className="w-[22rem] h-[19rem] rounded-xl border border-1.5 border-interaction-inactive bg-white shadow-lg overflow-hidden">
+    <div className="w-[22rem] h-[19rem] rounded-xl border border-card-border bg-bg-secondary shadow-lg overflow-hidden">
       <div className="w-full h-[12rem] bg-blue-100 flex items-center justify-center relative">
         <Image
           src="/icons/icon-avatar.svg"
@@ -13,11 +13,9 @@ export default function MyDataCard() {
         />
       </div>
 
-      <div className="border bg-text-default"></div>
-
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
-          <span className="flex gap-2 text-md text-text-default">
+          <span className="flex gap-2 text-md text-text-disabled">
             2025-06-17
           </span>
           <Image
@@ -29,12 +27,12 @@ export default function MyDataCard() {
           />
         </div>
 
-        <div className="mt-3 text-lg text-bg-primary mb-4">
+        <div className="mt-3 text-lg text-text-secondary mb-4">
           6월에 같이 팀하면서 일정 관리하고 공유하실 분!
         </div>
 
         <div className="flex justify-between items-center">
-          <div className="text-sm text-bg-secondary ">이나경</div>
+          <div className="text-sm text-text-Primary ">이나경</div>
           <div className="flex gap-1 items-center">
             <Image
               src="/icons/icon-heart.svg"
@@ -42,7 +40,7 @@ export default function MyDataCard() {
               width={16}
               height={16}
             />
-            <span className="text-sm text-bg-secondary ">10</span>
+            <span className="text-sm text-text-disabled ">10</span>
           </div>
         </div>
       </div>

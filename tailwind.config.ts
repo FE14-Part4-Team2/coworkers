@@ -52,6 +52,7 @@ const config: Config = {
         "icon-primary": "#64748b",
         "icon-inverse": "#f8fafc",
         "icon-brand": "#10b981",
+        "card-border": "#4c4c4c",
       },
     },
   },
