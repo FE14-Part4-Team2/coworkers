@@ -28,7 +28,7 @@ export default function TeamDropdown({
           {currentTeam}
         </span>
         <Image
-          src="/icons/icon-check.svg"
+          src="/icons/icon-toggle-check.svg"
           alt="팀 선택"
           width={16}
           height={16}
@@ -51,7 +51,7 @@ export default function TeamDropdown({
               {team.name}
             </div>
             <Image
-              src="icons/icon-kebab.svg"
+              src="icons/icon-kebabs.svg"
               width={3}
               height={12}
               alt="더보기"
