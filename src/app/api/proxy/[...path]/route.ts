@@ -17,8 +17,6 @@ export async function handler(req: NextRequest) {
     headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  console.log("HEADER", headers);
-
   const backendRes = await fetch(url, {
     method: req.method,
     headers,

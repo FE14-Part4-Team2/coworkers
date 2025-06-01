@@ -1,4 +1,5 @@
-import { api } from "../api";
+import { authApi } from "../auth-fetcher";
+import { api } from "../fetcher";
 import {
   OAuthSignInRequest,
   OAuthSignInResponse,
@@ -14,16 +15,19 @@ const PATH = "/auth";
 
 class AuthService {
   signUp(body: SignUpRequest) {
-    return api.post<SignUpResponse>(`${PATH}/signUp`, body);
+    return authApi.post<SignUpResponse>(`/sign-up`, body);
   }
   signIn(body: SignInRequest) {
-    return api.post<SignInResponse>(`${PATH}/signIn`, body);
+    return authApi.post<SignInResponse>(`/sign-in`, body);
   }
   refreshToken(body: RefreshTokenRequest) {
     return api.post<RefreshTokenResponse>(`${PATH}/refresh-token`, body);
-  }
+  } // 서버 구현 후 삭제
   kakaoSignIn(body: OAuthSignInRequest) {
     return api.post<OAuthSignInResponse>(`${PATH}/signIn/KAKAO`, body);
+  } // 임시
+  signOut() {
+    return authApi.post("/sign-out", undefined);
   }
 }
 
