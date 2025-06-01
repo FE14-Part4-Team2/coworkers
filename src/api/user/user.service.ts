@@ -1,3 +1,4 @@
+import { Message } from "../auth/auth.schema";
 import { api } from "../fetcher";
 import {
   GetMyGroupsResponse,
@@ -16,7 +17,7 @@ class UserService {
   getMyInfo() {
     return api.get<GetMyInfoResponse>(PATH);
   }
-  updateMyInfo(body: UpdateMyInfoRequest) {
+  updateMyInfo(body: UpdateMyInfoRequest): Promise<Message> {
     return api.patch(PATH, body);
   }
   deleteMyInfo() {

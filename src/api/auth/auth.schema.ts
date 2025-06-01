@@ -33,3 +33,5 @@ export type OAuthSignInRequest = {
 };
 
 export type OAuthSignInResponse = SignUserType;
+
+export type Message = { message: string };
