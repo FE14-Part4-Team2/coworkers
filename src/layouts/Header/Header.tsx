@@ -46,12 +46,13 @@ export default function Header() {
   return (
     <>
       <header
-        className="flex items-center w-full h-[60px] bg-bg-secondary max-w-full 
-                   px-[16px] py-[20px] md:px-[24px] md:py-[14px] lg:px-[360px] lg:py-[14px]"
+        className="fixed flex items-center w-full h-15 bg-bg-secondary max-w-[120rem] mx-auto
+                 px-4 py-5 sm:px-6 sm:py-3.5 md:px-[22.5rem] md:py-3.5
+                 justify-between sm:justify-center md:justify-between"
       >
         <div className="flex items-center">
           {!isLanding && !isAuthPage && mockUser.teams.length > 0 && (
-            <button onClick={handleMenuClick} className="block md:hidden mr-4">
+            <button onClick={handleMenuClick} className="block sm:hidden mr-4">
               <Image
                 src="/icons/icon-gnb_menu.svg"
                 alt="메뉴"
@@ -62,27 +63,27 @@ export default function Header() {
           )}
         </div>
 
-        <div className="flex items-center md:gap-8 lg:gap-10">
+        <div className="flex items-center sm:gap-8 md:gap-10">
           <Link href="/">
             <Image
               src="/icons/icon-logo-sm.svg"
               alt="작은 로고"
               width={102}
               height={20}
-              className="block lg:hidden"
+              className="block md:hidden"
             />
             <Image
               src="/icons/icon-logo-lg.svg"
               alt="큰 로고"
               width={158}
               height={32}
-              className="hidden lg:block"
+              className="hidden md:block"
             />
           </Link>
 
           {!isLanding && !isAuthPage && (
             <>
-              <div className="hidden md:flex items-center md:gap-8 lg:gap-10">
+              <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
                 {mockUser.teams.length > 1 ? (
                   <TeamDropdown
                     teams={mockUser.teams}
@@ -91,15 +92,12 @@ export default function Header() {
                     onToggle={toggleTeamMenu}
                   />
                 ) : (
-                  <span className="text-text-primary text-md md:text-lg">
+                  <span className="text-text-primary text-lg">
                     {mockUser.teams[0].name}
                   </span>
                 )}
 
-                <Link
-                  href="/boards"
-                  className={"whitespace-nowrap text-md md:text-lg"}
-                >
+                <Link href="/boards" className={"whitespace-nowrap text-lg"}>
                   모집게시판
                 </Link>
               </div>
@@ -112,7 +110,7 @@ export default function Header() {
             {isLanding ? (
               <Link
                 href="/login"
-                className="whitespace-nowrap text-text-primary text-md md:text-lg"
+                className="whitespace-nowrap text-text-primary text-lg"
               >
                 로그인
               </Link>

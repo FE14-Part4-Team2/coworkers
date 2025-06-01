@@ -24,11 +24,11 @@ export default function TeamDropdown({
   return (
     <div className="relative cursor-pointer">
       <div className="flex items-center gap-2.5" onClick={onToggle}>
-        <span className="whitespace-nowrap text-text-primary text-md md:text-lg">
+        <span className="whitespace-nowrap text-text-primary text-lg">
           {currentTeam}
         </span>
         <Image
-          src="/icons/icon-check.svg"
+          src="/icons/icon-toggle-check.svg"
           alt="팀 선택"
           width={16}
           height={16}
@@ -37,12 +37,12 @@ export default function TeamDropdown({
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute w-[218px] text-center top-full mt-2 right-0"
+        className="absolute w-[13.5rem] text-center top-full mt-2 right-0"
       >
         {teams.map((team) => (
           <DropDownItem
             key={team.name}
-            className={`text-lg w-full h-[46px] flex items-center justify-between ${
+            className={`text-lg w-full h-11.5 flex items-center justify-between ${
               team.name === currentTeam ? "font-bold bg-bg-hover" : ""
             }`}
           >
@@ -51,14 +51,14 @@ export default function TeamDropdown({
               {team.name}
             </div>
             <Image
-              src="icons/icon-kebab.svg"
+              src="icons/icon-kebabs.svg"
               width={3}
               height={12}
               alt="더보기"
             />
           </DropDownItem>
         ))}
-        <button className="mt-2 border-t w-full h-[46px] text-center border border-white rounded-[12px] text-text-primary cursor-pointer">
+        <button className="mt-2 border-t w-full h-[3rem] text-center border border-white rounded-xl text-text-primary cursor-pointer">
           + 팀 추가하기
         </button>
       </DropDownMenu>
