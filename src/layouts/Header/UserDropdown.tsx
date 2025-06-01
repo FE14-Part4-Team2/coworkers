@@ -25,14 +25,14 @@ export default function UserDropdown({
           height={16}
           className="rounded-full cursor-pointer"
         />
-        <span className="whitespace-nowrap text-sm md:text-base text-text-primary hidden lg:inline-block">
+        <span className="whitespace-nowrap text-md text-text-primary hidden md:inline-block">
           {userName}
         </span>
       </button>
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute mt-2 right-0 text-center"
+        className="w-[8.5rem] absolute mt-2 right-0 text-center"
       >
         <DropDownItem>
           <Link href="/myhistory">마이 히스토리</Link>
