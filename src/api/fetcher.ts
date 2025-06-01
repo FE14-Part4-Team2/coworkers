@@ -5,6 +5,7 @@ async function fetcher<T>(
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   body?: unknown,
   options?: RequestInit,
+  isRetry = false,
 ): Promise<T> {
   const url = `${BASE_URL}${path}`;
   let contentType: string | null = "application/json";
@@ -50,9 +51,15 @@ async function fetcher<T>(
         errorData = { message: response.statusText };
       }
 
-      if (response.status === 401) {
-        // 토큰 만료 시 로직 추가
-        throw new Error(errorData.message || "Unauthorized");
+      if (response.status === 401 && !isRetry) {
+        const refreshRes = await fetch("/api/auth/refresh", {
+          method: "POST",
+          credentials: "include",
+        });
+
+        if (refreshRes.ok) {
+          return fetcher<T>(path, method, body, options, true);
+        }
       }
 
       throw new Error(errorData.message || "Error!");

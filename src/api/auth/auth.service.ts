@@ -22,7 +22,7 @@ class AuthService {
   }
   refreshToken(body: RefreshTokenRequest) {
     return api.post<RefreshTokenResponse>(`${PATH}/refresh-token`, body);
-  } // 서버 구현 후 삭제
+  }
   kakaoSignIn(body: OAuthSignInRequest) {
     return api.post<OAuthSignInResponse>(`${PATH}/signIn/KAKAO`, body);
   } // 임시
