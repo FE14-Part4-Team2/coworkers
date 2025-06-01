@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function LongCard() {
   return (
-    <div className="w-[36rem] h-[11rem] border border-card-border bg-bg-secondary rounded-xl px-8 pt-6 pb-5 shadow-lg relative flex items-center">
+    <div className="w-[37rem] h-[11rem] border border-card-border bg-bg-secondary rounded-xl px-8 pt-6 pb-5 shadow-lg relative flex items-center">
       <div className="w-[128px] h-[128px] rounded-lg overflow-hidden bg-blue-100 flex-shrink-0 relative">
         <Image
           src="/icons/icon-avatar.svg"

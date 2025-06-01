@@ -1,17 +1,14 @@
-// import LongCard from "@/components/feature/Boards/LongCard";
-// import ShortCard from "@/components/feature/Boards/ShortCard";
-
 import SearchInput from "@/components/feature/Boards/SearchInput";
+import BoardBestList from "@/components/feature/Boards/BoardBestList";
+import BoardList from "@/components/feature/Boards/BoardList";
 
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col">
-        <span className="text-2xl text-text-primary mb-[2.5rem]">
-          자유게시판
-        </span>
-
+      <div className="flex flex-col w-full">
         <SearchInput />
+        <BoardBestList />
+        <BoardList />
       </div>
     </>
   );

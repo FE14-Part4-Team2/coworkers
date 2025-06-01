@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function ShortCard() {
   return (
-    <div className="w-[22rem] h-[19rem] rounded-xl border border-card-border bg-bg-secondary shadow-lg overflow-hidden">
+    <div className="w-[24rem] h-[19rem] rounded-xl border border-card-border bg-bg-secondary shadow-lg overflow-hidden">
       <div className="w-full h-[12rem] bg-blue-100 flex items-center justify-center relative">
         <Image
           src="/icons/icon-avatar.svg"
