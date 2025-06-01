@@ -46,9 +46,9 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed flex items-center w-full h-15 bg-bg-secondary max-w-full 
-                 px-4 py-5 sm:px-6 sm:py-3.5 lg:px-[18.75vw] lg:py-3.5
-                 justify-between sm:justify-center lg:justify-between"
+        className="fixed flex items-center w-full h-15 bg-bg-secondary max-w-[120rem] mx-auto
+                 px-4 py-5 sm:px-6 sm:py-3.5 md:px-[18.75vw] md:py-3.5
+                 justify-between sm:justify-center md:justify-between"
       >
         <div className="flex items-center">
           {!isLanding && !isAuthPage && mockUser.teams.length > 0 && (
@@ -63,27 +63,27 @@ export default function Header() {
           )}
         </div>
 
-        <div className="flex items-center sm:gap-8 lg:gap-10">
+        <div className="flex items-center sm:gap-8 md:gap-10">
           <Link href="/">
             <Image
               src="/icons/icon-logo-sm.svg"
               alt="작은 로고"
               width={102}
               height={20}
-              className="block lg:hidden"
+              className="block md:hidden"
             />
             <Image
               src="/icons/icon-logo-lg.svg"
               alt="큰 로고"
               width={158}
               height={32}
-              className="hidden lg:block"
+              className="hidden md:block"
             />
           </Link>
 
           {!isLanding && !isAuthPage && (
             <>
-              <div className="hidden sm:flex items-center sm:gap-8 lg:gap-10">
+              <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
                 {mockUser.teams.length > 1 ? (
                   <TeamDropdown
                     teams={mockUser.teams}
