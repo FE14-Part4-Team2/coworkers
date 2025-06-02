@@ -30,7 +30,7 @@ export type Membership = {
 export type GetMyInfoResponse = UserType & { memberships: Membership[] };
 
 export type UpdateMyInfoRequest = {
-  nickname: string;
+  nickname?: string;
   image?: string;
 };
 
