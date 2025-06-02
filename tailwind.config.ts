@@ -38,6 +38,7 @@ const config: Config = {
         "bg-secondary": "#1e293b",
         "bg-tertiary": "#334155",
         "bg-inverse": "#ffffff",
+        "bg-bar": "#faf8fc1A",
         "interaction-inactive": "#94a3b8",
         "interaction-hover": "#059669",
         "interaction-pressed": "#047857",
