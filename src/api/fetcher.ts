@@ -1,13 +1,28 @@
 const BASE_URL = "/api/proxy";
 
+type FetcherOptions = RequestInit & {
+  params?: Record<string, string | number | boolean>;
+};
+
 async function fetcher<T>(
   path: string,
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   body?: unknown,
-  options?: RequestInit,
+  options?: FetcherOptions,
   isRetry = false,
 ): Promise<T> {
-  const url = `${BASE_URL}${path}`;
+  const url = new URL(`${BASE_URL}${path}`, window.location.origin);
+
+  if (options?.params) {
+    Object.entries(options.params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, String(value));
+
+        console.log(url);
+      }
+    });
+  }
+
   let contentType: string | null = "application/json";
 
   const config: RequestInit = {
@@ -72,12 +87,12 @@ async function fetcher<T>(
 }
 
 export const api = {
-  get: <T>(path: string, options?: RequestInit) =>
+  get: <T>(path: string, options?: FetcherOptions) =>
     fetcher<T>(path, "GET", undefined, options),
-  post: <T>(path: string, body: unknown, options?: RequestInit) =>
+  post: <T>(path: string, body: unknown, options?: FetcherOptions) =>
     fetcher<T>(path, "POST", body, options),
-  patch: <T>(path: string, body: unknown, options?: RequestInit) =>
+  patch: <T>(path: string, body: unknown, options?: FetcherOptions) =>
     fetcher<T>(path, "PATCH", body, options),
-  delete: <T>(path: string, options?: RequestInit) =>
+  delete: <T>(path: string, options?: FetcherOptions) =>
     fetcher<T>(path, "DELETE", undefined, options),
 };

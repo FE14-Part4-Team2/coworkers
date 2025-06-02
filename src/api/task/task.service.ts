@@ -20,10 +20,12 @@ class TaskService {
       body,
     );
   }
-  getTasks(groupId: string, taskListId: string) {
-    return api.get<GetTasksResponse>(this.getBasePath(groupId, taskListId));
+  getTasks(groupId: string, taskListId: string, params?: { date?: string }) {
+    return api.get<GetTasksResponse>(this.getBasePath(groupId, taskListId), {
+      params,
+    });
   }
-  getTask(groupId: string, taskListId: string, taskId: string) {
+  getTaskInfo(groupId: string, taskListId: string, taskId: string) {
     const path = `${this.getBasePath(groupId, taskListId)}/${taskId}`;
 
     return api.get<GetTaskResponse>(path);

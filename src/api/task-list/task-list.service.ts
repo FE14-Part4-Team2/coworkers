@@ -15,8 +15,10 @@ class TaskListService {
       : `/groups/${groupId}/task-lists`;
   }
 
-  getTaskList(groupId: string, id: string) {
-    return api.get<GetTaskListResponse>(this.getBasePath(groupId, id));
+  getTaskList(groupId: string, id: string, params?: { date?: string }) {
+    return api.get<GetTaskListResponse>(this.getBasePath(groupId, id), {
+      params,
+    });
   }
   updateTaskList(groupId: string, id: string, body: UpdateTaskListRequest) {
     return api.patch<UpdateTaskListResponse>(

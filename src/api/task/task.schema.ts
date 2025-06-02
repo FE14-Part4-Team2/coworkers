@@ -40,13 +40,13 @@ interface OnceRecurring extends RecurringBody {
 export type TaskType = {
   doneBy: {
     user?: {
-      image?: string;
+      image?: string | null;
       nickname?: string;
       id: number;
     };
   };
   writer?: {
-    image?: string;
+    image?: string | null;
     nickname?: string;
     id: number;
   };
