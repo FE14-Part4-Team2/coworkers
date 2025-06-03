@@ -1,0 +1,26 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install SSH key
+        run: |
+          echo "${{ secrets.EC2_PEM_KEY }}" | tr -d '\r' > coworkers-ec2-server-key.pem
+          chmod 400 coworkers-ec2-server-key.pem
+
+      - name: Verify SSH key creation
+        run: ls -l coworkers-ec2-server-key.pem
+
+      - name: Deploy to EC2
+        run: |
+          ssh -vvv -i coworkers-ec2-server-key.pem -o StrictHostKeyChecking=no ubuntu@ec2-43-200-176-124.ap-northeast-2.compute.amazonaws.com 'cd coworkers && git pull origin develop && npm install && npm run build && pm2 restart all'
