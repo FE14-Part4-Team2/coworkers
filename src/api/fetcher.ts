@@ -17,8 +17,6 @@ async function fetcher<T>(
     Object.entries(options.params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         url.searchParams.append(key, String(value));
-
-        console.log(url);
       }
     });
   }
