@@ -2,6 +2,7 @@ import ShortCard from "./ShortCard";
 import Image from "next/image";
 
 const dummyList = [
+  //LATER: 실제 게시물 API 연결
   {
     id: 1,
     date: "2025.06.17",

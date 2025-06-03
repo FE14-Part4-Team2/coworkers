@@ -2,6 +2,7 @@ import FilterDropdown from "@/components/common/Dropdown/FilterDropdown";
 import LongCard from "./LongCard";
 
 const dummyList = [
+  //LATER: 실제 게시물 API 연결
   {
     id: 1,
     date: "2025.06.17",

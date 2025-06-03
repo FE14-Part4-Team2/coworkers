@@ -8,6 +8,7 @@ import UserDropdown from "./UserDropdown";
 import TeamDropdown from "./TeamDropdown";
 
 const mockUser = {
+  //LATER: 실제 user API 연결
   name: "안해나",
   teams: [
     { name: "경영관리팀", img: "/icons/icon-avatar.svg" },
@@ -17,6 +18,7 @@ const mockUser = {
 };
 
 export default function Header() {
+  //LATER: 추후 분기처리 로직 제외
   const pathname = usePathname();
 
   const isLanding = pathname === "/";

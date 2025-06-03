@@ -54,7 +54,7 @@ export default function LongCard({
 
       <button className="absolute top-3 right-4">
         <Image
-          src="/icons/icon-bookmark2.svg"
+          src="/icons/icon-bookmarks.svg"
           alt="더보기"
           width={18}
           height={18}

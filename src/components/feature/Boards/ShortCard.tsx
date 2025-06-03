@@ -33,7 +33,7 @@ export default function ShortCard({
         <div className="flex items-center justify-between">
           <span className="flex gap-3 text-md text-text-disabled">{date}</span>
           <Image
-            src="/icons/icon-bookmark2.svg"
+            src="/icons/icon-bookmarks.svg"
             alt="더보기"
             width={14}
             height={18}

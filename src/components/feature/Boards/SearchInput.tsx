@@ -7,6 +7,7 @@ interface SearchInputProps {
   onSearch?: (query: string) => void;
 }
 
+//LATER: search API 연결
 export default function SearchInput({
   placeholder = "검색어를 입력하세요",
   onSearch,
