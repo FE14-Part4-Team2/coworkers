@@ -3,6 +3,7 @@ import LongCard from "./LongCard";
 
 const dummyList = [
   {
+    id: 1,
     date: "2025.06.17",
     title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
     writer: "이나경",
@@ -11,6 +12,7 @@ const dummyList = [
     likes: 10,
   },
   {
+    id: 2,
     date: "2025.06.17",
     title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
     writer: "이나경",
@@ -19,6 +21,7 @@ const dummyList = [
     likes: 10,
   },
   {
+    id: 3,
     date: "2025.06.17",
     title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
     writer: "이나경",
@@ -27,6 +30,7 @@ const dummyList = [
     likes: 10,
   },
   {
+    id: 4,
     date: "2025.06.17",
     title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
     writer: "이나경",
@@ -44,18 +48,20 @@ export default function BoardList() {
           <span className="text-xl text-text-primary">게시글</span>
           <FilterDropdown />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-10">
-          {dummyList.map((post, idx) => (
-            <LongCard
-              key={idx}
-              date={post.date}
-              title={post.title}
-              writer={post.writer}
-              content={post.content}
-              likes={post.likes}
-            />
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-10">
+          {dummyList.map((post) => (
+            <li key={post.id}>
+              <LongCard
+                key={post.id}
+                date={post.date}
+                title={post.title}
+                writer={post.writer}
+                content={post.content}
+                likes={post.likes}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </>
   );

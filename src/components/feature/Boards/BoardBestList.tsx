@@ -3,18 +3,21 @@ import Image from "next/image";
 
 const dummyList = [
   {
+    id: 1,
     date: "2025.06.17",
     title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
     writer: "이나경",
     likes: 10,
   },
   {
+    id: 2,
     date: "2025.06.15",
     title: "React 같이 공부하실 분 구해요!",
     writer: "홍길동",
     likes: 7,
   },
   {
+    id: 3,
     date: "2025.06.18",
     title: "같이 공모전 나가실 분 구합니다!",
     writer: "김김김",
@@ -30,7 +33,7 @@ export default function BoardBestList() {
           베스트 게시글
         </span>
         <div className="flex gap-[0.1rem]">
-          <span className="text-text-disabled">더보기</span>
+          <button className="text-text-disabled">더보기</button>
           <Image
             src="/icons/icon-arrow_right.svg"
             alt="오른쪽 화살표"
@@ -39,17 +42,18 @@ export default function BoardBestList() {
           />
         </div>
       </div>
-      <div className="flex gap-[1.5rem]">
-        {dummyList.map((post, idx) => (
-          <ShortCard
-            key={idx}
-            date={post.date}
-            title={post.title}
-            writer={post.writer}
-            likes={post.likes}
-          />
+      <ul className="flex gap-[1.5rem]">
+        {dummyList.map((post) => (
+          <li key={post.id}>
+            <ShortCard
+              date={post.date}
+              title={post.title}
+              writer={post.writer}
+              likes={post.likes}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

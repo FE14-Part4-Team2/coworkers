@@ -1,6 +1,9 @@
 "use client";
 import Image from "next/image";
 
+const DEFAULT_PROFILE_IMG = "/icons/icon-profile-default.svg";
+const DEFAULT_THUMBNAIL = "/icons/icon-avatar.svg";
+
 interface LongCardProps {
   title: string;
   content: string;
@@ -17,8 +20,8 @@ export default function LongCard({
   writer,
   date,
   likes,
-  profileImg = "/icons/icon-profile-default.svg",
-  thumbnail = "/icons/icon-avatar.svg",
+  profileImg = DEFAULT_PROFILE_IMG,
+  thumbnail = DEFAULT_THUMBNAIL,
 }: LongCardProps) {
   return (
     <div className="w-[37rem] h-[11rem] border border-card-border bg-bg-secondary rounded-xl px-8 pt-6 pb-5 shadow-lg relative flex items-center">
