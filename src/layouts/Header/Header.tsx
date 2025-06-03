@@ -8,6 +8,7 @@ import UserDropdown from "./UserDropdown";
 import TeamDropdown from "./TeamDropdown";
 
 const mockUser = {
+  //LATER: 실제 user API 연결
   name: "안해나",
   teams: [
     { name: "경영관리팀", img: "/icons/icon-avatar.svg" },
@@ -17,6 +18,7 @@ const mockUser = {
 };
 
 export default function Header() {
+  //LATER: 추후 분기처리 로직 제외
   const pathname = usePathname();
 
   const isLanding = pathname === "/";
@@ -45,86 +47,89 @@ export default function Header() {
 
   return (
     <>
-      <header
-        className="fixed flex items-center w-full h-15 bg-bg-secondary mx-auto
-                 px-4 py-5 sm:px-6 sm:py-3.5 md:px-[18vw] md:py-3.5
-                 justify-between sm:justify-center md:justify-between"
-      >
-        <div className="flex items-center">
-          {!isLanding && !isAuthPage && mockUser.teams.length > 0 && (
-            <button onClick={handleMenuClick} className="block sm:hidden mr-4">
-              <Image
-                src="/icons/icon-gnb_menu.svg"
-                alt="메뉴"
-                width={24}
-                height={24}
-              />
-            </button>
-          )}
-        </div>
-
-        <div className="flex items-center sm:gap-8 md:gap-10">
-          <Link href="/">
-            <Image
-              src="/icons/icon-logo-sm.svg"
-              alt="작은 로고"
-              width={102}
-              height={20}
-              className="block md:hidden"
-            />
-            <Image
-              src="/icons/icon-logo-lg.svg"
-              alt="큰 로고"
-              width={158}
-              height={32}
-              className="hidden md:block"
-            />
-          </Link>
-
-          {!isLanding && !isAuthPage && (
-            <>
-              <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
-                {mockUser.teams.length > 1 ? (
-                  <TeamDropdown
-                    teams={mockUser.teams}
-                    currentTeam={currentTeam}
-                    isOpen={isTeamMenuOpen}
-                    onToggle={toggleTeamMenu}
-                  />
-                ) : (
-                  <span className="text-text-primary text-lg">
-                    {mockUser.teams[0].name}
-                  </span>
-                )}
-
-                <Link href="/boards" className={"whitespace-nowrap text-lg"}>
-                  모집게시판
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-
-        {!isAuthPage && (
-          <div className="ml-auto">
-            {isLanding ? (
-              <Link
-                href="/login"
-                className="whitespace-nowrap text-text-primary text-lg"
+      <header className="fixed top-0 left-0 w-full bg-bg-secondary z-50 h-15">
+        <div className="w-full max-w-[78rem] mx-auto flex items-center justify-between px-4 py-5 sm:px-6 sm:py-3.5 md:px-7 md:py-[0.88rem]">
+          <div className="flex items-center">
+            {!isLanding && !isAuthPage && mockUser.teams.length > 0 && (
+              <button
+                onClick={handleMenuClick}
+                className="block sm:hidden mr-4"
               >
-                로그인
-              </Link>
-            ) : (
-              <div className="relative">
-                <UserDropdown
-                  userName={mockUser.name}
-                  isOpen={isMenuOpen}
-                  onToggle={toggleMenu}
+                <Image
+                  src="/icons/icon-gnb_menu.svg"
+                  alt="메뉴"
+                  width={24}
+                  height={24}
                 />
-              </div>
+              </button>
             )}
           </div>
-        )}
+
+          <div className="flex items-center sm:gap-8 md:gap-10">
+            <Link href="/">
+              <Image
+                src="/icons/icon-logo-sm.svg"
+                alt="작은 로고"
+                width={102}
+                height={20}
+                className="block md:hidden"
+              />
+              <Image
+                src="/icons/icon-logo-lg.svg"
+                alt="큰 로고"
+                width={158}
+                height={32}
+                className="hidden md:block"
+              />
+            </Link>
+
+            {!isLanding && !isAuthPage && (
+              <>
+                <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
+                  {mockUser.teams.length > 1 ? (
+                    <TeamDropdown
+                      teams={mockUser.teams}
+                      currentTeam={currentTeam}
+                      isOpen={isTeamMenuOpen}
+                      onToggle={toggleTeamMenu}
+                      onClose={() => setIsTeamMenuOpen(false)}
+                    />
+                  ) : (
+                    <span className="text-text-primary text-lg">
+                      {mockUser.teams[0].name}
+                    </span>
+                  )}
+
+                  <Link href="/boards" className={"whitespace-nowrap text-lg"}>
+                    모집게시판
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+
+          {!isAuthPage && (
+            <div className="ml-auto">
+              {isLanding ? (
+                <Link
+                  href="/login"
+                  className="whitespace-nowrap text-text-primary text-lg"
+                >
+                  로그인
+                </Link>
+              ) : (
+                <div className="relative">
+                  <UserDropdown
+                    userName={mockUser.name}
+                    isOpen={isMenuOpen}
+                    onToggle={toggleMenu}
+                    onClose={() => setIsMenuOpen(false)}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </header>
 
       {isSidebarOpen && (
