@@ -9,6 +9,7 @@ type ModalType =
   | "delete-account"
   | "logout"
   | "password-change"
+  | "calendar"
   | null;
 
 interface ModalState {
