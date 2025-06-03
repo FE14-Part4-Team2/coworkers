@@ -90,6 +90,7 @@ export default function Header() {
                       currentTeam={currentTeam}
                       isOpen={isTeamMenuOpen}
                       onToggle={toggleTeamMenu}
+                      onClose={() => setIsTeamMenuOpen(false)}
                     />
                   ) : (
                     <span className="text-text-primary text-lg">
@@ -120,6 +121,7 @@ export default function Header() {
                     userName={mockUser.name}
                     isOpen={isMenuOpen}
                     onToggle={toggleMenu}
+                    onClose={() => setIsMenuOpen(false)}
                   />
                 </div>
               )}
