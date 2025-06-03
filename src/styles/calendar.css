@@ -1,0 +1,31 @@
+.react-calendar {
+  @apply bg-bg-secondary p-0 mx-auto
+my-0 border-none rounded-lg shadow-sm;
+}
+
+.react-calendar__tile {
+  @apply hover:bg-blue-100 focus:outline-none rounded;
+}
+
+abbr:where([title]) {
+  @apply no-underline;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__navigation button:enabled:hover {
+  @apply bg-bg-primary text-white rounded;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply text-white;
+}
+
+/* 선택된 날짜 */
+.react-calendar__tile--active {
+  @apply bg-bg-primary text-white rounded;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+  @apply bg-bg-primary border border-blue-500;
+}

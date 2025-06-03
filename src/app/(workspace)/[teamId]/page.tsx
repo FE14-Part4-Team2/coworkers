@@ -7,7 +7,7 @@ import { mockTeamData } from "../mock";
 export default function TestTeamPage() {
   const router = useRouter();
   const params = useParams();
-  const teamId = params.teamId as string;
+  const teamId = Number(params.teamId);
 
   useEffect(() => {
     if (teamId !== mockTeamData.teamId) {
