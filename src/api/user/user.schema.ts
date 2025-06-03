@@ -1,3 +1,5 @@
+import { TaskType } from "../task/task.schema";
+
 export type UserType = {
   id: number;
   nickname: string;
@@ -38,7 +40,7 @@ export type GetMyGroupsResponse = Group[];
 
 export type GetMyMemberships = Membership[];
 
-export type GetMyHistoryResponse = { taskDone: unknown }; //task 완료 후 작성
+export type GetMyHistoryResponse = { taskDone: TaskType[] };
 
 export type UpdatePasswordRequest = {
   passwordConfirmation: string;

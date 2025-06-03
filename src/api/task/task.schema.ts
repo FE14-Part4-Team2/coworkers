@@ -30,14 +30,22 @@ interface OnceRecurring extends RecurringBody {
   frequencyType: "ONCE";
 }
 
-// requrring 엔드포인트 논의 후 삭제
-// export type TaskRecurringCreateBody =
-//   | MonthlyRecurring
-//   | WeeklyRecurring
-//   | DailyRecurring
-//   | OnceRecurring;
-
 export type TaskType = {
+  displayIndex: number;
+  writerId: number;
+  userId: number;
+  deletedAt: string;
+  frequency: FrequencyType;
+  description: string;
+  name: string;
+  recurringId: number;
+  doneAt: string;
+  date: string;
+  updatedAt: string;
+  id: number;
+};
+
+export type TaskDetailType = {
   doneBy: {
     user?: {
       image?: string | null;
@@ -86,9 +94,9 @@ export type CreateTaskResponse = {
   };
 };
 
-export type GetTasksResponse = TaskType[];
+export type GetTasksResponse = TaskDetailType[];
 
-export type GetTaskResponse = TaskType;
+export type GetTaskResponse = TaskDetailType;
 
 export type UpdateTaskRequest = {
   name?: string;
