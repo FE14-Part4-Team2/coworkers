@@ -1,7 +1,7 @@
 "use client";
 
 import DividerWithText from "@/components/feature/Auth/DividerWithText";
-import KakaoLogin from "@/components/feature/Auth/KakaoButton";
+import KakaoLogin from "@/components/feature/Auth/KakaoLogin";
 import LoginForm from "@/components/feature/Auth/LoginForm/LoginForm";
 import Link from "next/link";
 
