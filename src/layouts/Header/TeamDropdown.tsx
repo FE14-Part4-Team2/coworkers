@@ -2,6 +2,7 @@
 import Image from "next/image";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
 import DropDownItem from "@/components/common/Dropdown/Item";
+import useClickOutside from "@/hooks/useClickOutside";
 
 interface Team {
   name: string;
@@ -13,6 +14,7 @@ interface TeamDropdownProps {
   currentTeam: string | null;
   isOpen: boolean;
   onToggle: () => void;
+  onClose: () => void;
 }
 
 export default function TeamDropdown({
@@ -20,9 +22,12 @@ export default function TeamDropdown({
   currentTeam,
   isOpen,
   onToggle,
+  onClose,
 }: TeamDropdownProps) {
+  const ref = useClickOutside(onClose);
+
   return (
-    <div className="relative cursor-pointer">
+    <div ref={ref} className="relative cursor-pointer">
       <div className="flex items-center gap-2.5" onClick={onToggle}>
         <span className="whitespace-nowrap text-text-primary text-lg">
           {currentTeam}
@@ -32,6 +37,7 @@ export default function TeamDropdown({
           alt="팀 선택"
           width={16}
           height={16}
+          className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
         />
       </div>
 

@@ -1,9 +1,15 @@
 import SimpleLayout from "@/layouts/SimpleLayout";
+import AuthHeader from "@/layouts/Header/AuthHeader";
 
 export default function ResetPasswordLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <SimpleLayout>{children}</SimpleLayout>;
+  return (
+    <>
+      <AuthHeader />
+      <SimpleLayout>{children}</SimpleLayout>
+    </>
+  );
 }

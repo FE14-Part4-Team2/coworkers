@@ -1,3 +1,4 @@
+import AuthHeader from "@/layouts/Header/AuthHeader";
 import SimpleLayout from "@/layouts/SimpleLayout";
 
 export default function LoginLayout({
@@ -5,5 +6,10 @@ export default function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <SimpleLayout>{children}</SimpleLayout>;
+  return (
+    <>
+      <AuthHeader />
+      <SimpleLayout>{children}</SimpleLayout>
+    </>
+  );
 }

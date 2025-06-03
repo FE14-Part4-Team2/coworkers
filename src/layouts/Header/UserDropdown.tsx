@@ -3,20 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
 import DropDownItem from "@/components/common/Dropdown/Item";
+import useClickOutside from "@/hooks/useClickOutside";
 
 interface UserDropdownProps {
   userName: string;
   isOpen: boolean;
   onToggle: () => void;
+  onClose: () => void;
 }
 
 export default function UserDropdown({
   userName,
   isOpen,
   onToggle,
+  onClose,
 }: UserDropdownProps) {
+  const ref = useClickOutside(onClose);
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button onClick={onToggle} className="flex gap-2 cursor-pointer">
         <Image
           src="/icons/icon-user.svg"

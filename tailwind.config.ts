@@ -38,6 +38,7 @@ const config: Config = {
         "bg-secondary": "#1e293b",
         "bg-tertiary": "#334155",
         "bg-inverse": "#ffffff",
+        "bg-bar": "#faf8fc1A",
         "interaction-inactive": "#94a3b8",
         "interaction-hover": "#059669",
         "interaction-pressed": "#047857",
@@ -55,6 +56,7 @@ const config: Config = {
         "icon-primary": "#64748b",
         "icon-inverse": "#f8fafc",
         "icon-brand": "#10b981",
+        "card-border": "#4c4c4c",
       },
       backgroundImage: {
         "brand-gradient": "linear-gradient(90deg, #10B981 0%, #A3E635 100%)",
