@@ -1,5 +1,6 @@
 "use client";
 
+import { useResetPassword } from "@/api/user/user.query";
 import Button from "@/components/common/Button";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
@@ -11,10 +12,10 @@ import { useState } from "react";
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
+  const resetPasswordMutation = useResetPassword();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [resetForm, setResetForm] = useState({
-    token: token,
     password: "",
     confirmPassword: "",
   });
@@ -46,16 +47,24 @@ export default function ResetPasswordPage() {
 
     const fieldsToValidate = ["password", "confirmPassword"] as const;
 
-    const newErrors: typeof error = { password: "", confirmPassword: "" };
-
-    fieldsToValidate.forEach((key) => {
-      newErrors[key] = validateField(key, resetForm[key], resetForm);
-    });
+    const newErrors = fieldsToValidate.reduce(
+      (acc, key) => {
+        acc[key] = validateField(key, resetForm[key], resetForm);
+        return acc;
+      },
+      {} as typeof error,
+    );
 
     setError(newErrors);
 
     const hasError = Object.values(error).some((msg) => msg);
     if (hasError) return;
+
+    resetPasswordMutation.mutate({
+      passwordConfirmation: resetForm.confirmPassword,
+      password: resetForm.password,
+      token: token,
+    });
   };
 
   return (
