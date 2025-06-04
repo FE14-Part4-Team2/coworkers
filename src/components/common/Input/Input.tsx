@@ -25,7 +25,7 @@ export default function Input({
     "bg-bg-tertiary hover:border-border-primary cursor-not-allowed";
   const inputBorderStyle = error
     ? "border-status-danger"
-    : "border-border-primary/10";
+    : "border-border-primary";
 
   const containerStyleclasses = `${containerStyle} ${interactionStyle} ${inputBorderStyle} ${disabled && disabledStyle}`;
 
