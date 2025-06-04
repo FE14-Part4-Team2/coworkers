@@ -1,5 +1,17 @@
 import React, { InputHTMLAttributes } from "react";
 
+export const containerStyle =
+  "relative flex items-center border rounded-xl bg-bg-secondary";
+export const inputStyle =
+  "flex-grow pl-4 py-[14px] text-lg text-text-primary placeholder-text-default bg-transparent rounded-xl disabled:text-text-disabled focus:outline-none";
+export const interactionStyle =
+  "focus-within:border-interaction-focus hover:border-interaction-hover";
+export const disabledStyle =
+  "bg-bg-tertiary hover:border-border-primary cursor-not-allowed";
+
+export const inputBorderStyle = (error: boolean) =>
+  error ? "border-status-danger" : "border-border-primary/10";
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: boolean;
@@ -15,19 +27,14 @@ export default function Input({
   disabled = false,
   ...props
 }: InputProps) {
-  const containerStyle =
-    "relative flex items-center border rounded-xl bg-bg-secondary";
-  const inputStyle =
-    "flex-grow pl-4 py-[14px] text-lg text-text-primary placeholder-text-default bg-transparent rounded-xl disabled:text-text-disabled focus:outline-none";
-  const interactionStyle =
-    "focus-within:border-interaction-focus hover:border-interaction-hover";
-  const disabledStyle =
-    "bg-bg-tertiary hover:border-border-primary cursor-not-allowed";
-  const inputBorderStyle = error
-    ? "border-status-danger"
-    : "border-border-primary";
-
-  const containerStyleclasses = `${containerStyle} ${interactionStyle} ${inputBorderStyle} ${disabled && disabledStyle}`;
+  const containerStyleclasses = [
+    containerStyle,
+    interactionStyle,
+    inputBorderStyle(error),
+    disabled && disabledStyle,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={`w-full ${hasTopMargin && "mt-6"}`}>

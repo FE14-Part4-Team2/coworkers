@@ -1,6 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useRef, useState, DragEvent } from "react";
+import {
+  containerStyle,
+  inputBorderStyle,
+  interactionStyle,
+} from "@/components/common/Input/Input";
 
 export default function ImageUploader() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -45,19 +50,16 @@ export default function ImageUploader() {
   };
 
   const uploaderBoxStyle = [
-    "relative",
-    "w-[15rem] h-[15rem]",
-    "flex flex-col gap-[0.75rem] items-center justify-center",
-    "rounded-xl bg-bg-secondary",
-    "border border-card-border",
-    "focus-within:border-interaction-focus hover:border-interaction-hover",
-    "transition-colors duration-200",
-    "cursor-pointer",
+    containerStyle,
+    inputBorderStyle(false),
+    interactionStyle,
+    isDragging ? "border-interaction-focus bg-bg-hover" : "",
+    "w-[10rem] h-[10rem] sm:w-[15rem] sm:h-[15rem] flex-col gap-[0.75rem] items-center justify-center cursor-pointer",
   ].join(" ");
 
   return (
-    <div className="flex flex-col gap-[1rem] mt-[2.5rem]">
-      <span className="text-lg text-text-primary">이미지</span>
+    <div className="flex flex-col gap-[1rem] mb-0 sm:mb-[1rem] mt-[1.5rem] sm:mt-[2rem] md:mt-[2.5rem]">
+      <span className="text-md sm:text-lg text-text-primary">이미지</span>
       <div
         className={uploaderBoxStyle}
         tabIndex={0}
@@ -80,7 +82,7 @@ export default function ImageUploader() {
           <img
             src={preview}
             alt="미리보기"
-            className="object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-lg"
           />
         ) : (
           <>

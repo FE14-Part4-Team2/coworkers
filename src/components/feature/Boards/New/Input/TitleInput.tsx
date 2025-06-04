@@ -6,9 +6,9 @@ export default function TitleInput(
 ) {
   return (
     <>
-      <div className="flex gap-[0.3rem] mb-[1rem] mt-[2.5rem]">
-        <span className="text-brand-tertiary text-lg">*</span>
-        <span className="text-text-primary text-lg">제목</span>
+      <div className="flex gap-[0.3rem] mb-[1rem] mt-[1.5rem] sm:mt-[2rem] md:mt-[2.5rem]">
+        <span className="text-brand-tertiary text-md sm:text-lg">*</span>
+        <span className="text-text-primary text-md sm:text-lg">제목</span>
       </div>
       <Input
         id="title"

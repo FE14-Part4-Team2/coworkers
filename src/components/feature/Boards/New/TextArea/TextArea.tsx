@@ -1,4 +1,11 @@
 import React, { TextareaHTMLAttributes } from "react";
+import {
+  containerStyle,
+  inputStyle,
+  interactionStyle,
+  disabledStyle,
+  inputBorderStyle,
+} from "@/components/common/Input/Input";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -13,18 +20,18 @@ export default function Textarea({
   disabled = false,
   ...props
 }: TextareaProps) {
-  const containerStyle = "h-[15rem] relative border rounded-xl bg-bg-secondary";
-  const textareaStyle =
-    "w-full pl-4 py-[14px] text-lg text-text-primary placeholder-text-default bg-transparent rounded-xl disabled:text-text-disabled focus:outline-none resize-none";
-  const interactionStyle =
-    "focus-within:border-interaction-focus hover:border-interaction-hover";
-  const disabledStyle =
-    "bg-bg-tertiary hover:border-border-primary cursor-not-allowed";
-  const inputBorderStyle = error
-    ? "border-status-danger"
-    : "border-card-border";
+  const containerCustomStyle = "h-[15rem]";
+  const textareaStyle = `${inputStyle} w-full resize-none`;
 
-  const containerStyleclasses = `${containerStyle} ${interactionStyle} ${inputBorderStyle} ${disabled && disabledStyle}`;
+  const containerStyleclasses = [
+    containerStyle.replace("flex items-center", "w-full"),
+    containerCustomStyle,
+    interactionStyle,
+    inputBorderStyle(error),
+    disabled && disabledStyle,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={`w-full ${hasTopMargin && "mt-6"}`}>
