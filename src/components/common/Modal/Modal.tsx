@@ -7,10 +7,11 @@ import { useModalStore } from "@/stores/modalStore";
 type ModalButtonType =
   | "single-green"
   | "double-white-green"
-  | "double-white-red";
+  | "double-white-red"
+  | "none-button";
 
 interface ModalProps extends React.PropsWithChildren {
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
   headerImage?: ReactNode;
@@ -95,6 +96,9 @@ export default function Modal({
             </button>
           </div>
         );
+      case "none-button":
+        return null;
+
       default:
         return null;
     }
@@ -107,7 +111,7 @@ export default function Modal({
     >
       <div
         className="bg-bg-secondary p-8 w-full sm:w-[384px] sm:max-w-md rounded-t-lg sm:rounded-lg relative"
-        // onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {confirmButtonType === "submit" ? (
           <form onSubmit={onSubmit}>
