@@ -64,6 +64,7 @@ export default function LoginForm() {
           비밀번호를 잊으셨나요?
         </button>
         <Button
+          type="submit"
           label="로그인"
           variant="primary"
           className="mt-[4.75rem] w-full"
