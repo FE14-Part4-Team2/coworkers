@@ -38,7 +38,10 @@ export default function DropDownItem({
       whileTap={tapAnimation}
       initial={false}
       animate="rest"
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
     >
       {children}
     </motion.div>

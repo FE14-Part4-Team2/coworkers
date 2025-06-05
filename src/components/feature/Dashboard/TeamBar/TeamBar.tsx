@@ -1,10 +1,14 @@
 import Image from "next/image";
 import TeamBarDropdown from "./TeamBarDropdown";
 
-export default function TeamBar() {
+interface TeamBarProps {
+  teamName: string;
+}
+
+export default function TeamBar({ teamName }: TeamBarProps) {
   return (
     <div className="w-full h-16 bg-bg-bar border border-bg-bar rounded-xl relative px-6 flex items-center justify-between">
-      <div className="font-bold text-xl text-text-inverse z-10">경영관리팀</div>
+      <div className="font-bold text-xl text-text-inverse z-10">{teamName}</div>
       <TeamBarDropdown />
       <Image
         src="/images/teambar-pattern.png"
