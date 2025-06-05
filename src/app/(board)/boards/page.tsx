@@ -1,4 +1,4 @@
-import SearchInput from "@/components/feature/Boards/SearchInput/SearchInput";
+import SearchInput from "@/components/feature/Boards/List/SearchInput";
 import BoardBestList from "@/components/feature/Boards/List/BoardBestList";
 import BoardList from "@/components/feature/Boards/List/BoardList";
 
