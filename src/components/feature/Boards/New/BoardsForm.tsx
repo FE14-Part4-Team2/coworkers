@@ -2,8 +2,8 @@
 import Button from "@/components/common/Button";
 import LabeledField from "./LabeledField";
 import Input from "@/components/common/Input/Input";
-import Textarea from "../TextArea/TextArea";
-import ImageUploader from "../ImageUploader/ImageUploader";
+import Textarea from "../../../common/TextArea/TextArea";
+import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
 
 interface FormValues {
