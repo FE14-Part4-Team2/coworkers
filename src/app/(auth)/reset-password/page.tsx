@@ -5,6 +5,7 @@ import Button from "@/components/common/Button";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
+import { useToastStore } from "@/stores/toastStore";
 import { validateField } from "@/utils/validation";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -23,6 +24,7 @@ export default function ResetPasswordPage() {
     password: "",
     confirmPassword: "",
   });
+  const { showToast } = useToastStore();
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -60,11 +62,21 @@ export default function ResetPasswordPage() {
     const hasError = Object.values(error).some((msg) => msg);
     if (hasError) return;
 
-    resetPasswordMutation.mutate({
-      passwordConfirmation: resetForm.confirmPassword,
-      password: resetForm.password,
-      token: token,
-    });
+    resetPasswordMutation.mutate(
+      {
+        passwordConfirmation: resetForm.confirmPassword,
+        password: resetForm.password,
+        token: token,
+      },
+      {
+        onSuccess: () => {
+          showToast("비밀번호가 변경되었습니다.", "success");
+        },
+        onError: () => {
+          showToast("입력 값을 확인해주세요.", "error");
+        },
+      },
+    );
   };
 
   return (
