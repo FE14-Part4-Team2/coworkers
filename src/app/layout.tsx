@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ReactQueryProvider } from "@/lib/reactQueryProvider";
 import LandingHeader from "@/layouts/Header/LandingHeader";
+import Toast from "@/components/common/Toast/Toast";
 
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
@@ -26,6 +27,11 @@ export default function RootLayout({
         <ReactQueryProvider>
           <LandingHeader />
           {children}
+          <div
+            id="toast-root"
+            className="fixed bottom-0 left-1/2 transform -translate-x-1/2"
+          ></div>
+          <Toast />
         </ReactQueryProvider>
       </body>
     </html>
