@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function handler(req: NextRequest) {
+export async function proxyHandler(req: NextRequest) {
   const { pathname, search } = new URL(req.url);
   const path = pathname.replace(/^\/api\/proxy/, "");
   const url = `${BACKEND_URL}${path}${search}`;
@@ -32,8 +32,18 @@ export async function handler(req: NextRequest) {
   return response;
 }
 
-export const GET = handler;
-export const POST = handler;
-export const DELETE = handler;
-export const PATCH = handler;
-export const PUT = handler;
+export async function GET(req: NextRequest) {
+  return proxyHandler(req);
+}
+export async function POST(req: NextRequest) {
+  return proxyHandler(req);
+}
+export async function PATCH(req: NextRequest) {
+  return proxyHandler(req);
+}
+export async function PUT(req: NextRequest) {
+  return proxyHandler(req);
+}
+export async function DELETE(req: NextRequest) {
+  return proxyHandler(req);
+}
