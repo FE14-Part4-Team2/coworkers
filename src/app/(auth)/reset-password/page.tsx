@@ -6,7 +6,7 @@ import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
 import { useToastStore } from "@/stores/toastStore";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,6 +20,7 @@ export default function ResetPasswordPage() {
   const token = searchParams.get("token") || "";
   const resetPasswordMutation = useResetPassword();
   const { showToast } = useToastStore();
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -41,6 +42,7 @@ export default function ResetPasswordPage() {
       {
         onSuccess: () => {
           showToast("비밀번호가 변경되었습니다.", "success");
+          router.push("/login");
         },
         onError: () => {
           showToast("입력 값을 확인해주세요.", "error");
