@@ -12,9 +12,10 @@ interface TaskItemProps {
     date?: string;
   };
   onToggle: () => void;
+  onDetail: () => void;
 }
 
-export default function TaskItem({ task, onToggle }: TaskItemProps) {
+export default function TaskItem({ task, onToggle, onDetail }: TaskItemProps) {
   return (
     <li className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2">
       <div className="flex items-center">
@@ -32,6 +33,7 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
             />
           </button>
           <span
+            onClick={onDetail}
             className={`text-md font-regular inline-block cursor-pointer mr-[12px] ${
               task.checked ? "line-through text-gray-400" : ""
             }`}
