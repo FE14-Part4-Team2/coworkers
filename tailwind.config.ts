@@ -57,6 +57,7 @@ const config: Config = {
         "icon-inverse": "#f8fafc",
         "icon-brand": "#10b981",
         "card-border": "#4c4c4c",
+        "image-label": "#9CA3AF",
       },
       backgroundImage: {
         "brand-gradient": "linear-gradient(90deg, #10B981 0%, #A3E635 100%)",
