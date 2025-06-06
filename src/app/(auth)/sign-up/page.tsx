@@ -1,8 +1,22 @@
+"use client";
+
 import DividerWithText from "@/components/feature/Auth/DividerWithText";
 import KakaoLogin from "@/components/feature/Auth/KakaoLogin";
 import SignupForm from "@/components/feature/Auth/SignupForm/SignupForm";
+import { useAuthStore } from "@/stores/authStroe";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/");
+    }
+  }, [isAuthenticated, router]);
+
   return (
     <div className="w-full mt-5 sm:mt-0">
       <h2 className="text-center text-text-primary text-2xl md:text-4xl font-medium">
