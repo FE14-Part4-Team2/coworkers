@@ -1,5 +1,5 @@
-import FilterDropdown from "@/components/common/Dropdown/FilterDropdown";
-import LongCard from "./LongCard";
+import FilterDropdown from "@/components/feature/Boards/List/FilterDropdown";
+import LongCard from "../Card/LongCard";
 
 const dummyList = [
   //LATER: 실제 게시물 API 연결

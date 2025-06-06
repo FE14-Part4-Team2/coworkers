@@ -1,3 +1,9 @@
-export default function BoardNewPage() {
-  return <div>게시판 생성 페이지 (준비 중)</div>;
+import BoardsForm from "@/components/feature/Boards/New/BoardsForm";
+
+export default function BoardsNewPage() {
+  return (
+    <>
+      <BoardsForm />
+    </>
+  );
 }

@@ -1,4 +1,4 @@
-import ShortCard from "./ShortCard";
+import ShortCard from "../Card/ShortCard";
 import Image from "next/image";
 
 const dummyList = [
