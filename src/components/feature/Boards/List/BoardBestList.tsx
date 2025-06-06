@@ -1,6 +1,6 @@
 import ShortCard from "../Card/ShortCard";
 import Image from "next/image";
-import { Article } from "@/types/Article";
+import { Article } from "@/types/article";
 
 export default function BoardBestList({ data }: { data: Article[] }) {
   return (

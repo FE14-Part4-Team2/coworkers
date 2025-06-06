@@ -14,11 +14,12 @@ export interface ArticleDetailProps {
     content: string;
   };
 }
+
 export default function ArticleDetail({ data }: ArticleDetailProps) {
   return (
     <>
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2lg text-text-secondary font-medium">
+      <div className="flex justify-between items-center mb-5 mt-6">
+        <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data?.title}
         </h1>
         <Image
@@ -30,15 +31,15 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <div className="flex justify-between items-center mt-5">
-        <div className="flex items-center gap-20">
-          <span className="text-text-primary text-md">
+        <div className="flex items-center gap-4 sm:gap-8 md:gap-20">
+          <span className="text-text-primary text-sm sm:text-md">
             {data?.writer?.nickname}
           </span>
-          <span className="text-interaction-inactive text-md">
+          <span className="text-interaction-inactive text-sm sm:text-md">
             {data?.updatedAt.slice(0, 10).replace(/-/g, ".")}
           </span>
         </div>
-        <span className="flex items-center gap-4 text-text-disabled text-md">
+        <span className="flex items-center gap-4 text-text-disabled text-sm sm:text-md">
           <span className="flex items-center gap-1">
             <Image
               src="/icons/icon-comment.svg"
@@ -60,7 +61,7 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
         </span>
       </div>
 
-      <section className="text-text-secondary text-lg py-[3.8rem] whitespace-pre-line">
+      <section className="text-text-secondary text-md sm:text-lg py-12 sm:py-16 whitespace-pre-line">
         {data?.content}
       </section>
     </>

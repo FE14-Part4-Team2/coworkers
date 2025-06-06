@@ -1,6 +1,6 @@
 import FilterDropdown from "@/components/feature/Boards/List/FilterDropdown";
 import LongCard from "../Card/LongCard";
-import { Article } from "@/types/Article";
+import { Article } from "@/types/article";
 
 export default function BoardList({ data }: { data: Article[] }) {
   return (
