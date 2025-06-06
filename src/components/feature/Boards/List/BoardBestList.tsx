@@ -1,32 +1,8 @@
 import ShortCard from "../Card/ShortCard";
 import Image from "next/image";
+import { Article } from "@/types/Article";
 
-const dummyList = [
-  //LATER: 실제 게시물 API 연결
-  {
-    id: 1,
-    date: "2025.06.17",
-    title: "6월에 같이 팀하면서 일정 관리하고 공유하실 분!",
-    writer: "이나경",
-    likes: 10,
-  },
-  {
-    id: 2,
-    date: "2025.06.15",
-    title: "React 같이 공부하실 분 구해요!",
-    writer: "홍길동",
-    likes: 7,
-  },
-  {
-    id: 3,
-    date: "2025.06.18",
-    title: "같이 공모전 나가실 분 구합니다!",
-    writer: "김김김",
-    likes: 20,
-  },
-];
-
-export default function BoardBestList() {
+export default function BoardBestList({ data }: { data: Article[] }) {
   return (
     <>
       <div className="flex items-center mt-[2.5rem] justify-between mb-[3.5rem]">
@@ -44,13 +20,13 @@ export default function BoardBestList() {
         </div>
       </div>
       <ul className="flex gap-[1.5rem]">
-        {dummyList.map((post) => (
+        {data.map((post) => (
           <li key={post.id}>
             <ShortCard
-              date={post.date}
+              date={post.createdAt}
               title={post.title}
-              writer={post.writer}
-              likes={post.likes}
+              writer={post.writer.nickname}
+              likes={post.likeCount}
             />
           </li>
         ))}
