@@ -18,7 +18,7 @@ export default function CommentForm() {
           label="등록"
           variant="primary"
           type="submit"
-          className="px-0 py-0 w-[4.5rem] h-[2rem] sm:w-[11.5rem] sm:h-[3rem] mt-4"
+          className="px-[0] w-[4.5rem] h-[2rem] sm:w-[11.5rem] sm:h-[3rem] mt-4"
         />
       </div>
 
