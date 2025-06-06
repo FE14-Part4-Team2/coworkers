@@ -1,48 +1,16 @@
 import Image from "next/image";
-import Textarea from "@/components/common/TextArea/TextArea";
-import Button from "@/components/common/Button";
-
-interface ArticleComment {
-  id: number;
-  writer: {
-    image: string;
-    nickname: string;
-    id: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-  content: string;
-}
+import { ArticleComment } from "@/types/article";
+import CommentDropdown from "./CommentDropdown";
 
 interface ArticleCommentProps {
   comments: ArticleComment[];
   articleId: number;
 }
 
-export default function ArticleComment({ comments }: ArticleCommentProps) {
+export default function CommentList({ comments }: ArticleCommentProps) {
   return (
     <>
       <section aria-label="댓글 목록" className="flex flex-col">
-        <h2 className="text-lg sm:text-xl text-text-primary font-medium mb-4 sm:mb-6">
-          댓글달기
-        </h2>
-        <Textarea
-          id="comment"
-          placeholder="댓글을 입력해주세요."
-          height="h-[6.5rem]"
-          className="text-md sm:text-lg"
-        />
-        <div className="flex justify-end mb-8 sm:mb-10">
-          <Button
-            label="등록"
-            variant="primary"
-            type="submit"
-            className="w-[4.5rem] h-[2rem] sm:w-[11.5rem] sm:h-[3rem] mt-4"
-          />
-        </div>
-
-        <hr className="w-full border-t border-border-primary opacity-10 mb-8 sm:mb-10" />
-
         <div className="flex flex-col gap-4">
           {comments.map((comment) => (
             <div key={comment.id}>
@@ -51,12 +19,7 @@ export default function ArticleComment({ comments }: ArticleCommentProps) {
                   <span className="text-md sm:text-lg text-text-primary">
                     {comment.content}
                   </span>
-                  <Image
-                    src="/icons/icon-kebabs.svg"
-                    alt="더보기"
-                    width={3}
-                    height={12}
-                  />
+                  <CommentDropdown />
                 </div>
                 <div className="flex items-center gap-2 sm:gap-4">
                   <span className="flex items-center text-sm sm:text-md text-text-primary gap-1.5 sm:gap-3">

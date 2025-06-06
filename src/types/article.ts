@@ -10,3 +10,15 @@ export interface Article {
   isLiked: boolean;
   content: string;
 }
+
+export interface ArticleComment {
+  id: number;
+  writer: {
+    image: string;
+    nickname: string;
+    id: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+  content: string;
+}

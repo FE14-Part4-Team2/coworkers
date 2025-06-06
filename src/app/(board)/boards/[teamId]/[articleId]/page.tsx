@@ -1,7 +1,8 @@
 import ArticleDetail from "@/components/feature/Boards/Article/ArticleDetail";
-import ArticleComment from "@/components/feature/Boards/Comment/ArticleComment";
+import CommentList from "@/components/feature/Boards/Comment/CommentList";
 import { ArticleMock } from "../ArticleMock";
 import { CommentMock } from "../CommentMock";
+import CommentForm from "@/components/feature/Boards/Comment/CommentForm";
 
 export default function ArticlePage({
   params,
@@ -15,7 +16,8 @@ export default function ArticlePage({
   return (
     <article className="w-full">
       <ArticleDetail data={article} />
-      <ArticleComment
+      <CommentForm />
+      <CommentList
         articleId={article.id}
         comments={CommentMock.flatMap((item) => item.list)}
       />
