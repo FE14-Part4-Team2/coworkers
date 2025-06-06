@@ -34,7 +34,7 @@ export default function LongCard({
 
         <div className="text-md text-text-secondary">{content}</div>
 
-        <div className="flex items-center text-xs text-text-secondary">
+        <div className="flex items-center">
           <span className="flex items-center gap-3 text-md text-icon-inverse">
             <Image src={profileImg} alt="작성자" width={25} height={25} />
             {writer}
