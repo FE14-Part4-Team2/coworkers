@@ -9,13 +9,15 @@ import React, { useState } from "react";
 export default function SendEmailModal() {
   const [email, setEmail] = useState("");
   const sendEmailMutation = useSendResetPasswordMutation();
-  const redirectUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+  const redirectUrl = window.location.origin || "";
   const { closeModal } = useModalStore();
   const { showToast } = useToastStore();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
+
+  console.log(redirectUrl);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
