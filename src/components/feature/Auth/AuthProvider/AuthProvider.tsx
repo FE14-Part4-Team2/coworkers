@@ -6,11 +6,13 @@ import { useEffect } from "react";
 
 export default function AuthProvider({
   children,
+  hasToken,
 }: {
   children: React.ReactNode;
+  hasToken: boolean;
 }) {
   const { setAuth, clearAuth } = useAuthStore();
-  const { data, isError } = useMyInfoQuery();
+  const { data, isError } = useMyInfoQuery(hasToken);
 
   useEffect(() => {
     if (data) {
