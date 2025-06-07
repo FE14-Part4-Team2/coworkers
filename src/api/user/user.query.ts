@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { userService } from "./user.service";
-import { useAuthStore } from "@/stores/authStroe";
+import { useAuthStore } from "@/stores/authStore";
 import { authService } from "../auth/auth.service";
 import { useRouter } from "next/navigation";
 import { UpdateMyInfoRequest } from "./user.schema";

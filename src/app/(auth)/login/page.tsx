@@ -3,7 +3,7 @@
 import DividerWithText from "@/components/feature/Auth/DividerWithText";
 import KakaoLogin from "@/components/feature/Auth/KakaoLogin";
 import LoginForm from "@/components/feature/Auth/LoginForm/LoginForm";
-import { useAuthStore } from "@/stores/authStroe";
+import { useAuthStore } from "@/stores/authStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

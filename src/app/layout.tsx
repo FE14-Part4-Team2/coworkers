@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactQueryProvider } from "@/lib/reactQueryProvider";
 import LandingHeader from "@/layouts/Header/LandingHeader";
 import Toast from "@/components/common/Toast/Toast";
+import AuthProvider from "@/components/feature/Auth/AuthProvider/AuthProvider";
 
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
@@ -25,13 +26,15 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable} font-pretendard`}>
       <body className="bg-bg-primary text-white">
         <ReactQueryProvider>
-          <LandingHeader />
-          {children}
-          <div
-            id="toast-root"
-            className="fixed bottom-0 left-1/2 transform -translate-x-1/2"
-          ></div>
-          <Toast />
+          <AuthProvider>
+            <LandingHeader />
+            {children}
+            <div
+              id="toast-root"
+              className="fixed bottom-0 left-1/2 transform -translate-x-1/2"
+            ></div>
+            <Toast />
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
