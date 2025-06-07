@@ -15,6 +15,7 @@ const config: Config = {
         "2lg": ["1.125rem", { lineHeight: "1.3125rem" }],
         lg: ["1rem", { lineHeight: "1.1875rem" }],
         md: ["0.875rem", { lineHeight: "1.0625rem" }],
+        sm: ["0.75rem", { lineHeight: "0.875rem" }],
       },
       fontWeight: {
         bold: "700",

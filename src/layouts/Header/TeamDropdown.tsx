@@ -57,7 +57,7 @@ export default function TeamDropdown({
               {team.name}
             </div>
             <Image
-              src="icons/icon-kebabs.svg"
+              src="/icons/icon-kebabs.svg"
               width={3}
               height={12}
               alt="더보기"

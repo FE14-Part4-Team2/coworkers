@@ -1,11 +1,14 @@
 export const mockTeamData = {
-  teamId: 1234,
+  teamId: "14-2",
+  id: 1234,
   name: "프론트엔드 개발팀",
   taskLists: [
     {
       displayIndex: 1,
       groupId: 1234,
       name: "디자인 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 201,
       tasks: [
         {
@@ -23,6 +26,7 @@ export const mockTeamData = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 102,
@@ -33,12 +37,13 @@ export const mockTeamData = {
           commentCount: 1,
           date: "2025-06-02T09:00:00+09:00",
           deletedAt: null,
-          doneAt: null,
+          doneAt: 111,
           updatedAt: "2025-06-01T15:00:00+09:00",
           displayIndex: 2,
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
       ],
     },
@@ -46,6 +51,8 @@ export const mockTeamData = {
       displayIndex: 2,
       groupId: 1234,
       name: "개발 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 202,
       tasks: [
         {
@@ -57,12 +64,13 @@ export const mockTeamData = {
           commentCount: 0,
           date: "2025-06-03T09:00:00+09:00",
           deletedAt: null,
-          doneAt: null,
+          doneAt: 123,
           updatedAt: "2025-06-02T09:00:00+09:00",
           displayIndex: 1,
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 104,
@@ -79,6 +87,7 @@ export const mockTeamData = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
       ],
     },
@@ -86,6 +95,8 @@ export const mockTeamData = {
       displayIndex: 3,
       groupId: 1234,
       name: "기획 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 203,
       tasks: [],
     },

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function proxyHandler(req: NextRequest) {
+async function proxyHandler(req: NextRequest) {
   const { pathname, search } = new URL(req.url);
   const path = pathname.replace(/^\/api\/proxy/, "");
   const url = `${BACKEND_URL}${path}${search}`;
