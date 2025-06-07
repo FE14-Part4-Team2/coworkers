@@ -15,6 +15,11 @@ type Task = {
   doneBy: {
     user: number | null;
   };
+  writer: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
 };
 
 type TaskList = {
@@ -22,23 +27,29 @@ type TaskList = {
   groupId: number;
   name: string;
   id: number;
+  updatedAt: string;
+  createdAt: string;
   tasks: Task[];
 };
 
 type Team = {
-  teamId: number;
+  teamId: string;
+  id: number;
   name: string;
   taskLists: TaskList[];
 };
 
 export const mockTeamData: Team = {
-  teamId: 1234,
+  teamId: "14-2",
+  id: 1234,
   name: "프론트엔드 개발팀",
   taskLists: [
     {
       displayIndex: 1,
       groupId: 1234,
       name: "디자인 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 201,
       tasks: [
         {
@@ -56,6 +67,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 102,
@@ -72,6 +84,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: 123 },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 103,
@@ -87,7 +100,8 @@ export const mockTeamData: Team = {
           displayIndex: 2,
           recurringId: null,
           user: null,
-          doneBy: { user: 123 },
+          doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
       ],
     },
@@ -95,6 +109,8 @@ export const mockTeamData: Team = {
       displayIndex: 2,
       groupId: 1234,
       name: "개발 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 202,
       tasks: [
         {
@@ -112,6 +128,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 105,
@@ -128,6 +145,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
       ],
     },
@@ -135,6 +153,8 @@ export const mockTeamData: Team = {
       displayIndex: 3,
       groupId: 1234,
       name: "기획 작업",
+      updatedAt: "2025-06-07T05:28:45.875Z",
+      createdAt: "2025-06-07T05:28:45.875Z",
       id: 203,
       tasks: [
         {
@@ -152,6 +172,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
         {
           id: 107,
@@ -168,6 +189,7 @@ export const mockTeamData: Team = {
           recurringId: null,
           user: null,
           doneBy: { user: null },
+          writer: { id: 2141, nickname: "노바1492", image: null },
         },
       ],
     },
