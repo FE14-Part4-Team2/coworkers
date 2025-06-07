@@ -7,9 +7,14 @@ import {
   interactionStyle,
 } from "@/components/common/Input/Input";
 
-export default function ImageUploader() {
+interface ImageUploaderProps {
+  onChange?: (file: File | null) => void;
+}
+
+export default function ImageUploader({ onChange }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleBoxClick = () => {
@@ -18,14 +23,17 @@ export default function ImageUploader() {
 
   const handleRemove = () => {
     setPreview(null);
+    setImageFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    onChange?.(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreview(url);
+    if (file && file.type.startsWith("image/")) {
+      setPreview(URL.createObjectURL(file));
+      setImageFile(file);
+      onChange?.(file);
     }
   };
 
@@ -45,7 +53,8 @@ export default function ImageUploader() {
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) {
       setPreview(URL.createObjectURL(file));
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      setImageFile(file);
+      onChange?.(file);
     }
   };
 
@@ -66,6 +75,7 @@ export default function ImageUploader() {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onClick={handleBoxClick}
       >
         {preview && (
           <button
@@ -91,7 +101,6 @@ export default function ImageUploader() {
               alt="이미지 추가"
               width={48}
               height={48}
-              onClick={handleBoxClick}
             />
             <span className="text-image-label text-lg">이미지 등록</span>
           </>

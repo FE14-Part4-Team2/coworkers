@@ -1,4 +1,5 @@
 import React, { TextareaHTMLAttributes } from "react";
+import { useRef } from "react";
 import {
   containerStyle,
   inputStyle,
@@ -24,7 +25,8 @@ export default function Textarea({
   className = "",
   ...props
 }: TextareaProps) {
-  const textareaStyle = `${inputStyle} w-full resize-none`;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaStyle = `${inputStyle} w-full h-full resize-none leading-6 cursor-text`;
 
   const containerStyleclasses = [
     containerStyle.replace("flex items-center", "w-full"),
@@ -32,12 +34,13 @@ export default function Textarea({
     inputBorderStyle(error),
     disabled && disabledStyle,
     height,
+    "relative cursor-text",
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className={`w-full ${hasTopMargin && "mt-6"}`}>
+    <div className={`w-full h-full${hasTopMargin && " mt-6"}`}>
       {label && (
         <label
           htmlFor={props.id}
@@ -46,8 +49,13 @@ export default function Textarea({
           {label}
         </label>
       )}
-      <div className={containerStyleclasses}>
+      <div
+        className={containerStyleclasses}
+        onClick={() => textareaRef.current?.focus()}
+        tabIndex={-1}
+      >
         <textarea
+          ref={textareaRef}
           {...props}
           className={`${textareaStyle} ${className}`}
           disabled={disabled}

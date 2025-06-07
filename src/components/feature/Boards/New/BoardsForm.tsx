@@ -6,6 +6,9 @@ import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
 import { useCreateArticle } from "@/api/article/article.query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useUploadImage } from "@/api/image/image-api";
 
 interface FormValues {
   title: string;
@@ -13,6 +16,10 @@ interface FormValues {
 }
 
 export default function BoardsForm() {
+  const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const uploadImageMutation = useUploadImage();
+
   const {
     register,
     handleSubmit,
@@ -29,14 +36,18 @@ export default function BoardsForm() {
   const { mutate: createArticle } = useCreateArticle();
 
   const onSubmit = (data: FormValues) => {
-    createArticle(data, {
-      onSuccess: (result) => {
-        console.log("게시글 등록 성공", result);
+    createArticle(
+      { ...data, image: imageUrl },
+      {
+        onSuccess: (result) => {
+          console.log(result);
+          router.push("/boards");
+        },
+        onError: (error) => {
+          alert(error.message);
+        },
       },
-      onError: (error) => {
-        alert(error.message);
-      },
-    });
+    );
   };
 
   const errorStyle = "block mt-2 text-status-danger text-sm";
@@ -49,9 +60,9 @@ export default function BoardsForm() {
           <Button
             label={isSubmitting ? "등록중" : "등록"}
             variant="primary"
-            className="w-[11.5rem] h-[3rem]"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || uploadImageMutation.isPending}
+            className="px-0 w-[11.5rem] h-[3rem]"
           />
         </div>
       </div>
@@ -89,7 +100,21 @@ export default function BoardsForm() {
         )}
       </LabeledField>
       <section aria-label="이미지 등록">
-        <ImageUploader />
+        <ImageUploader
+          onChange={(file) => {
+            if (file) {
+              uploadImageMutation.mutate(file, {
+                onSuccess: (url) => {
+                  setImageUrl(url);
+                },
+                onError: (error) =>
+                  alert("이미지 업로드 실패: " + error.message),
+              });
+            } else {
+              setImageUrl(undefined);
+            }
+          }}
+        />
       </section>
       <div className="block sm:hidden">
         <Button
