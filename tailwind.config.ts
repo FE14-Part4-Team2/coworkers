@@ -15,6 +15,7 @@ const config: Config = {
         "2lg": ["1.125rem", { lineHeight: "1.3125rem" }],
         lg: ["1rem", { lineHeight: "1.1875rem" }],
         md: ["0.875rem", { lineHeight: "1.0625rem" }],
+        sm: ["0.75rem", { lineHeight: "0.875rem" }],
       },
       fontWeight: {
         bold: "700",
@@ -57,6 +58,7 @@ const config: Config = {
         "icon-inverse": "#f8fafc",
         "icon-brand": "#10b981",
         "card-border": "#4c4c4c",
+        "image-label": "#9CA3AF",
       },
       backgroundImage: {
         "brand-gradient": "linear-gradient(90deg, #10B981 0%, #A3E635 100%)",

@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import Sidebar from "./Sidebar";
@@ -18,12 +17,6 @@ const mockUser = {
 };
 
 export default function Header() {
-  //LATER: 추후 분기처리 로직 제외
-  const pathname = usePathname();
-
-  const isLanding = pathname === "/";
-  const isAuthPage = ["/login", "/sign-up"].includes(pathname);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTeamMenuOpen, setIsTeamMenuOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +43,7 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full bg-bg-secondary z-50 h-15">
         <div className="w-full max-w-[78rem] mx-auto flex items-center justify-between px-4 py-5 sm:px-6 sm:py-3.5 md:px-7 md:py-[0.88rem]">
           <div className="flex items-center">
-            {!isLanding && !isAuthPage && mockUser.teams.length > 0 && (
+            {mockUser.teams.length > 0 && (
               <button
                 onClick={handleMenuClick}
                 className="block sm:hidden mr-4"
@@ -83,52 +76,37 @@ export default function Header() {
               />
             </Link>
 
-            {!isLanding && !isAuthPage && (
-              <>
-                <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
-                  {mockUser.teams.length > 1 ? (
-                    <TeamDropdown
-                      teams={mockUser.teams}
-                      currentTeam={currentTeam}
-                      isOpen={isTeamMenuOpen}
-                      onToggle={toggleTeamMenu}
-                      onClose={() => setIsTeamMenuOpen(false)}
-                    />
-                  ) : (
-                    <span className="text-text-primary text-lg">
-                      {mockUser.teams[0].name}
-                    </span>
-                  )}
+            <div className="hidden sm:flex items-center sm:gap-8 md:gap-10">
+              {mockUser.teams.length > 1 ? (
+                <TeamDropdown
+                  teams={mockUser.teams}
+                  currentTeam={currentTeam}
+                  isOpen={isTeamMenuOpen}
+                  onToggle={toggleTeamMenu}
+                  onClose={() => setIsTeamMenuOpen(false)}
+                />
+              ) : (
+                <span className="text-text-primary text-lg">
+                  {mockUser.teams[0].name}
+                </span>
+              )}
 
-                  <Link href="/boards" className={"whitespace-nowrap text-lg"}>
-                    모집게시판
-                  </Link>
-                </div>
-              </>
-            )}
+              <Link href="/boards" className={"whitespace-nowrap text-lg"}>
+                모집게시판
+              </Link>
+            </div>
           </div>
 
-          {!isAuthPage && (
-            <div className="ml-auto">
-              {isLanding ? (
-                <Link
-                  href="/login"
-                  className="whitespace-nowrap text-text-primary text-lg"
-                >
-                  로그인
-                </Link>
-              ) : (
-                <div className="relative">
-                  <UserDropdown
-                    userName={mockUser.name}
-                    isOpen={isMenuOpen}
-                    onToggle={toggleMenu}
-                    onClose={() => setIsMenuOpen(false)}
-                  />
-                </div>
-              )}
+          <div className="ml-auto">
+            <div className="relative">
+              <UserDropdown
+                userName={mockUser.name}
+                isOpen={isMenuOpen}
+                onToggle={toggleMenu}
+                onClose={() => setIsMenuOpen(false)}
+              />
             </div>
-          )}
+          </div>
         </div>
       </header>
 
