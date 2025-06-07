@@ -1,4 +1,37 @@
-export const mockTeamData = {
+type Task = {
+  id: number;
+  name: string;
+  description: string;
+  startDate: string;
+  frequency: string;
+  commentCount: number;
+  date: string;
+  deletedAt: null;
+  doneAt: number | null;
+  updatedAt: string;
+  displayIndex: number;
+  recurringId: null;
+  user: null;
+  doneBy: {
+    user: number | null;
+  };
+};
+
+type TaskList = {
+  displayIndex: number;
+  groupId: number;
+  name: string;
+  id: number;
+  tasks: Task[];
+};
+
+type Team = {
+  teamId: number;
+  name: string;
+  taskLists: TaskList[];
+};
+
+export const mockTeamData: Team = {
   teamId: 1234,
   name: "프론트엔드 개발팀",
   taskLists: [
@@ -15,7 +48,7 @@ export const mockTeamData = {
           startDate: "2025-06-01T00:00:00Z",
           frequency: "ONCE",
           commentCount: 2,
-          date: "2025-06-01T09:00:00+09:00",
+          date: "2025-06-07T09:00:00+09:00",
           deletedAt: null,
           doneAt: null,
           updatedAt: "2025-06-01T12:00:00+09:00",
@@ -31,7 +64,7 @@ export const mockTeamData = {
           startDate: "2025-06-01T00:00:00Z",
           frequency: "ONCE",
           commentCount: 1,
-          date: "2025-06-02T09:00:00+09:00",
+          date: "2025-06-07T09:00:00+09:00",
           deletedAt: null,
           doneAt: 111,
           updatedAt: "2025-06-01T15:00:00+09:00",
@@ -47,7 +80,7 @@ export const mockTeamData = {
           startDate: "2025-06-01T00:00:00Z",
           frequency: "ONCE",
           commentCount: 1,
-          date: "2025-06-02T09:00:00+09:00",
+          date: "2025-06-07T09:00:00+09:00",
           deletedAt: null,
           doneAt: 111,
           updatedAt: "2025-06-01T15:00:00+09:00",
@@ -65,13 +98,13 @@ export const mockTeamData = {
       id: 202,
       tasks: [
         {
-          id: 103,
+          id: 104,
           name: "API 연결",
           description: "백엔드 API와 프론트 연동",
           startDate: "2025-06-01T00:00:00Z",
           frequency: "ONCE",
           commentCount: 0,
-          date: "2025-06-03T09:00:00+09:00",
+          date: "2025-06-07T09:00:00+09:00",
           deletedAt: null,
           doneAt: 123,
           updatedAt: "2025-06-02T09:00:00+09:00",
@@ -81,13 +114,13 @@ export const mockTeamData = {
           doneBy: { user: null },
         },
         {
-          id: 104,
+          id: 105,
           name: "컴포넌트 분리",
           description: "재사용 가능한 UI 컴포넌트로 분리",
           startDate: "2025-06-01T00:00:00Z",
           frequency: "ONCE",
           commentCount: 3,
-          date: "2025-06-04T09:00:00+09:00",
+          date: "2025-06-07T09:00:00+09:00",
           deletedAt: null,
           doneAt: null,
           updatedAt: "2025-06-02T12:00:00+09:00",
@@ -103,7 +136,40 @@ export const mockTeamData = {
       groupId: 1234,
       name: "기획 작업",
       id: 203,
-      tasks: [],
+      tasks: [
+        {
+          id: 106,
+          name: "API 연결",
+          description: "백엔드 API와 프론트 연동",
+          startDate: "2025-06-01T00:00:00Z",
+          frequency: "ONCE",
+          commentCount: 0,
+          date: "2025-06-07T09:00:00+09:00",
+          deletedAt: null,
+          doneAt: 123,
+          updatedAt: "2025-06-02T09:00:00+09:00",
+          displayIndex: 1,
+          recurringId: null,
+          user: null,
+          doneBy: { user: null },
+        },
+        {
+          id: 107,
+          name: "컴포넌트 분리",
+          description: "재사용 가능한 UI 컴포넌트로 분리",
+          startDate: "2025-06-01T00:00:00Z",
+          frequency: "ONCE",
+          commentCount: 3,
+          date: "2025-06-08T09:00:00+09:00",
+          deletedAt: null,
+          doneAt: null,
+          updatedAt: "2025-06-02T12:00:00+09:00",
+          displayIndex: 2,
+          recurringId: null,
+          user: null,
+          doneBy: { user: null },
+        },
+      ],
     },
   ],
 };
