@@ -30,12 +30,18 @@ export default function DashboardPage() {
     }
   }, [teamId, router]);
 
+  {
+    /* TODO: API 연결 */
+  }
   const handleListClick = (listId: number) => {
     router.push(`/${teamId}/task-lists/${listId}`);
   };
 
   const today = new Date();
 
+  {
+    /* TODO: API 연결 */
+  }
   const todayTasks = mockTeamData.taskLists
     .flatMap((list) => list.tasks)
     .filter((task) => isSameDay(parseISO(task.date), today));
@@ -69,11 +75,19 @@ export default function DashboardPage() {
           );
         })}
       </div>
-      <div className="w-full flex bg-bg-secondary h-[13.5625rem] p-6 pl-6 sm:pl-8 rounded-xl items-center justify-between">
+      <div className="w-full flex bg-bg-secondary h-[13.5625rem] p-6 pl-6 sm:pl-8 rounded-xl items-center justify-between gap-6 sm:gap-14">
         <ReportChart done={todayDoneCount} total={todayTotalCount} />
-        <div className="flex flex-col">
-          <ReportBox />
-          <ReportBox />
+        <div className="flex flex-col w-full gap-4 items-end">
+          <ReportBox
+            content="오늘의 할 일"
+            count={todayTotalCount}
+            image="/icons/icon-avatar.svg"
+          />
+          <ReportBox
+            content="한 일"
+            count={todayDoneCount}
+            image="/icons/icon-done.svg"
+          />
         </div>
       </div>
     </div>
