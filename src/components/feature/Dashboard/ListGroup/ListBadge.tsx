@@ -23,7 +23,7 @@ function ListChart({ done, total }: Props) {
   const progress = (done / total) * circumference;
 
   return (
-    <svg width={16} height={16} className="transform rotate-90 scale-y-[-1]">
+    <svg width={16} height={16} className="rotate-[-90deg]">
       <circle
         cx={8}
         cy={8}

@@ -6,7 +6,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 
-export default function TeamBarDropdown() {
+export default function ListBarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -28,18 +28,21 @@ export default function TeamBarDropdown() {
   const dropdownRef = useClickOutside(closeDropdown);
 
   return (
-    <div ref={dropdownRef} className="relative z-10">
+    <div ref={dropdownRef} className="relative">
       <Image
-        src="/icons/icon-setting.svg"
+        src="/icons/icon-more-vertical-sm.svg"
         alt="setting"
-        width={24}
-        height={24}
-        className={`cursor-pointer transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-        onClick={toggleOpen}
+        width={16}
+        height={16}
+        className="cursor-pointer z-0"
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleOpen();
+        }}
       />
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute mt-2 right-0 text-center w-[7.5rem]"
+        className="absolute mt-2 right-0 text-center w-[7.5rem] z-[999]"
       >
         <DropDownItem onClick={handleEdit}>수정하기</DropDownItem>
         <DropDownItem onClick={handleDelete}>삭제하기</DropDownItem>
