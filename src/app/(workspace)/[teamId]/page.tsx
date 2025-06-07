@@ -8,8 +8,7 @@ import ListBar from "@/components/feature/Dashboard/ListGroup/ListBar";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const params = useParams();
-  const teamId = Number(params.teamId);
+  const { teamId } = useParams();
 
   const pointColors = [
     "bg-point-purple",
@@ -22,7 +21,7 @@ export default function DashboardPage() {
   ];
 
   useEffect(() => {
-    if (teamId !== mockTeamData.teamId) {
+    if (Number(teamId) !== mockTeamData.id) {
       router.push("/");
     }
   }, [teamId, router]);
