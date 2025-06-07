@@ -17,8 +17,6 @@ export default function SendEmailModal() {
     setEmail(e.target.value);
   };
 
-  console.log(redirectUrl);
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendEmailMutation.mutate(
