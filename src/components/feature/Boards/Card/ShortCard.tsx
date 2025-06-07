@@ -31,7 +31,10 @@ export default function ShortCard({
 
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
-          <span className="flex gap-3 text-md text-text-disabled">{date}</span>
+          <span className="flex gap-3 text-md text-text-disabled">
+            {" "}
+            {date.slice(0, 10).replace(/-/g, ".")}
+          </span>
           <Image
             src="/icons/icon-bookmarks.svg"
             alt="더보기"

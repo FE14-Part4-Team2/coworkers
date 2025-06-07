@@ -1,12 +1,11 @@
 "use client";
-
+import Image from "next/image";
 import DropDownItem from "@/components/common/Dropdown/Item";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
-import useClickOutside from "@/hooks/useClickOutside";
-import Image from "next/image";
 import { useCallback, useState } from "react";
+import useClickOutside from "@/hooks/useClickOutside";
 
-export default function TeamBarDropdown() {
+export default function CommentDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -14,32 +13,32 @@ export default function TeamBarDropdown() {
   }, []);
 
   const handleEdit = useCallback(() => {
-    alert("수정하기"); // TODO: 페이지 연결
+    alert("수정하기");
   }, []);
 
   const handleDelete = useCallback(() => {
-    alert("삭제하기"); // TODO: API 연결
+    alert("삭제하기");
   }, []);
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
   }, []);
 
-  const dropdownRef = useClickOutside(closeDropdown);
+  const ref = useClickOutside(closeDropdown);
 
   return (
-    <div ref={dropdownRef} className="relative z-10">
-      <Image
-        src="/icons/icon-setting.svg"
-        alt="setting"
-        width={24}
-        height={24}
-        className={`cursor-pointer transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-        onClick={toggleOpen}
-      />
+    <div ref={ref} className="relative z-10">
+      <button type="button" onClick={toggleOpen} className="cursor-pointer">
+        <Image
+          src="/icons/icon-kebabs.svg"
+          alt="더보기"
+          width={3}
+          height={12}
+        />
+      </button>
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute mt-2 right-0 text-center w-[7.5rem]"
+        className="absolute mt-1 right-0 text-center w-[7.5rem]"
       >
         <DropDownItem onClick={handleEdit}>수정하기</DropDownItem>
         <DropDownItem onClick={handleDelete}>삭제하기</DropDownItem>

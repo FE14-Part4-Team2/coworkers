@@ -3,10 +3,22 @@
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
 import { mockTeamData } from "../mock";
+import TeamBar from "@/components/feature/Dashboard/TeamBar/TeamBar";
+import ListBar from "@/components/feature/Dashboard/ListGroup/ListBar";
 
-export default function TestTeamPage() {
+export default function DashboardPage() {
   const router = useRouter();
   const { teamId } = useParams();
+
+  const pointColors = [
+    "bg-point-purple",
+    "bg-point-blue",
+    "bg-point-cyan",
+    "bg-point-pink",
+    "bg-point-rose",
+    "bg-point-orange",
+    "bg-point-yellow",
+  ];
 
   useEffect(() => {
     if (Number(teamId) !== mockTeamData.id) {
@@ -19,21 +31,28 @@ export default function TestTeamPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">{mockTeamData.name}</h1>
+    <div className="w-full flex-col flex gap-12">
+      <TeamBar teamName={mockTeamData.name} />
+      <div className="flex flex-col gap-4">
+        {mockTeamData.taskLists.map((list, index) => {
+          const doneCount = list.tasks.filter(
+            (task) => task.doneAt !== null,
+          ).length;
+          const totalCount = list.tasks.length;
+          const colorClass = pointColors[index % pointColors.length];
 
-      <h2 className="text-lg font-semibold mb-2">할 일 목록</h2>
-      <ul className="space-y-3">
-        {mockTeamData.taskLists.map((list) => (
-          <li
-            key={list.id}
-            className="border p-4 rounded cursor-pointer hover:bg-gray-50"
-            onClick={() => handleListClick(list.id)}
-          >
-            <p className="font-bold text-blue-600">{list.name}</p>
-          </li>
-        ))}
-      </ul>
+          return (
+            <div key={list.id} onClick={() => handleListClick(list.id)}>
+              <ListBar
+                listName={list.name}
+                done={doneCount}
+                total={totalCount}
+                colorClass={colorClass}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

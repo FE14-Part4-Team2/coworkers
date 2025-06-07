@@ -1,6 +1,6 @@
 "use client";
 
-import GenericDropdown from "./GenericDropdown";
+import GenericDropdown from "../../../common/Dropdown/GenericDropdown";
 import useGenericDropdown from "@/hooks/useGenericDropdown";
 
 const options = [
