@@ -1,16 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState, useCallback } from "react";
-import {
-  processImageFile,
-  removeImage,
-  handleDragEvents,
-} from "@/utils/imageUploadHelpers";
 import {
   containerStyle,
   inputBorderStyle,
   interactionStyle,
 } from "@/components/common/Input/Input";
+import { useImageUploader } from "@/hooks/useImageUploader";
 
 interface ImageUploaderProps {
   onChange?: (file: File | null) => void;
@@ -21,45 +16,15 @@ export default function ImageUploader({
   onChange,
   disabled = false,
 }: ImageUploaderProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const updateImage = useCallback(
-    (newPreview: string | null, file: File | null) => {
-      setPreview(newPreview);
-      onChange?.(file);
-    },
-    [onChange],
-  );
-
-  const handleFileProcess = useCallback(
-    (file: File | null) => {
-      if (disabled) return;
-      processImageFile(file, preview, updateImage);
-    },
-    [disabled, preview, updateImage],
-  );
-
-  const handleBoxClick = () => {
-    if (disabled) return;
-    fileInputRef.current?.click();
-  };
-
-  const handleRemove = useCallback(() => {
-    if (disabled) return;
-    removeImage(preview, fileInputRef, updateImage);
-  }, [disabled, preview, updateImage]);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    handleFileProcess(file);
-  };
-
-  const handleRemoveClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    handleRemove();
-  };
+  const {
+    fileInputRef,
+    preview,
+    isDragging,
+    handleBoxClick,
+    handleFileChange,
+    handleRemoveClick,
+    dragHandlers,
+  } = useImageUploader(onChange, disabled);
 
   const uploaderBoxStyle = [
     containerStyle,
@@ -76,16 +41,9 @@ export default function ImageUploader({
       <div
         className={uploaderBoxStyle}
         tabIndex={0}
-        onDragOver={(e) =>
-          !disabled && handleDragEvents.onDragOver(e, setIsDragging)
-        }
-        onDragLeave={(e) =>
-          !disabled && handleDragEvents.onDragLeave(e, setIsDragging)
-        }
-        onDrop={(e) =>
-          !disabled &&
-          handleDragEvents.onDrop(e, setIsDragging, handleFileProcess)
-        }
+        onDragOver={dragHandlers.onDragOver}
+        onDragLeave={dragHandlers.onDragLeave}
+        onDrop={dragHandlers.onDrop}
         onClick={handleBoxClick}
         role="button"
         aria-label={preview ? "이미지 변경" : "이미지 업로드"}

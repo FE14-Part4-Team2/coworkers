@@ -140,7 +140,6 @@ export default function BoardsForm() {
           onChange={handleImageUpload}
           disabled={uploadImageMutation.isPending}
         />
-
         {uploadImageMutation.isPending && (
           <p className="mt-2 text-sm text-text-secondary">
             이미지 업로드 중...
