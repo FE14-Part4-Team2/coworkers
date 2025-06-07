@@ -5,6 +5,7 @@ import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
+import { useCreateArticle } from "@/api/article/article.query";
 
 interface FormValues {
   title: string;
@@ -25,9 +26,17 @@ export default function BoardsForm() {
     shouldFocusError: false,
   });
 
-  //LATER: 게시글 등록 API 추후 구현, 현재는 RHF 테스트를 위해 정의
+  const { mutate: createArticle } = useCreateArticle();
+
   const onSubmit = (data: FormValues) => {
-    console.log("Form submitted", data);
+    createArticle(data, {
+      onSuccess: (result) => {
+        console.log("게시글 등록 성공", result);
+      },
+      onError: (error) => {
+        alert(error.message);
+      },
+    });
   };
 
   const errorStyle = "block mt-2 text-status-danger text-sm";
