@@ -85,19 +85,26 @@ export default function BoardsForm() {
     isSubmitting || isCreatingArticle || uploadImageMutation.isPending;
   const errorStyle = "block mt-2 text-status-danger text-sm";
 
+  const submitButton = (
+    <Button
+      label={isLoading ? "등록중" : "등록"}
+      variant="primary"
+      type="submit"
+      disabled={isLoading}
+      className="
+        w-full sm:w-[11.5rem] 
+        h-[3rem] 
+        mt-[2.5rem] sm:mt-0
+        sm:!px-0
+      "
+    />
+  );
+
   return (
     <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
         <h1 className="text-text-primary text-2lg sm:text-xl">게시글 쓰기</h1>
-        <div className="hidden sm:block">
-          <Button
-            label={isLoading ? "등록중" : "등록"}
-            variant="primary"
-            type="submit"
-            disabled={isLoading}
-            className="!px-0 w-[11.5rem] h-[3rem]"
-          />
-        </div>
+        <div className="hidden sm:block">{submitButton}</div>
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <LabeledField id="title" label="제목" required>
@@ -146,15 +153,7 @@ export default function BoardsForm() {
           </p>
         )}
       </section>
-      <div className="block sm:hidden">
-        <Button
-          label={isLoading ? "등록중" : "등록"}
-          variant="primary"
-          type="submit"
-          disabled={isLoading}
-          className="w-full h-[3rem] mt-[2.5rem] block sm:hidden"
-        />
-      </div>
+      <div className="block sm:hidden">{submitButton}</div>
     </form>
   );
 }

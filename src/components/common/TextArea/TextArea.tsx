@@ -1,3 +1,4 @@
+"use client";
 import React, { TextareaHTMLAttributes } from "react";
 import { useRef } from "react";
 import {

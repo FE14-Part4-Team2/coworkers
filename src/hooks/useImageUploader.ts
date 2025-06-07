@@ -5,6 +5,7 @@ import {
   handleDragEvents,
 } from "@/utils/imageUploadHelpers";
 
+// 이미지 업로드 관련 함수
 export const useImageUploader = (
   onChange?: (file: File | null) => void,
   disabled = false,
