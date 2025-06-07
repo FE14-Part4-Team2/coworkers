@@ -7,7 +7,7 @@ import { ko } from "date-fns/locale";
 interface TaskItemProps {
   task: {
     name: string;
-    checked: boolean;
+    doneAt: string | null;
     commentCount?: number;
     date?: string;
   };
@@ -17,13 +17,22 @@ interface TaskItemProps {
 
 export default function TaskItem({ task, onToggle, onDetail }: TaskItemProps) {
   return (
-    <li className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2">
+    <li
+      className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2  cursor-pointer"
+      onClick={onDetail}
+    >
       <div className="flex items-center">
         <div className="flex items-center gap-2">
-          <button onClick={onToggle} className="w-5 h-5">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle();
+            }}
+            className="w-5 h-5"
+          >
             <Image
               src={
-                task.checked
+                task.doneAt
                   ? "/icons/icon-checkbox-checked.svg"
                   : "/icons/icon-checkbox-empty.svg"
               }
@@ -33,9 +42,8 @@ export default function TaskItem({ task, onToggle, onDetail }: TaskItemProps) {
             />
           </button>
           <span
-            onClick={onDetail}
-            className={`text-md font-regular inline-block cursor-pointer mr-[12px] ${
-              task.checked ? "line-through text-gray-400" : ""
+            className={`text-md font-regular inline-block mr-[12px] ${
+              task.doneAt ? "line-through text-gray-400" : ""
             }`}
           >
             {task.name}

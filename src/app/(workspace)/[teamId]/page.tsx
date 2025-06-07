@@ -6,11 +6,10 @@ import { mockTeamData } from "../mock";
 
 export default function TestTeamPage() {
   const router = useRouter();
-  const params = useParams();
-  const teamId = Number(params.teamId);
+  const { teamId } = useParams();
 
   useEffect(() => {
-    if (teamId !== mockTeamData.teamId) {
+    if (Number(teamId) !== mockTeamData.id) {
       router.push("/");
     }
   }, [teamId, router]);
