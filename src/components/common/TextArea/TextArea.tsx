@@ -11,6 +11,8 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: boolean;
   hasTopMargin?: boolean;
+  height?: string;
+  className?: string;
 }
 
 export default function Textarea({
@@ -18,17 +20,18 @@ export default function Textarea({
   error = false,
   hasTopMargin = false,
   disabled = false,
+  height = "h-[15rem]",
+  className = "",
   ...props
 }: TextareaProps) {
-  const containerCustomStyle = "h-[15rem]";
   const textareaStyle = `${inputStyle} w-full resize-none`;
 
   const containerStyleclasses = [
     containerStyle.replace("flex items-center", "w-full"),
-    containerCustomStyle,
     interactionStyle,
     inputBorderStyle(error),
     disabled && disabledStyle,
+    height,
   ]
     .filter(Boolean)
     .join(" ");
@@ -44,7 +47,11 @@ export default function Textarea({
         </label>
       )}
       <div className={containerStyleclasses}>
-        <textarea {...props} className={textareaStyle} disabled={disabled} />
+        <textarea
+          {...props}
+          className={`${textareaStyle} ${className}`}
+          disabled={disabled}
+        />
       </div>
     </div>
   );

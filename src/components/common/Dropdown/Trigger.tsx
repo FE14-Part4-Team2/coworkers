@@ -29,7 +29,7 @@ export default function DropDownTrigger({
     >
       {children}
       <Image
-        src="icons/icon-toggle.svg"
+        src="/icons/icon-toggle.svg"
         alt="toggle"
         width={24}
         height={24}
