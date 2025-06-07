@@ -6,6 +6,7 @@ import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
 import { useAuthStore } from "@/stores/authStroe";
+import { useToastStore } from "@/stores/toastStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ export default function SignupForm() {
   } = useForm<SignupForm>({
     mode: "onBlur",
   });
+  const { showToast } = useToastStore();
 
   const handlePasswordToggle = () => {
     setShowPasword((prev) => !prev);
@@ -50,8 +52,12 @@ export default function SignupForm() {
       },
       {
         onSuccess: (data) => {
+          showToast("회원가입을 성공했습니다", "success");
           setAuth(data.user);
           router.push("/");
+        },
+        onError: (error) => {
+          showToast(error.message, "error");
         },
       },
     );
@@ -157,6 +163,7 @@ export default function SignupForm() {
           label="회원가입"
           variant="primary"
           className="mt-10 w-full"
+          disabled={signupMutation.isPending}
         />
       </form>
     </>
