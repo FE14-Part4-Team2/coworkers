@@ -1,3 +1,5 @@
+"use client";
+
 import DividerWithText from "@/components/feature/Auth/DividerWithText";
 import KakaoLogin from "@/components/feature/Auth/KakaoLogin";
 import SignupForm from "@/components/feature/Auth/SignupForm/SignupForm";
