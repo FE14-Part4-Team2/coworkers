@@ -18,11 +18,11 @@ export const useCreateArticle = () => {
 
 export const useBestArticles = () => {
   //베스트 게시글 목록 불러오기
-  const query = useArticleList({ orderBy: "like", pageSize: 3, page: 1 });
-  return {
-    ...query,
-    data: query.data?.list ?? [],
-  };
+  return useArticleList({
+    orderBy: "like",
+    pageSize: 3,
+    page: 1,
+  });
 };
 
 export const useArticleList = (params?: {
@@ -32,8 +32,15 @@ export const useArticleList = (params?: {
   orderBy?: string;
   keyword?: string;
 }) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["articles", "list", params],
     queryFn: () => articleService.getArticleList(params),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
+
+  return {
+    ...query,
+    data: query.data?.list ?? [],
+  };
 };

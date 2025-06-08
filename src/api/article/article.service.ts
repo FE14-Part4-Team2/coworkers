@@ -23,7 +23,12 @@ class ArticleService {
     orderBy?: string;
     keyword?: string;
   }) {
-    return api.get<GetArticleListResponse>(this.getBasePath(), { params });
+    return api.get<GetArticleListResponse>(this.getBasePath(), {
+      params,
+      headers: {
+        "Accept-Encoding": "identity",
+      },
+    });
   }
   getArticleDetail(articleId: string) {
     return api.get<GetArticleDetailResponse>(this.getBasePath(articleId));

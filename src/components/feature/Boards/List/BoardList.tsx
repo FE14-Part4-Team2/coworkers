@@ -1,8 +1,8 @@
 import FilterDropdown from "@/components/feature/Boards/List/FilterDropdown";
 import LongCard from "../Card/LongCard";
-import { Article } from "@/types/article";
+import { ArticleType } from "@/api/article/article.schema";
 
-export default function BoardList({ data }: { data: Article[] }) {
+export default function BoardList({ data }: { data: ArticleType[] }) {
   return (
     <>
       <div className="flex flex-col mt-[5rem]">
@@ -18,8 +18,8 @@ export default function BoardList({ data }: { data: Article[] }) {
                 date={post.createdAt}
                 title={post.title}
                 writer={post.writer.nickname}
-                content={post.content}
                 likes={post.likeCount}
+                thumbnail={post.image ?? undefined}
               />
             </li>
           ))}
