@@ -27,6 +27,7 @@ export default function BoardBestList({ data }: { data: ArticleType[] }) {
               title={post.title}
               writer={post.writer.nickname}
               likes={post.likeCount}
+              thumbnail={post.image ?? undefined}
             />
           </li>
         ))}

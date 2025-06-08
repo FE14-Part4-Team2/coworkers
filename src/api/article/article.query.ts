@@ -4,7 +4,7 @@ import { articleService } from "./article.service";
 import { CreateArticleRequest, CreateArticleResponse } from "./article.schema";
 
 export const useCreateArticle = () => {
-  // 게시글 작성
+  //게시글 작성
   const queryClient = useQueryClient();
 
   return useMutation<CreateArticleResponse, Error, CreateArticleRequest>({
