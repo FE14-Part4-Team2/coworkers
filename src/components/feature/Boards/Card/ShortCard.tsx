@@ -42,7 +42,7 @@ export default function ShortCard({
           </div>
 
           <div className={shortCardStyles.content}>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between">
               <div className={sharedCardStyles.dateContainer}>
                 <div className={shortCardStyles.dateIndicator}></div>
                 <span className={sharedCardStyles.dateText}>
@@ -93,7 +93,13 @@ export default function ShortCard({
 
           <div className="flex-grow flex flex-col justify-center">
             <div className="text-center mb-6">
-              <div className={shortCardStyles.centerIcon}></div>
+              <Image
+                src="/icons/icon-logo-icon.svg"
+                alt="클로버"
+                width={40}
+                height={40}
+                className="mx-auto mb-4"
+              />
               <h3 className={`${sharedCardStyles.title} px-2`}>{title}</h3>
             </div>
           </div>

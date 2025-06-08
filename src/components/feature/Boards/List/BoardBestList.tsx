@@ -19,7 +19,7 @@ export default function BoardBestList({ data }: { data: ArticleType[] }) {
           />
         </div>
       </div>
-      <ul className="flex gap-[1.5rem]">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.5rem] w-full overflow-hidden">
         {data.map((post) => (
           <li key={post.id}>
             <ShortCard

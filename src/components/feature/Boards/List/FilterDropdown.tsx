@@ -1,25 +1,33 @@
 "use client";
 
 import GenericDropdown from "../../../common/Dropdown/GenericDropdown";
-import useGenericDropdown from "@/hooks/useGenericDropdown";
+import { useState } from "react";
 
 const options = [
-  { label: "최신순", value: "latest" },
-  { label: "좋아요순", value: "likes" },
+  { label: "최신순", value: "recent" },
+  { label: "좋아요순", value: "like" },
 ];
 
-export default function FilterDropdown() {
-  const { selected, isOpen, handleToggle, handleClose, handleSelect } =
-    useGenericDropdown("최신순");
+export default function FilterDropdown({
+  orderBy,
+  setOrderBy,
+}: {
+  orderBy: "recent" | "like";
+  setOrderBy: (order: "recent" | "like") => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <GenericDropdown
       options={options}
-      selected={selected}
+      selected={orderBy}
       isOpen={isOpen}
-      handleToggle={handleToggle}
-      handleClose={handleClose}
-      handleSelect={handleSelect}
+      handleToggle={() => setIsOpen((v) => !v)}
+      handleClose={() => setIsOpen(false)}
+      handleSelect={(value: string) => {
+        setOrderBy(value as "recent" | "like");
+        setIsOpen(false);
+      }}
     />
   );
 }

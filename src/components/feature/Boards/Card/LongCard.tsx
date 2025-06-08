@@ -98,7 +98,13 @@ export default function LongCard({
 
             <div className="flex-grow flex items-center justify-center">
               <div className="text-center">
-                <div className={longCardStyles.centerIcon}></div>
+                <Image
+                  src="/icons/icon-logo-icon.svg"
+                  alt="클로버"
+                  width={40}
+                  height={40}
+                  className="mx-auto mb-4"
+                />
                 <h3 className={`${sharedCardStyles.title} px-4`}>{title}</h3>
               </div>
             </div>

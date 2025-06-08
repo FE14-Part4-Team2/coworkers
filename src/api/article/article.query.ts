@@ -33,7 +33,7 @@ export const useArticleList = (params?: {
   keyword?: string;
 }) => {
   const query = useQuery({
-    queryKey: ["articles", "list", params],
+    queryKey: ["articles", params],
     queryFn: () => articleService.getArticleList(params),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,

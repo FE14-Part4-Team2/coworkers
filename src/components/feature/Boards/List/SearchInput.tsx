@@ -33,7 +33,7 @@ export default function SearchInput({
       </span>
       <form
         onSubmit={handleSubmit}
-        className="w-full p-[1rem] h-[3.5rem] gap-[0.75rem] bg-bg-secondary border border-card-border rounded-xl flex"
+        className="w-full p-[1rem] h-[3rem] sm:h-[3.5rem] gap-[0.75rem] bg-bg-secondary border border-card-border rounded-xl flex"
       >
         <Image
           src="/icons/icon-search-gray.svg"
