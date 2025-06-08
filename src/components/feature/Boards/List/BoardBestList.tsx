@@ -1,8 +1,8 @@
 import ShortCard from "../Card/ShortCard";
 import Image from "next/image";
-import { Article } from "@/types/article";
+import { ArticleType } from "@/api/article/article.schema";
 
-export default function BoardBestList({ data }: { data: Article[] }) {
+export default function BoardBestList({ data }: { data: ArticleType[] }) {
   return (
     <>
       <div className="flex items-center mt-[2.5rem] justify-between mb-[3.5rem]">
