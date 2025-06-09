@@ -1,59 +1,37 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState, DragEvent } from "react";
 import {
   containerStyle,
   inputBorderStyle,
   interactionStyle,
 } from "@/components/common/Input/Input";
+import { useImageUploader } from "@/hooks/useImageUploader";
 
-export default function ImageUploader() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+interface ImageUploaderProps {
+  onChange?: (file: File | null) => void;
+  disabled?: boolean;
+}
 
-  const handleBoxClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleRemove = () => {
-    setPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreview(url);
-    }
-  };
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      setPreview(URL.createObjectURL(file));
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
+export default function ImageUploader({
+  onChange,
+  disabled = false,
+}: ImageUploaderProps) {
+  const {
+    fileInputRef,
+    preview,
+    isDragging,
+    handleBoxClick,
+    handleFileChange,
+    handleRemoveClick,
+    dragHandlers,
+  } = useImageUploader(onChange, disabled);
 
   const uploaderBoxStyle = [
     containerStyle,
     inputBorderStyle(false),
     interactionStyle,
     isDragging ? "border-interaction-focus bg-bg-hover" : "",
+    disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
     "w-[10rem] h-[10rem] sm:w-[15rem] sm:h-[15rem] flex-col gap-[0.75rem] items-center justify-center cursor-pointer",
   ].join(" ");
 
@@ -63,14 +41,17 @@ export default function ImageUploader() {
       <div
         className={uploaderBoxStyle}
         tabIndex={0}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragOver={dragHandlers.onDragOver}
+        onDragLeave={dragHandlers.onDragLeave}
+        onDrop={dragHandlers.onDrop}
+        onClick={handleBoxClick}
+        role="button"
+        aria-label={preview ? "이미지 변경" : "이미지 업로드"}
       >
         {preview && (
           <button
             type="button"
-            onClick={handleRemove}
+            onClick={handleRemoveClick}
             className="absolute top-2 right-2 bg-black/50 rounded-full w-7 h-7 flex items-center justify-center z-10"
             tabIndex={-1}
             aria-label="이미지 삭제"
@@ -91,7 +72,6 @@ export default function ImageUploader() {
               alt="이미지 추가"
               width={48}
               height={48}
-              onClick={handleBoxClick}
             />
             <span className="text-image-label text-lg">이미지 등록</span>
           </>
@@ -101,6 +81,8 @@ export default function ImageUploader() {
           accept="image/*"
           ref={fileInputRef}
           className="hidden"
+          disabled={disabled}
+          aria-label="이미지 파일 선택"
           onChange={handleFileChange}
         />
       </div>

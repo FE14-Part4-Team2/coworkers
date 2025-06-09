@@ -3,7 +3,7 @@ import { api } from "../fetcher";
 
 const uploadImageService = async (file: File) => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("image", file);
   const res = await api.post<{ url: string }>("/images/upload", formData);
   return res.url;
 };
