@@ -9,16 +9,10 @@ export default function BoardBestList({ data }: { data: ArticleType[] }) {
           베스트 게시글
         </span>
       </div>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.5rem] w-full overflow-hidden">
+      <ul className="grid grid-cols-1 md:grid-cols-3 gap-[1.5rem] w-full overflow-hidden">
         {data.map((post) => (
           <li key={post.id}>
-            <ShortCard
-              date={post.createdAt}
-              title={post.title}
-              writer={post.writer.nickname}
-              likes={post.likeCount}
-              thumbnail={post.image ?? undefined}
-            />
+            <ShortCard article={post} />
           </li>
         ))}
       </ul>

@@ -16,6 +16,7 @@ export const useCreateArticle = () => {
   });
 };
 
+// 추후 isLoading, error등 추가 예정
 export const useBestArticles = () => {
   //베스트 게시글 목록 불러오기
   return useArticleList({

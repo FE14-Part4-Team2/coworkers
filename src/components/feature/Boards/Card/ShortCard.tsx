@@ -1,40 +1,26 @@
 "use client";
 import Image from "next/image";
 import { sharedCardStyles, shortCardStyles } from "@/styles/sharedCardStyles";
+import { ArticleType } from "@/api/article/article.schema";
 
-interface ShortCardProps {
-  date: string;
-  title: string;
-  writer: string;
-  profileImg?: string;
-  likes: number;
-  thumbnail?: string;
-}
+export const DEFAULT_PROFILE_IMG = "/icons/icon-profile-default.svg";
 
-interface ShortCardProps {
-  date: string;
-  title: string;
-  writer: string;
+export interface CardProps {
+  article: ArticleType;
   profileImg?: string;
-  likes: number;
-  thumbnail?: string;
 }
 
 export default function ShortCard({
-  date,
-  title,
-  writer,
-  profileImg = "/icons/icon-profile-default.svg",
-  likes,
-  thumbnail,
-}: ShortCardProps) {
+  article,
+  profileImg = DEFAULT_PROFILE_IMG,
+}: CardProps) {
   return (
     <div className={shortCardStyles.container}>
-      {thumbnail ? (
+      {article.image ? (
         <>
           <div className={shortCardStyles.thumbnail}>
             <Image
-              src={thumbnail}
+              src={article.image}
               fill
               alt="게시글 썸네일"
               className="object-cover"
@@ -46,12 +32,12 @@ export default function ShortCard({
               <div className={sharedCardStyles.dateContainer}>
                 <div className={shortCardStyles.dateIndicator}></div>
                 <span className={sharedCardStyles.dateText}>
-                  {date.slice(0, 10).replace(/-/g, ".")}
+                  {article.createdAt.slice(0, 10).replace(/-/g, ".")}
                 </span>
               </div>
             </div>
 
-            <div className={sharedCardStyles.title}>{title}</div>
+            <div className={sharedCardStyles.title}>{article.title}</div>
 
             <div className="border-gray-100 pt-[2.125rem]">
               <div className="flex gap-3 items-center">
@@ -65,7 +51,9 @@ export default function ShortCard({
                   />
                 </div>
                 <div className="flex-grow">
-                  <div className={sharedCardStyles.authorName}>{writer}</div>
+                  <div className={sharedCardStyles.authorName}>
+                    {article.writer.nickname}
+                  </div>
                 </div>
                 <div className={sharedCardStyles.likesBadge}>
                   <Image
@@ -74,7 +62,9 @@ export default function ShortCard({
                     width={14}
                     height={14}
                   />
-                  <span className={sharedCardStyles.likesText}>{likes}</span>
+                  <span className={sharedCardStyles.likesText}>
+                    {article.likeCount}
+                  </span>
                 </div>
               </div>
             </div>
@@ -86,7 +76,7 @@ export default function ShortCard({
             <div className={sharedCardStyles.dateContainer}>
               <div className={shortCardStyles.dateIndicator}></div>
               <span className={sharedCardStyles.dateText}>
-                {date.slice(0, 10).replace(/-/g, ".")}
+                {article.createdAt.slice(0, 10).replace(/-/g, ".")}
               </span>
             </div>
           </div>
@@ -100,7 +90,9 @@ export default function ShortCard({
                 height={40}
                 className="mx-auto mb-4"
               />
-              <h3 className={`${sharedCardStyles.title} px-2`}>{title}</h3>
+              <h3 className={`${sharedCardStyles.title} px-2`}>
+                {article.title}
+              </h3>
             </div>
           </div>
 
@@ -114,7 +106,9 @@ export default function ShortCard({
                 className={sharedCardStyles.profileImage}
               />
               <div className="flex-grow">
-                <div className={sharedCardStyles.authorName}>{writer}</div>
+                <div className={sharedCardStyles.authorName}>
+                  {article.writer.nickname}
+                </div>
               </div>
               <div className={sharedCardStyles.likesBadge}>
                 <Image
@@ -123,7 +117,9 @@ export default function ShortCard({
                   width={14}
                   height={14}
                 />
-                <span className={sharedCardStyles.likesText}>{likes}</span>
+                <span className={sharedCardStyles.likesText}>
+                  {article.likeCount}
+                </span>
               </div>
             </div>
           </div>
