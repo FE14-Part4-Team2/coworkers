@@ -11,9 +11,11 @@ const options = [
 export default function FilterDropdown({
   orderBy,
   setOrderBy,
+  className,
 }: {
   orderBy: "recent" | "like";
   setOrderBy: (order: "recent" | "like") => void;
+  className?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,6 +30,7 @@ export default function FilterDropdown({
         setOrderBy(value as "recent" | "like");
         setIsOpen(false);
       }}
+      className={className}
     />
   );
 }

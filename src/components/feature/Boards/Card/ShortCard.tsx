@@ -104,17 +104,15 @@ export default function ShortCard({
             </div>
           </div>
 
-          <div className={shortCardStyles.bottomBorder}>
-            <div className="flex gap-3 items-center">
-              <div>
-                <Image
-                  src={profileImg}
-                  alt="작성자"
-                  width={32}
-                  height={32}
-                  className={sharedCardStyles.profileImage}
-                />
-              </div>
+          <div className="mt-auto">
+            <div className="flex gap-2 sm:gap-3  items-center">
+              <Image
+                src={profileImg}
+                alt="작성자"
+                width={32}
+                height={32}
+                className={sharedCardStyles.profileImage}
+              />
               <div className="flex-grow">
                 <div className={sharedCardStyles.authorName}>{writer}</div>
               </div>

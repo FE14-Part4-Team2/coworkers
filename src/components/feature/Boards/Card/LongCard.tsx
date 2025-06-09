@@ -35,20 +35,22 @@ export default function LongCard({
               />
             </div>
 
-            <div className={longCardStyles.contentWithThumbnail}>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
+            <div className="flex-1 min-w-0 ml-6 flex flex-col justify-between h-full">
+              <div className="flex-1">
+                <div className="flex items-start gap-2 mb-2">
                   <div className={longCardStyles.dateIndicator}></div>
-                  <h3 className={`${sharedCardStyles.title} line-clamp-2`}>
+                  <h3
+                    className={`${sharedCardStyles.title} line-clamp-2 flex-1 min-w-0`}
+                  >
                     {title}
                   </h3>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className={sharedCardStyles.authorSection}>
-                    <div className="relative">
+              <div className="flex items-center justify-between gap-4 min-w-0">
+                <div className="flex items-center gap-4 min-w-0 flex-1">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex-shrink-0">
                       <Image
                         src={profileImg}
                         alt="작성자"
@@ -57,21 +59,25 @@ export default function LongCard({
                         className={sharedCardStyles.profileImage}
                       />
                     </div>
-                    <div>
-                      <div className={sharedCardStyles.authorName}>
+                    <div className="min-w-0 flex-1">
+                      <div
+                        className={`${sharedCardStyles.authorName} whitespace-nowrap overflow-hidden text-ellipsis`}
+                      >
                         {writer}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className={sharedCardStyles.dateText}>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span
+                      className={`${sharedCardStyles.dateText} whitespace-nowrap`}
+                    >
                       {date.slice(0, 10).replace(/-/g, ".")}
                     </span>
                   </div>
                 </div>
 
-                <div className={sharedCardStyles.likesBadge}>
+                <div className={`${sharedCardStyles.likesBadge} flex-shrink-0`}>
                   <Image
                     src="/icons/icon-heart.svg"
                     alt="하트"

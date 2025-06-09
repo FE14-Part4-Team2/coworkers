@@ -43,7 +43,7 @@ export default function GenericDropdown({
         <DropDown.Trigger onClick={handleToggle} isOpen={isOpen}>
           {selectedLabel}
         </DropDown.Trigger>
-        <DropDown.Menu isOpen={isOpen} className="w-[7.5rem]">
+        <DropDown.Menu isOpen={isOpen} className="w-[6rem] sm:w-[7.5rem]">
           {options.map((opt) => (
             <DropDown.Item
               key={opt.value}
