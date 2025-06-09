@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { userService } from "./user.service";
-import { useAuthStore } from "@/stores/authStroe";
+import { useAuthStore } from "@/stores/authStore";
 import { authService } from "../auth/auth.service";
 import { useRouter } from "next/navigation";
 import { UpdateMyInfoRequest } from "./user.schema";
@@ -40,8 +40,8 @@ const userQuery = {
 };
 
 // 내 정보 조회 쿼리
-export const useMyInfoQuery = () => {
-  return useQuery({ ...userQuery.myInfo() });
+export const useMyInfoQuery = (enabled: boolean) => {
+  return useQuery({ ...userQuery.myInfo(), enabled });
 };
 
 // 내 정보 수정 뮤테이션
