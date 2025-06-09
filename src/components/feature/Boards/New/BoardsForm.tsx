@@ -5,17 +5,30 @@ import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
+import { useCreateArticle } from "@/api/article/article.query";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useUploadImage } from "@/api/image/image-api";
 
 interface FormValues {
   title: string;
   content: string;
 }
 
+interface CreateArticlePayload extends FormValues {
+  image?: string;
+}
+
 export default function BoardsForm() {
+  const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const uploadImageMutation = useUploadImage();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
@@ -25,26 +38,73 @@ export default function BoardsForm() {
     shouldFocusError: false,
   });
 
-  //LATER: 게시글 등록 API 추후 구현, 현재는 RHF 테스트를 위해 정의
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted", data);
-  };
+  const { mutate: createArticle, isPending: isCreatingArticle } =
+    useCreateArticle();
 
+  const handleImageUpload = useCallback(
+    (file: File | null) => {
+      if (file) {
+        uploadImageMutation.mutate(file, {
+          onSuccess: (url: string) => {
+            setImageUrl(url);
+          },
+        });
+      } else {
+        setImageUrl(undefined);
+      }
+    },
+    [uploadImageMutation],
+  );
+
+  const onSubmit = useCallback(
+    (data: FormValues) => {
+      const payload: CreateArticlePayload = {
+        ...data,
+        ...(imageUrl && { image: imageUrl }),
+      };
+
+      createArticle(payload, {
+        onSuccess: () => {
+          reset();
+          setImageUrl(undefined);
+          router.push("/boards");
+        },
+        onError: (error) => {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "게시글 등록에 실패했습니다.";
+          alert(errorMessage);
+        },
+      });
+    },
+    [createArticle, imageUrl, reset, router],
+  );
+
+  const isLoading =
+    isSubmitting || isCreatingArticle || uploadImageMutation.isPending;
   const errorStyle = "block mt-2 text-status-danger text-sm";
+
+  const submitButton = (
+    <Button
+      label={isLoading ? "등록중" : "등록"}
+      variant="primary"
+      type="submit"
+      disabled={isLoading}
+      className="
+        w-full sm:w-[11.5rem] 
+        h-[3rem] 
+        mt-[2.5rem] sm:mt-0
+        sm:!px-0
+      "
+    />
+  );
 
   return (
     <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
         <h1 className="text-text-primary text-2lg sm:text-xl">게시글 쓰기</h1>
-        <div className="hidden sm:block">
-          <Button
-            label={isSubmitting ? "등록중" : "등록"}
-            variant="primary"
-            className="w-[11.5rem] h-[3rem]"
-            type="submit"
-            disabled={isSubmitting}
-          />
-        </div>
+        <div className="hidden sm:block">{submitButton}</div>
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <LabeledField id="title" label="제목" required>
@@ -53,7 +113,10 @@ export default function BoardsForm() {
           placeholder="제목을 입력해주세요."
           {...register("title", {
             required: "제목은 필수 입력입니다.",
-            minLength: { value: 5, message: "5자 이상 입력해주세요." },
+            minLength: {
+              value: 5,
+              message: "제목은 최소 5자 이상 입력해주세요.",
+            },
           })}
           error={!!errors.title}
           maxLength={30}
@@ -73,24 +136,24 @@ export default function BoardsForm() {
           })}
           error={!!errors.content}
           maxLength={500}
-          className={!!errors.title ? "hover:border-status-danger" : ""}
+          className={!!errors.content ? "hover:border-status-danger" : ""}
         />
         {errors.content && (
           <span className={errorStyle}>{errors.content.message}</span>
         )}
       </LabeledField>
       <section aria-label="이미지 등록">
-        <ImageUploader />
-      </section>
-      <div className="block sm:hidden">
-        <Button
-          label={isSubmitting ? "등록중" : "등록"}
-          variant="primary"
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full h-[3rem] mt-[2.5rem] block sm:hidden"
+        <ImageUploader
+          onChange={handleImageUpload}
+          disabled={uploadImageMutation.isPending}
         />
-      </div>
+        {uploadImageMutation.isPending && (
+          <p className="mt-2 text-sm text-text-secondary">
+            이미지 업로드 중...
+          </p>
+        )}
+      </section>
+      <div className="block sm:hidden">{submitButton}</div>
     </form>
   );
 }

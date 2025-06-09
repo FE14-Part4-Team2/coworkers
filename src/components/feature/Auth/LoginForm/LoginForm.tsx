@@ -6,11 +6,34 @@ import PasswordToggle from "@/components/common/Input/PasswordToggle";
 import { useModalStore } from "@/stores/modalStore";
 import React, { useState } from "react";
 import SendEmailModal from "./SendEmailModal";
+import { useForm } from "react-hook-form";
+import { useSignIn } from "@/api/auth/auth.query";
+import ErrorMsg from "@/components/common/Input/ErrorMsg";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
+import { useToastStore } from "@/stores/toastStore";
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
 
 export default function LoginForm() {
   const { openModal } = useModalStore();
+  const { showToast } = useToastStore();
   const [showPassword, setShowPasword] = useState(false);
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+
+  const loginMutation = useSignIn();
+  const { setAuth } = useAuthStore();
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({
+    mode: "onBlur",
+  });
 
   const handlePasswordToggle = () => {
     setShowPasword((prev) => !prev);
@@ -20,35 +43,52 @@ export default function LoginForm() {
     openModal("password-reset");
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (data: LoginForm) => {
+    loginMutation.mutate(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: (data) => {
+          setAuth(data.user);
+          showToast("로그인 성공", "success");
+          router.push("/");
+        },
+        onError: () => {
+          showToast("이메일 혹은 비밀번호를 확인해주세요.", "error");
+        },
+      },
+    );
   };
 
   return (
     <>
-      <form onSubmit={handleSubmitLogin}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="email"
-          name="email"
           label="이메일"
           placeholder="이메일을 입력해주세요."
-          value={loginForm.email}
-          onChange={handleInputChange}
+          error={!!errors.email}
+          {...register("email", {
+            required: "이메일은 필수 입력입니다.",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "이메일 형식으로 작성해 주세요.",
+            },
+          })}
         />
+        <ErrorMsg message={errors.email?.message} />
         <Input
           id="password"
-          name="password"
           type={showPassword ? "text" : "password"}
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요."
-          value={loginForm.password}
-          onChange={handleInputChange}
           hasTopMargin
+          error={!!errors.password}
+          {...register("password", {
+            required: "비밀번호는 필수 입력입니다.",
+          })}
           suffix={
             <PasswordToggle
               isShow={showPassword}
@@ -56,6 +96,7 @@ export default function LoginForm() {
             />
           }
         />
+        <ErrorMsg message={errors.password?.message} />
         <button
           type="button"
           className="absolute right-0 mt-3 text-brand-primary text-lg font-medium underline text-md sm:text-lg"
