@@ -1,6 +1,8 @@
 import FilterDropdown from "@/components/feature/Boards/List/FilterDropdown";
 import LongCard from "../Card/LongCard";
 import { ArticleType } from "@/api/article/article.schema";
+import WriteButton from "./WriteButton";
+import { useRouter } from "next/navigation";
 
 export default function BoardList({
   data,
@@ -11,6 +13,8 @@ export default function BoardList({
   orderBy: "recent" | "like";
   setOrderBy: (order: "recent" | "like") => void;
 }) {
+  const router = useRouter();
+
   return (
     <>
       <div className="flex flex-col mt-[5rem]">
@@ -32,6 +36,8 @@ export default function BoardList({
             </li>
           ))}
         </ul>
+
+        <WriteButton onClick={() => router.push("/boards/new")} />
       </div>
     </>
   );

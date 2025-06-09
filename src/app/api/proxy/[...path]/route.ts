@@ -24,13 +24,9 @@ async function proxyHandler(req: NextRequest) {
     duplex: "half",
   } as RequestInit);
 
-  const responseHeaders = new Headers(backendRes.headers);
-  responseHeaders.delete("content-encoding");
-  responseHeaders.delete("content-length");
-
   const response = new NextResponse(backendRes.body, {
     status: backendRes.status,
-    headers: responseHeaders,
+    headers: backendRes.headers,
   });
 
   return response;

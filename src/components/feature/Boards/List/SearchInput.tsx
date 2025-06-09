@@ -29,7 +29,7 @@ export default function SearchInput({
   return (
     <>
       <span className="sm:text-2xl text-2lg text-text-primary mb-[2.5rem]">
-        자유게시판
+        모집게시판
       </span>
       <form
         onSubmit={handleSubmit}
