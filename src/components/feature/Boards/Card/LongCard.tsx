@@ -33,7 +33,6 @@ export default function LongCard({
               </div>
 
               <div className="flex flex-col gap-2 min-w-0">
-                {/* 모바일: 날짜 먼저, 그 다음 작성자+좋아요 */}
                 <div className="sm:hidden flex flex-col gap-2">
                   <span
                     className={`${sharedCardStyles.dateText} whitespace-nowrap text-sm`}
