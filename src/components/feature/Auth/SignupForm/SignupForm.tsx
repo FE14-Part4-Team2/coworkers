@@ -5,7 +5,7 @@ import Button from "@/components/common/Button";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
-import { useAuthStore } from "@/stores/authStroe";
+import { useAuthStore } from "@/stores/authStore";
 import { useToastStore } from "@/stores/toastStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
