@@ -1,8 +1,5 @@
 import Image from "next/image";
-import {
-  useAddLikeArticle,
-  useDeleteLikeArticle,
-} from "@/api/article/article.query";
+import { useLikeArticle } from "@/api/article/article.query";
 
 export interface LikeButtonProps {
   articleId: number;
@@ -15,8 +12,8 @@ export default function LikeButton({
   isLiked,
   likeCount,
 }: LikeButtonProps) {
-  const { mutate: addLike } = useAddLikeArticle();
-  const { mutate: deleteLike } = useDeleteLikeArticle();
+  const { mutate: addLike } = useLikeArticle("add");
+  const { mutate: deleteLike } = useLikeArticle("delete");
   return (
     <>
       <button

@@ -9,6 +9,7 @@ import {
 
 const STALE_TIME_5_MIN = 1000 * 60 * 5;
 const GC_TIME_10_MIN = 1000 * 60 * 10;
+type LikeAction = "add" | "delete";
 
 //게시글 작성
 export const useCreateArticle = () => {
@@ -23,26 +24,15 @@ export const useCreateArticle = () => {
   });
 };
 
-// 게시글 좋아요 기능
-export const useAddLikeArticle = () => {
+// 게시글 좋아요 / 취소 공통 훅
+export const useLikeArticle = (action: LikeAction) => {
   const queryClient = useQueryClient();
 
   return useMutation<GetArticleDetailResponse, Error, string>({
-    mutationFn: (articleId) => articleService.addLikeArticle(articleId),
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["article"] });
-    },
-  });
-};
-
-// 게시글 좋아요 취소
-export const useDeleteLikeArticle = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<GetArticleDetailResponse, Error, string>({
-    mutationFn: (articleId) => articleService.deleteLikeArticle(articleId),
-
+    mutationFn: (articleId) =>
+      action === "add"
+        ? articleService.addLikeArticle(articleId)
+        : articleService.deleteLikeArticle(articleId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["article"] });
     },
