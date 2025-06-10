@@ -11,7 +11,7 @@ interface SettingForm {
   name: string;
 }
 
-function SettingForm() {
+function SettingForm({ userName }: { userName: string }) {
   const {
     register,
     handleSubmit,
@@ -29,7 +29,7 @@ function SettingForm() {
         <Input
           id="name"
           label="이름"
-          defaultValue="유저 이름 연결"
+          defaultValue={userName}
           {...register("name", {
             required: "이름을 입력해주세요.",
             maxLength: {

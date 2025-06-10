@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  images: {
+    domains: [
+      "img1.kakaocdn.net",
+      "sprint-fe-project.s3.ap-northeast-2.amazonaws.com",
+    ],
+  },
 };
 
 export default nextConfig;
