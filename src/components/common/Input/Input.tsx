@@ -7,7 +7,7 @@ export const inputStyle =
 export const interactionStyle =
   "focus-within:border-interaction-focus hover:border-interaction-hover";
 export const disabledStyle =
-  "bg-bg-tertiary hover:border-border-primary cursor-not-allowed";
+  "bg-bg-tertiary hover:!border-border-primary/10 cursor-not-allowed";
 
 export const inputBorderStyle = (error: boolean) =>
   error ? "border-status-danger" : "border-border-primary/10";
