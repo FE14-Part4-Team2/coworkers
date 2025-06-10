@@ -14,7 +14,7 @@ export interface Article {
 export interface ArticleComment {
   id: number;
   writer: {
-    image: string;
+    image: string | null;
     nickname: string;
     id: number;
   };
