@@ -1,65 +1,187 @@
 "use client";
 import Image from "next/image";
-
-const DEFAULT_PROFILE_IMG = "/icons/icon-profile-default.svg";
-const DEFAULT_THUMBNAIL = "/icons/icon-avatar.svg";
-
-interface LongCardProps {
-  title: string;
-  content: string;
-  writer: string;
-  date: string;
-  likes: number;
-  profileImg?: string;
-  thumbnail?: string;
-}
+import { sharedCardStyles, longCardStyles } from "@/styles/sharedCardStyles";
+import { CardProps } from "./ShortCard";
+import { DEFAULT_PROFILE_IMG } from "./ShortCard";
 
 export default function LongCard({
-  title,
-  content,
-  writer,
-  date,
-  likes,
+  article,
   profileImg = DEFAULT_PROFILE_IMG,
-  thumbnail = DEFAULT_THUMBNAIL,
-}: LongCardProps) {
+}: CardProps) {
   return (
-    <div className="w-[37rem] h-[11rem] border border-card-border bg-bg-secondary rounded-xl px-8 pt-6 pb-5 shadow-lg relative flex items-center">
-      <div className="w-[128px] h-[128px] rounded-lg overflow-hidden bg-blue-100 flex-shrink-0 relative">
-        <Image src={thumbnail} alt="썸네일" fill className="object-cover" />
-      </div>
+    <div className={longCardStyles.container}>
+      {article.image ? (
+        <>
+          <div className={longCardStyles.content}>
+            <div className={longCardStyles.thumbnail}>
+              <Image
+                src={article.image}
+                alt="썸네일"
+                fill
+                className="object-cover relative z-10"
+              />
+            </div>
 
-      <div className="ml-4 w-full h-full flex flex-col justify-between">
-        <div className="text-2lg text-text-tertiary truncate">{title}</div>
+            <div className="flex-1 min-w-0 ml-6 flex flex-col justify-between h-full">
+              <div className="flex-1">
+                <div className="flex items-start gap-2 mb-2">
+                  <div className={longCardStyles.dateIndicator}></div>
+                  <h3 className={`${sharedCardStyles.title} flex-1 min-w-0`}>
+                    {article.title}
+                  </h3>
+                </div>
+              </div>
 
-        <div className="text-md text-text-secondary">{content}</div>
+              <div className="flex flex-col gap-2 min-w-0">
+                <div className="sm:hidden flex flex-col gap-2">
+                  <span
+                    className={`${sharedCardStyles.dateText} whitespace-nowrap text-sm`}
+                  >
+                    {article.createdAt.slice(0, 10).replace(/-/g, ".")}
+                  </span>
 
-        <div className="flex items-center">
-          <span className="flex items-center gap-3 text-md text-icon-inverse">
-            <Image src={profileImg} alt="작성자" width={25} height={25} />
-            {writer}
-          </span>
-          <span className="text-md ml-3 text-interaction-inactive">{date}</span>
-          <span className="flex items-center gap-1 ml-auto text-sm text-text-disabled ">
-            <Image
-              src="/icons/icon-heart.svg"
-              alt="하트"
-              width={16}
-              height={16}
-            />
-            {likes}
-          </span>
-        </div>
-      </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="flex-shrink-0">
+                        <Image
+                          src={profileImg}
+                          alt="작성자"
+                          width={32}
+                          height={32}
+                          className={sharedCardStyles.profileImage}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className={`${sharedCardStyles.authorName} truncate`}
+                        >
+                          {article.writer.nickname}
+                        </div>
+                      </div>
+                    </div>
 
-      <button className="absolute top-3 right-4">
-        <Image
-          src="/icons/icon-bookmarks.svg"
-          alt="더보기"
-          width={18}
-          height={18}
-        />
-      </button>
+                    <div
+                      className={`${sharedCardStyles.likesBadge} flex-shrink-0`}
+                    >
+                      <Image
+                        src="/icons/icon-heart.svg"
+                        alt="하트"
+                        width={14}
+                        height={14}
+                      />
+                      <span className={sharedCardStyles.likesText}>
+                        {article.likeCount}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="hidden sm:flex items-center justify-between gap-4 min-w-0">
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex-shrink-0">
+                        <Image
+                          src={profileImg}
+                          alt="작성자"
+                          width={32}
+                          height={32}
+                          className={sharedCardStyles.profileImage}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className={`${sharedCardStyles.authorName}`}>
+                          {article.writer.nickname}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span
+                        className={`${sharedCardStyles.dateText} whitespace-nowrap`}
+                      >
+                        {article.createdAt.slice(0, 10).replace(/-/g, ".")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`${sharedCardStyles.likesBadge} flex-shrink-0`}
+                  >
+                    <Image
+                      src="/icons/icon-heart.svg"
+                      alt="하트"
+                      width={14}
+                      height={14}
+                    />
+                    <span className={sharedCardStyles.likesText}>
+                      {article.likeCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={longCardStyles.contentNoThumbnail}>
+            <div className="flex items-center justify-between">
+              <div className={sharedCardStyles.dateContainer}>
+                <div className={longCardStyles.dateIndicator}></div>
+                <span className={sharedCardStyles.dateText}>
+                  {article.createdAt.slice(0, 10).replace(/-/g, ".")}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex-grow flex items-center justify-center">
+              <div className="text-center">
+                <Image
+                  src="/icons/icon-logo-icon.svg"
+                  alt="클로버"
+                  width={40}
+                  height={40}
+                  className="mx-auto mb-4"
+                />
+                <h3 className={`${sharedCardStyles.title} px-4`}>
+                  {article.title}
+                </h3>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className={sharedCardStyles.authorSection}>
+                <div className="relative">
+                  <Image
+                    src={profileImg}
+                    alt="작성자"
+                    width={32}
+                    height={32}
+                    className={sharedCardStyles.profileImage}
+                  />
+                </div>
+                <div>
+                  <div className={sharedCardStyles.authorName}>
+                    {article.writer.nickname}
+                  </div>
+                </div>
+              </div>
+
+              <div className={sharedCardStyles.likesBadge}>
+                <Image
+                  src="/icons/icon-heart.svg"
+                  alt="하트"
+                  width={14}
+                  height={14}
+                />
+                <span className={sharedCardStyles.likesText}>
+                  {article.likeCount}
+                </span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

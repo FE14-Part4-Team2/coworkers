@@ -29,11 +29,11 @@ export default function SearchInput({
   return (
     <>
       <span className="sm:text-2xl text-2lg text-text-primary mb-[2.5rem]">
-        자유게시판
+        모집게시판
       </span>
       <form
         onSubmit={handleSubmit}
-        className="w-full p-[1rem] h-[3.5rem] gap-[0.75rem] bg-bg-secondary border border-card-border rounded-xl flex"
+        className="w-full p-[1rem] h-[3rem] sm:h-[3.5rem] gap-[0.75rem] bg-bg-secondary border border-card-border rounded-xl flex"
       >
         <Image
           src="/icons/icon-search-gray.svg"
