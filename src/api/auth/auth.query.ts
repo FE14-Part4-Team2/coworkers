@@ -38,4 +38,14 @@ export const useSignOut = () => {
   });
 };
 
-// 카카오 로그인 추후 추가
+// 카카오 로그인 뮤테이션
+export const useKakaoOauth = () => {
+  const setAuth = useAuthStore((state) => state.setAuth);
+
+  return useMutation({
+    mutationFn: authService.kakaoSignIn,
+    onSuccess: (data) => {
+      setAuth(data.user);
+    },
+  });
+};

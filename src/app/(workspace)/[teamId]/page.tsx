@@ -1,17 +1,21 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { useEffect } from "react";
-import { mockTeamData } from "../mock";
+import { useEffect, useState } from "react";
+import { mockTeamData, currentUser } from "../mock";
 import TeamBar from "@/components/feature/Dashboard/TeamBar/TeamBar";
 import ListBar from "@/components/feature/Dashboard/ListGroup/ListBar";
 import ReportChart from "@/components/feature/Dashboard/ReportGroup/ReportChart";
 import ReportBox from "@/components/feature/Dashboard/ReportGroup/ReportBox";
 import { isSameDay, parseISO } from "date-fns";
+import MemberBox from "@/components/feature/Dashboard/MemberGroup/MemberBox";
+import { useModalStore } from "@/stores/modalStore";
+import ProfileModal from "@/components/common/Modal/ProfileModal";
 
 export default function DashboardPage() {
   const router = useRouter();
   const { teamId } = useParams();
+  const { openModal } = useModalStore();
 
   const pointColors = [
     "bg-point-purple",
@@ -49,6 +53,12 @@ export default function DashboardPage() {
     (task) => task.doneAt !== null,
   ).length;
   const todayTotalCount = todayTasks.length;
+
+  const [selectedProfile, setSelectedProfile] = useState<{
+    name: string;
+    email: string;
+    profileImageUrl: string;
+  } | null>(null);
 
   return (
     <div className="w-full flex-col flex gap-12">
@@ -89,6 +99,49 @@ export default function DashboardPage() {
           />
         </div>
       </div>
+      <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+        {/* TODO: API 연결 */}
+        {mockTeamData.members.map((member) => {
+          const isSelf = member.userEmail === currentUser.userEmail;
+          const isCurrentAdmin =
+            mockTeamData.members.find(
+              (m) => m.userEmail === currentUser.userEmail,
+            )?.role === "ADMIN";
+
+          const isAbleButton = isCurrentAdmin ? !isSelf : isSelf;
+
+          return (
+            <MemberBox
+              key={member.userId + member.userEmail}
+              profile={member.userImage}
+              name={member.userName}
+              email={member.userEmail}
+              isAdmin={member.role === "ADMIN"}
+              isSelf={isSelf}
+              isAbleButton={isAbleButton}
+              onClickProfile={() => {
+                setSelectedProfile({
+                  name: member.userName,
+                  email: member.userEmail,
+                  profileImageUrl: member.userImage,
+                });
+                openModal("profile");
+              }}
+            />
+          );
+        })}
+      </div>
+      {selectedProfile && (
+        <ProfileModal
+          name={selectedProfile.name}
+          email={selectedProfile.email}
+          profileImageUrl={selectedProfile.profileImageUrl}
+          onCopy={() => {
+            navigator.clipboard.writeText(selectedProfile.email);
+            alert("이메일이 복사되었습니다!"); // TODO: 모달 연결
+          }}
+        />
+      )}
     </div>
   );
 }
