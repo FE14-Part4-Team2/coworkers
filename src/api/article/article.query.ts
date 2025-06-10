@@ -1,13 +1,17 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { articleService } from "./article.service";
-import { CreateArticleRequest, CreateArticleResponse } from "./article.schema";
+import {
+  CreateArticleRequest,
+  CreateArticleResponse,
+  GetArticleDetailResponse,
+} from "./article.schema";
 
 const STALE_TIME_5_MIN = 1000 * 60 * 5;
 const GC_TIME_10_MIN = 1000 * 60 * 10;
 
+//게시글 작성
 export const useCreateArticle = () => {
-  //게시글 작성
   const queryClient = useQueryClient();
 
   return useMutation<CreateArticleResponse, Error, CreateArticleRequest>({
@@ -19,9 +23,34 @@ export const useCreateArticle = () => {
   });
 };
 
-// 추후 isLoading, error등 추가 예정
+// 게시글 좋아요 기능
+export const useAddLikeArticle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<GetArticleDetailResponse, Error, string>({
+    mutationFn: (articleId) => articleService.addLikeArticle(articleId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["article"] });
+    },
+  });
+};
+
+// 게시글 좋아요 취소
+export const useDeleteLikeArticle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<GetArticleDetailResponse, Error, string>({
+    mutationFn: (articleId) => articleService.deleteLikeArticle(articleId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["article"] });
+    },
+  });
+};
+
+//베스트 게시글 목록 불러오기
 export const useBestArticles = () => {
-  //베스트 게시글 목록 불러오기
   return useArticleList({
     orderBy: "like",
     pageSize: 3,
@@ -29,8 +58,8 @@ export const useBestArticles = () => {
   });
 };
 
+//전체 게시글 목록 불러오기
 export const useArticleList = (params?: {
-  //전체 게시글 목록 불러오기
   page?: number;
   pageSize?: number;
   orderBy?: string;
@@ -47,4 +76,13 @@ export const useArticleList = (params?: {
     ...query,
     data: query.data?.list ?? [],
   };
+};
+
+// 게시글 상세 내용 불러오기
+export const useArticleDetail = (articleId: string) => {
+  return useQuery({
+    queryKey: ["article", articleId],
+    queryFn: () => articleService.getArticleDetail(articleId),
+    enabled: !!articleId,
+  });
 };

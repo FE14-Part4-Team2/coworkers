@@ -40,10 +40,15 @@ class ArticleService {
     return api.delete(this.getBasePath(articleId));
   }
   addLikeArticle(articleId: string) {
-    return api.post<LikeArticleResponse>(this.getBasePath(articleId), null);
+    return api.post<LikeArticleResponse>(
+      `${this.getBasePath(articleId)}/like`,
+      null,
+    );
   }
   deleteLikeArticle(articleId: string) {
-    return api.delete(this.getBasePath(articleId));
+    return api.delete<LikeArticleResponse>(
+      `${this.getBasePath(articleId)}/like`,
+    );
   }
 }
 

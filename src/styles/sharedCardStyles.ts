@@ -11,7 +11,7 @@ export const sharedCardStyles = {
     "flex gap-1 items-center bg-text-primary px-2 py-1 sm:px-3 sm:py-1.5 rounded-full",
   likesText: "text-sm text-text-disabled font-medium",
   cardBase:
-    "border border-card-border bg-bg-secondary rounded-xl shadow-lg overflow-hidden",
+    "border border-card-border bg-bg-secondary rounded-xl shadow-lg overflow-hidden cursor-pointer",
   dateContainer: "flex items-center gap-2",
   authorSection: "flex items-center gap-3",
 };
