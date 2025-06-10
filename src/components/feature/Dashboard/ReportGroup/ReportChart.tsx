@@ -67,7 +67,7 @@ function ReportCircle({ done, total }: Props) {
 }
 
 export default function ReportChart({ done, total }: Props) {
-  const percentage = (done / total) * 100;
+  const percentage = total === 0 ? 100 : (done / total) * 100;
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-12">
