@@ -11,7 +11,7 @@ const STALE_TIME_5_MIN = 1000 * 60 * 5;
 const GC_TIME_10_MIN = 1000 * 60 * 10;
 type LikeAction = "add" | "delete";
 
-//게시글 작성
+// 게시글 작성
 export const useCreateArticle = () => {
   const queryClient = useQueryClient();
 

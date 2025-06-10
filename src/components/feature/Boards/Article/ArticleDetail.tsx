@@ -16,7 +16,7 @@ export default function ArticleDetail({ data }: { data: ArticleDetailType }) {
           height={12}
         />
       </div>
-      <hr className="w-full border-t border-border-primary" />
+      <hr className="w-full border-t border-border-primary opacity-10" />
       <div className="flex justify-between items-center mt-5">
         <div className="flex items-center gap-4 sm:gap-8 md:gap-20">
           <span className="text-text-primary text-sm sm:text-md">
