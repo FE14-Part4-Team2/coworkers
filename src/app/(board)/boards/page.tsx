@@ -5,17 +5,21 @@ import BoardList from "@/components/feature/Boards/List/BoardList";
 import { useArticleList, useBestArticles } from "@/api/article/article.query";
 import { useState } from "react";
 
+const ORDER_TYPE = {
+  RECENT: "recent",
+  LIKE: "like",
+} as const;
+
+type OrderType = (typeof ORDER_TYPE)[keyof typeof ORDER_TYPE];
+
 export default function BoardsPage() {
-  const [orderBy, setOrderBy] = useState<"recent" | "like">("recent");
+  const [orderBy, setOrderBy] = useState<OrderType>(ORDER_TYPE.RECENT);
   const { data: bestList } = useBestArticles();
   const { data: articleList } = useArticleList({
     page: 1,
     pageSize: 6,
     orderBy,
   });
-
-  console.log("orderBy", orderBy);
-  console.log("Article List", articleList);
 
   return (
     <>
