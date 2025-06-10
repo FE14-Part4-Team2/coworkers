@@ -5,6 +5,7 @@ interface TeamFormLayoutProps {
   title: string;
   buttonLabel: string;
   tip?: string;
+  placeholder?: string;
   children: React.ReactNode;
   onSubmit: () => void;
 }
@@ -14,6 +15,7 @@ export default function TeamFormLayout({
   buttonLabel,
   tip,
   children,
+  placeholder,
   onSubmit,
 }: TeamFormLayoutProps) {
   return (
@@ -23,7 +25,7 @@ export default function TeamFormLayout({
       </h1>
       <form onSubmit={onSubmit} className="w-full">
         {children}
-        <Input placeholder="팀 이름을 입력해주세요." value={""} />
+        <Input placeholder={placeholder} value={""} />
         <Button
           label={buttonLabel}
           variant="primary"

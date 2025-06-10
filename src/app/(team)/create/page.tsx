@@ -11,8 +11,9 @@ export default function TeamCreatePage() {
       <TeamFormLayout
         title="팀 생성하기"
         buttonLabel="생성하기"
-        onSubmit={handleCreate}
+        placeholder="팀 이름을 입력해주세요."
         tip="팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요."
+        onSubmit={handleCreate}
       >
         <span className="inline-block font-medium text-lg pb-[0.75rem]">
           {TEAM_FORM_LABELS.PROFILE}
