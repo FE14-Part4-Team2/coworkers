@@ -24,8 +24,8 @@ class AuthService {
     return api.post<RefreshTokenResponse>(`${PATH}/refresh-token`, body);
   }
   kakaoSignIn(body: OAuthSignInRequest) {
-    return api.post<OAuthSignInResponse>(`${PATH}/signIn/KAKAO`, body);
-  } // 임시
+    return authApi.post<OAuthSignInResponse>(`/kakao`, body);
+  }
   signOut() {
     return authApi.post("/sign-out", undefined);
   }

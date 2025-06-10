@@ -28,7 +28,7 @@ export type RefreshTokenResponse = { accessToken: string };
 
 export type OAuthSignInRequest = {
   state: string;
-  redirectUrl: string;
+  redirectUri: string;
   token: string;
 };
 
