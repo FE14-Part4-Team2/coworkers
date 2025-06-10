@@ -11,8 +11,6 @@ export default function UserSettingPage() {
 
   if (!user) return <div>로그인 정보가 없습니다.</div>;
 
-  console.log(user);
-
   return (
     <div className="w-full">
       <h3 className="mb-6 text-2lg font-bold sm:text-xl">계정 설정</h3>
@@ -25,7 +23,7 @@ export default function UserSettingPage() {
         disabled
       />
       <PasswordChanger />
-      <Secession />
+      {!user.email.toLowerCase().includes("kakao") && <Secession />}
     </div>
   );
 }

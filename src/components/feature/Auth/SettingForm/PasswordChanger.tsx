@@ -1,5 +1,6 @@
 "use client";
 
+import { useUpdatePassword } from "@/api/user/user.query";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input/Input";
 import PasswordChangeModal from "@/components/common/Modal/PasswordChangeModal";
@@ -15,6 +16,7 @@ interface FormValues {
 
 function PasswordChanger() {
   const { openModal, closeModal } = useModalStore();
+  const updatePasswordMutation = useUpdatePassword();
   const { showToast } = useToastStore();
 
   const {
@@ -33,7 +35,21 @@ function PasswordChanger() {
       return;
     }
 
-    console.log("비밀번호 변경 API");
+    updatePasswordMutation.mutate(
+      {
+        passwordConfirmation: data.confirmPassword,
+        password: data.newPassword,
+      },
+      {
+        onSuccess: () => {
+          showToast("비밀번호가 변경되었습니다.", "success");
+        },
+        onError: () => {
+          showToast("비밀번호 변경을 실패했습니다.", "error");
+        },
+      },
+    );
+
     closeModal();
     reset();
   };
