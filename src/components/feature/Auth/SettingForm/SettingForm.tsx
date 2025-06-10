@@ -6,6 +6,8 @@ import Input from "@/components/common/Input/Input";
 import Button from "@/components/common/Button";
 import { useForm } from "react-hook-form";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
+import { useUpdateMyInfoMutation } from "@/api/user/user.query";
+import { useToastStore } from "@/stores/toastStore";
 
 interface SettingForm {
   name: string;
@@ -17,9 +19,21 @@ function SettingForm({ userName }: { userName: string }) {
     handleSubmit,
     formState: { errors },
   } = useForm<SettingForm>({ mode: "onBlur" });
+  const updateMyInfoMutation = useUpdateMyInfoMutation();
+  const { showToast } = useToastStore();
 
   const onSubmit = (data: SettingForm) => {
-    console.log("프로필 업데이트 API:", data);
+    updateMyInfoMutation.mutate(
+      { nickname: data.name },
+      {
+        onSuccess: () => {
+          showToast("이름을 변경했습니다.", "success");
+        },
+        onError: () => {
+          showToast("이름 변경을 실패했습니다.", "error");
+        },
+      },
+    );
   };
 
   return (

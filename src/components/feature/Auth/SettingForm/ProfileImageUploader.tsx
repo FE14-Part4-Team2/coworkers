@@ -11,9 +11,8 @@ import React, { useCallback, useRef, useState } from "react";
 function ProfileImageUploader() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { user, setAuth } = useAuthStore();
-  const [imgSrc, setImgSrc] = useState(
-    user?.image || "/icons/icon-profile-default.svg",
-  );
+  const initialImgSrc = user?.image || "/icons/icon-profile-default.svg";
+  const [imgSrc, setImgSrc] = useState(initialImgSrc);
   const imageUpload = useUploadImage();
   const updateMyInfoMutation = useUpdateMyInfoMutation();
   const { showToast } = useToastStore();
@@ -43,9 +42,6 @@ function ProfileImageUploader() {
       imageUpload.mutate(file, {
         onSuccess: (uploadedUrl) => {
           setImgSrc(uploadedUrl);
-          if (user) {
-            setAuth({ ...user, image: uploadedUrl });
-          }
           updateMyInfoMutation.mutate(
             { image: uploadedUrl },
             {
@@ -54,8 +50,9 @@ function ProfileImageUploader() {
               },
               onError: (error) => {
                 console.log(error);
-                setImgSrc(user?.image || "/icons/icon-profile-default.svg");
                 showToast("정보 수정을 실패했습니다.", "error");
+
+                setImgSrc(initialImgSrc);
                 if (user) {
                   setAuth({ ...user, image: user.image });
                 }
@@ -65,8 +62,11 @@ function ProfileImageUploader() {
         },
         onError: (error) => {
           console.log(error);
-          setImgSrc(user?.image || "/icons/icon-profile-default.svg");
+          setImgSrc(initialImgSrc);
           showToast("이미지 변경을 실패했습니다.", "error");
+          if (user) {
+            setAuth({ ...user, image: user.image });
+          }
         },
       });
     },
@@ -76,8 +76,9 @@ function ProfileImageUploader() {
       imgSrc,
       updateImagePreview,
       showToast,
-      setAuth,
       updateMyInfoMutation,
+      setAuth,
+      initialImgSrc,
     ],
   );
 
