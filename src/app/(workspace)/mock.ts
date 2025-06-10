@@ -32,17 +32,106 @@ type TaskList = {
   tasks: Task[];
 };
 
+type Member = {
+  role: string;
+  userImage: string;
+  userEmail: string;
+  userName: string;
+  groupId: number;
+  userId: number;
+};
+
 type Team = {
   teamId: string;
   id: number;
   name: string;
+  members: Member[];
   taskLists: TaskList[];
+};
+
+export const currentUser = {
+  userId: 0,
+  userEmail: "test123@email.com",
 };
 
 export const mockTeamData: Team = {
   teamId: "14-2",
   id: 1234,
   name: "프론트엔드 개발팀",
+  members: [
+    {
+      role: "ADMIN",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "testLL@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test1@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test22@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "testDE@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test123@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test5552@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test233@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+    {
+      role: "MEMBER",
+      userImage: "/icons/icon-profile-default.svg",
+      userEmail: "test1235@email.com",
+      userName: "오수빈",
+      groupId: 0,
+      userId: 0,
+    },
+  ],
   taskLists: [
     {
       displayIndex: 1,
