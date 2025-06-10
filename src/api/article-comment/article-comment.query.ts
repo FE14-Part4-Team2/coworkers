@@ -3,6 +3,11 @@ import { CreateArticleCommentRequest } from "./article-comment.schema";
 import { CreateArticleCommentResponse } from "./article-comment.schema";
 import { articleCommentService } from "./article-comment.service";
 
+type GetArticleCommentParams = {
+  limit: number;
+  cursor?: number;
+};
+
 // 게시글 댓글 작성
 export const useCreateArticleComment = () => {
   const queryClient = useQueryClient();
@@ -15,8 +20,11 @@ export const useCreateArticleComment = () => {
     mutationFn: ({ articleId, body }) =>
       articleCommentService.createArticleComment(articleId, body),
 
-    onSuccess: () => {
+    onSuccess: (_, { articleId }) => {
       queryClient.invalidateQueries({ queryKey: ["article"] });
+      queryClient.invalidateQueries({
+        queryKey: ["articleComment", articleId],
+      });
     },
   });
 };
@@ -24,10 +32,7 @@ export const useCreateArticleComment = () => {
 // 게시글 댓글 불러오기
 export const useGetArticleComment = (
   articleId: string,
-  params: {
-    limit: number;
-    cursor?: number;
-  },
+  params: GetArticleCommentParams,
 ) => {
   return useQuery({
     queryKey: ["articleComment", articleId, params],

@@ -10,18 +10,12 @@ import { useGetArticleComment } from "@/api/article-comment/article-comment.quer
 
 export default function ArticlePage() {
   const { articleId } = useParams();
-  const {
-    data: article,
-    isLoading: isArticleLoading,
-    error: articleError,
-  } = useArticleDetail(articleId as string);
-  const { mutate: createComment } = useCreateArticleComment();
   const [comment, setComment] = useState("");
-  const {
-    data: comments,
-    isLoading: isCommentsLoading,
-    error: commentsError,
-  } = useGetArticleComment(articleId as string, { limit: 10 });
+  const { data: article } = useArticleDetail(articleId as string);
+  const { mutate: createComment } = useCreateArticleComment();
+  const { data: comments } = useGetArticleComment(articleId as string, {
+    limit: 10,
+  });
 
   const handleSubmit = () => {
     createComment({
@@ -31,9 +25,10 @@ export default function ArticlePage() {
     setComment("");
   };
 
-  if (isArticleLoading || isCommentsLoading) return <div>로딩 중...</div>;
-  if (articleError || commentsError) return <div>에러가 발생했습니다.</div>;
-  if (!article) return <div>게시글을 찾을 수 없습니다.</div>;
+  const commentList = comments?.list || [];
+
+  //추후 error 처리 구현 예정 (skeleton UI 등등)
+  if (!article) return null;
 
   return (
     <article className="w-full">
@@ -43,7 +38,7 @@ export default function ArticlePage() {
         onChange={(e) => setComment(e.target.value)}
         onSubmit={handleSubmit}
       />
-      <CommentList articleId={article.id} comments={comments?.list || []} />
+      <CommentList articleId={article.id} comments={commentList} />
     </article>
   );
 }
