@@ -18,7 +18,7 @@ export default function TeamFormLayout({
 }: TeamFormLayoutProps) {
   return (
     <main className="mt-[4.5rem] sm:mt-0 w-full items-center justify-center">
-      <h1 className="pb-[1.5rem] text-2xl sm:pb-[5rem] md:text-4xl text-center font-medium text-primary">
+      <h1 className="pb-[1.5rem] text-2xl sm:pb-[5rem] md:text-4xl text-center font-medium text-text-primary">
         {title}
       </h1>
       <form onSubmit={onSubmit} className="w-full">
@@ -30,7 +30,7 @@ export default function TeamFormLayout({
           className="w-full mt-[2.5rem] mb-[1.5rem]"
         />
         {tip && (
-          <p className="text-md sm:text-lg text-center font-regular text-primary">
+          <p className="text-md sm:text-lg text-center font-regular text-text-primary">
             {tip}
           </p>
         )}
