@@ -19,7 +19,7 @@ export const useCreateArticle = () => {
     mutationFn: (body) => articleService.createArticle(body),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articleList"] });
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 };
@@ -35,6 +35,7 @@ export const useLikeArticle = (action: LikeAction) => {
         : articleService.deleteLikeArticle(articleId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["article"] });
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 };

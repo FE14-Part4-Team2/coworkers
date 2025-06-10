@@ -3,13 +3,19 @@ import Image from "next/image";
 import { sharedCardStyles, longCardStyles } from "@/styles/sharedCardStyles";
 import { CardProps } from "./ShortCard";
 import { DEFAULT_PROFILE_IMG } from "./ShortCard";
+import { useRouter } from "next/navigation";
 
 export default function LongCard({
   article,
   profileImg = DEFAULT_PROFILE_IMG,
 }: CardProps) {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/boards/${article.id}`);
+  };
   return (
-    <div className={longCardStyles.container}>
+    <div className={longCardStyles.container} onClick={handleCardClick}>
       {article.image ? (
         <>
           <div className={longCardStyles.content}>

@@ -45,7 +45,7 @@ export default function ArticleDetail({ data }: { data: ArticleDetailType }) {
         {data.content}
       </section>
 
-      <div className="flex items-center gap-4 py-6 border-b mb-6">
+      <div className="flex items-center gap-4 border-b pb-6 mb-12">
         <div className="flex items-center gap-3">
           <Image
             src="/icons/icon-comment.svg"
