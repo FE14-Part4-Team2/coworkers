@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { FrequencyType } from "@/api/task/task.schema";
 
 interface TaskItemProps {
   task: {
@@ -10,17 +11,20 @@ interface TaskItemProps {
     doneAt: string | null;
     commentCount?: number;
     date?: string;
+    frequency: FrequencyType;
   };
   onToggle: () => void;
-  onDetail: () => void;
 }
 
-export default function TaskItem({ task, onToggle, onDetail }: TaskItemProps) {
+export default function TaskItem({ task, onToggle }: TaskItemProps) {
+  const frequencyTextMap: Record<FrequencyType, string> = {
+    ONCE: "한 번",
+    DAILY: "매일 반복",
+    WEEKLY: "주 반복",
+    MONTHLY: "월 반복",
+  };
   return (
-    <li
-      className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2  cursor-pointer"
-      onClick={onDetail}
-    >
+    <li className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2  cursor-pointer">
       <div className="flex items-center">
         <div className="flex items-center gap-2">
           <button
@@ -80,7 +84,7 @@ export default function TaskItem({ task, onToggle, onDetail }: TaskItemProps) {
           width={16}
           height={16}
         />
-        <span>매일 반복</span>
+        <span>{frequencyTextMap[task.frequency]}</span>
       </div>
     </li>
   );
