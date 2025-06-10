@@ -3,6 +3,7 @@ import LongCard from "../Card/LongCard";
 import { ArticleType } from "@/api/article/article.schema";
 import WriteButton from "./WriteButton";
 import { useRouter } from "next/navigation";
+import { OrderType } from "@/constants/orderType";
 
 export default function BoardList({
   data,
@@ -10,8 +11,8 @@ export default function BoardList({
   setOrderBy,
 }: {
   data: ArticleType[];
-  orderBy: "recent" | "like";
-  setOrderBy: (order: "recent" | "like") => void;
+  orderBy: OrderType;
+  setOrderBy: (order: OrderType) => void;
 }) {
   const router = useRouter();
 

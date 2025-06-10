@@ -2,32 +2,28 @@
 
 import GenericDropdown from "../../../common/Dropdown/GenericDropdown";
 import { useState } from "react";
-
-const options = [
-  { label: "최신순", value: "recent" },
-  { label: "좋아요순", value: "like" },
-];
+import { ORDER_OPTIONS, OrderType } from "@/constants/orderType";
 
 export default function FilterDropdown({
   orderBy,
   setOrderBy,
   className,
 }: {
-  orderBy: "recent" | "like";
-  setOrderBy: (order: "recent" | "like") => void;
+  orderBy: OrderType;
+  setOrderBy: (order: OrderType) => void;
   className?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <GenericDropdown
-      options={options}
+      options={ORDER_OPTIONS}
       selected={orderBy}
       isOpen={isOpen}
       handleToggle={() => setIsOpen((v) => !v)}
       handleClose={() => setIsOpen(false)}
       handleSelect={(value: string) => {
-        setOrderBy(value as "recent" | "like");
+        setOrderBy(value as OrderType);
         setIsOpen(false);
       }}
       className={className}

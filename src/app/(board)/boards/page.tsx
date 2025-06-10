@@ -4,13 +4,7 @@ import BoardBestList from "@/components/feature/Boards/List/BoardBestList";
 import BoardList from "@/components/feature/Boards/List/BoardList";
 import { useArticleList, useBestArticles } from "@/api/article/article.query";
 import { useState } from "react";
-
-const ORDER_TYPE = {
-  RECENT: "recent",
-  LIKE: "like",
-} as const;
-
-type OrderType = (typeof ORDER_TYPE)[keyof typeof ORDER_TYPE];
+import { ORDER_TYPE, OrderType } from "@/constants/orderType";
 
 export default function BoardsPage() {
   const [orderBy, setOrderBy] = useState<OrderType>(ORDER_TYPE.RECENT);
