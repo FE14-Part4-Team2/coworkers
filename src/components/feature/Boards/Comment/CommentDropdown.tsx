@@ -8,8 +8,8 @@ import Image from "next/image";
 interface CommentDropdownProps {
   isEditing: boolean;
   onEdit: () => void;
-  onSave: () => void;
-  onCancel: () => void;
+  onSave?: () => void;
+  onCancel?: () => void;
   onDelete: () => void;
 }
 

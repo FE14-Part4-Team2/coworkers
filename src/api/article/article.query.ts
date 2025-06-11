@@ -93,7 +93,7 @@ export const useEditArticle = (articleId: string) => {
 };
 
 // 게시글 삭제하기
-export const useArticleDelete = () => {
+export const useDeleteArticle = () => {
   const queryClient = useQueryClient();
 
   return useMutation<unknown, Error, string>({

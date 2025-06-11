@@ -3,26 +3,36 @@ import { ArticleDetailType } from "@/api/article/article.schema";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import CommentDropdown from "../Comment/CommentDropdown";
-import { useState } from "react";
 
-export default function ArticleDetail({ data }: { data: ArticleDetailType }) {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+interface ArticleDetailProps {
+  data: ArticleDetailType;
+  onDelete: () => void;
+  onEdit: () => void;
+}
 
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
+export default function ArticleDetail({
+  data,
+  onDelete,
+  onEdit,
+}: ArticleDetailProps) {
+  const handleEdit = () => {
+    if (onEdit) onEdit();
   };
 
-  const closeDropdown = () => {
-    setDropdownOpen(false);
+  const handleDelete = () => {
+    if (onDelete) onDelete();
   };
-
   return (
     <>
       <div className="flex justify-between items-center my-5">
         <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data.title}
         </h1>
-        <CommentDropdown />
+        <CommentDropdown
+          isEditing={false}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <div className="flex justify-between items-center mt-5">

@@ -2,7 +2,10 @@
 import ArticleDetail from "@/components/feature/Boards/Article/ArticleDetail";
 import CommentList from "@/components/feature/Boards/Comment/CommentList";
 import CommentForm from "@/components/feature/Boards/Comment/CommentForm";
-import { useArticleDetail } from "@/api/article/article.query";
+import {
+  useArticleDetail,
+  useDeleteArticle,
+} from "@/api/article/article.query";
 import { useParams } from "next/navigation";
 import {
   useCreateArticleComment,
@@ -11,6 +14,7 @@ import {
 } from "@/api/article-comment/article-comment.query";
 import { useState } from "react";
 import { useGetArticleComment } from "@/api/article-comment/article-comment.query";
+import { useRouter } from "next/navigation";
 
 export default function ArticlePage() {
   const { articleId } = useParams();
@@ -22,6 +26,8 @@ export default function ArticlePage() {
   });
   const { mutate: deleteComment } = useDeleteArticleComment();
   const { mutate: editComment } = useEditArticleComment();
+  const { mutate: deleteArticle } = useDeleteArticle();
+  const router = useRouter();
 
   const handleSubmit = () => {
     createComment({
@@ -31,7 +37,16 @@ export default function ArticlePage() {
     setComment("");
   };
 
-  const handleEdit = (commentId: number, content: string) => {
+  const handleEditArticle = () => {
+    console.log("수정 잘 동작하게 해주세요");
+    router.push(`/boards/new`);
+  };
+
+  const handleDeleteArticle = (articleId: number) => {
+    deleteArticle(articleId.toString());
+  };
+
+  const handleEditComment = (commentId: number, content: string) => {
     editComment({
       commentId: commentId.toString(),
       body: { content },
@@ -39,7 +54,7 @@ export default function ArticlePage() {
   };
 
   // LATER : 삭제 확인 모달 띄우기
-  const handleDelete = (commentId: number) => {
+  const handleDeleteComment = (commentId: number) => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       deleteComment(commentId.toString());
     }
@@ -52,7 +67,11 @@ export default function ArticlePage() {
 
   return (
     <article className="w-full">
-      <ArticleDetail data={article} />
+      <ArticleDetail
+        data={article}
+        onEdit={handleEditArticle}
+        onDelete={() => handleDeleteArticle(article.id)}
+      />
       <CommentForm
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -61,8 +80,8 @@ export default function ArticlePage() {
       <CommentList
         articleId={article.id}
         comments={commentList}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={handleEditComment}
+        onDelete={handleDeleteComment}
       />
     </article>
   );
