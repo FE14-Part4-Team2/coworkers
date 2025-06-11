@@ -1,20 +1,28 @@
+"use client";
 import { ArticleDetailType } from "@/api/article/article.schema";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
+import CommentDropdown from "../Comment/CommentDropdown";
+import { useState } from "react";
 
 export default function ArticleDetail({ data }: { data: ArticleDetailType }) {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
+
   return (
     <>
       <div className="flex justify-between items-center my-5">
         <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data.title}
         </h1>
-        <Image
-          src="/icons/icon-kebabs.svg"
-          alt="더보기"
-          width={3}
-          height={12}
-        />
+        <CommentDropdown />
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <div className="flex justify-between items-center mt-5">
