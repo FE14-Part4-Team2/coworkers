@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import {
   useCreateArticleComment,
   useDeleteArticleComment,
+  useEditArticleComment,
 } from "@/api/article-comment/article-comment.query";
 import { useState } from "react";
 import { useGetArticleComment } from "@/api/article-comment/article-comment.query";
@@ -20,6 +21,7 @@ export default function ArticlePage() {
     limit: 10,
   });
   const { mutate: deleteComment } = useDeleteArticleComment();
+  const { mutate: editComment } = useEditArticleComment();
 
   const handleSubmit = () => {
     createComment({
@@ -29,9 +31,12 @@ export default function ArticlePage() {
     setComment("");
   };
 
-  // const handleEdit = () => {
-
-  // }
+  const handleEdit = (commentId: number, content: string) => {
+    editComment({
+      commentId: commentId.toString(),
+      body: { content },
+    });
+  };
 
   const handleDelete = (commentId: number) => {
     deleteComment(commentId.toString());
@@ -53,6 +58,7 @@ export default function ArticlePage() {
       <CommentList
         articleId={article.id}
         comments={commentList}
+        onEdit={handleEdit}
         onDelete={handleDelete}
       />
     </article>

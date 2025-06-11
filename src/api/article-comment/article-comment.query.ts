@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateArticleCommentRequest } from "./article-comment.schema";
+import {
+  CreateArticleCommentRequest,
+  UpdateArticleCommentRequest,
+} from "./article-comment.schema";
 import { CreateArticleCommentResponse } from "./article-comment.schema";
 import { articleCommentService } from "./article-comment.service";
+import { UpdateArticleCommentResponse } from "./article-comment.schema";
 
 type GetArticleCommentParams = {
   limit: number;
@@ -38,6 +42,24 @@ export const useGetArticleComment = (
     queryKey: ["articleComment", articleId, params],
     queryFn: () => articleCommentService.getArticleComment(articleId, params),
     enabled: !!articleId,
+  });
+};
+
+// 댓글 수정하기
+export const useEditArticleComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    UpdateArticleCommentResponse,
+    Error,
+    { commentId: string; body: UpdateArticleCommentRequest }
+  >({
+    mutationFn: ({ commentId, body }) =>
+      articleCommentService.updateArticleComment(commentId, body),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articleComment"] });
+    },
   });
 };
 

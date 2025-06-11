@@ -12,6 +12,15 @@ export default function CommentForm({
   onChange,
   onSubmit,
 }: CommentFormProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+
+      if (value.trim()) {
+        onSubmit();
+      }
+    }
+  };
   return (
     <>
       <h2 className="text-lg sm:text-xl text-text-primary font-medium mb-4 sm:mb-6">
@@ -24,6 +33,7 @@ export default function CommentForm({
         className="text-md sm:text-lg"
         value={value}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
       />
       <div className="flex justify-end mb-8 sm:mb-10">
         <Button
@@ -32,6 +42,7 @@ export default function CommentForm({
           type="submit"
           className="px-[0] w-[4.5rem] h-[2rem] sm:w-[11.5rem] sm:h-[3rem] mt-4"
           onClick={onSubmit}
+          disabled={!value.trim()}
         />
       </div>
 
