@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { sharedCardStyles, shortCardStyles } from "@/styles/sharedCardStyles";
 import { ArticleType } from "@/api/article/article.schema";
+import { useRouter } from "next/navigation";
 
 export const DEFAULT_PROFILE_IMG = "/icons/icon-profile-default.svg";
 
@@ -14,8 +15,14 @@ export default function ShortCard({
   article,
   profileImg = DEFAULT_PROFILE_IMG,
 }: CardProps) {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/boards/${article.id}`);
+  };
+
   return (
-    <div className={shortCardStyles.container}>
+    <div className={shortCardStyles.container} onClick={handleCardClick}>
       {article.image ? (
         <>
           <div className={shortCardStyles.thumbnail}>
