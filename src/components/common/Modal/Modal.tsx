@@ -50,8 +50,8 @@ export default function Modal({
   const modalRadiusClass = clsx(
     "w-full sm:max-w-md sm:w-[384px] p-8 bg-bg-secondary relative",
     {
-      "rounded-t-[12px] sm:rounded-[24px]": modalType === "profile",
-      "rounded-t-[12px] sm:rounded-[12px]": modalType !== "profile",
+      "rounded-t-[0.75rem] sm:rounded-[1.5rem]": modalType === "profile",
+      "rounded-t-[0.75rem] sm:rounded-[0.75rem]": modalType !== "profile",
     },
   );
 
