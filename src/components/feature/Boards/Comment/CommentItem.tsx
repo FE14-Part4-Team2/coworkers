@@ -47,18 +47,14 @@ export default function CommentItem({
                 variant="secondary"
                 onClick={handleCancel}
                 className="border-none"
-              >
-                취소
-              </Button>
+              ></Button>
               <Button
                 label="저장"
                 size="sm"
                 variant="primary"
                 onClick={handleSave}
                 className="border-none"
-              >
-                저장
-              </Button>
+              ></Button>
             </div>
           </div>
         ) : (

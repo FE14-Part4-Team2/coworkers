@@ -38,13 +38,16 @@ export default function ArticlePage() {
     });
   };
 
+  // LATER : 삭제 확인 모달 띄우기
   const handleDelete = (commentId: number) => {
-    deleteComment(commentId.toString());
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      deleteComment(commentId.toString());
+    }
   };
 
   const commentList = comments?.list || [];
 
-  //추후 error 처리 구현 예정 (skeleton UI 등등)
+  // LATER : 에러 처리 구현 (스켈레톤 UI 등등)
   if (!article) return null;
 
   return (

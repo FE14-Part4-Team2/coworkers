@@ -12,11 +12,12 @@ export default function CommentForm({
   onChange,
   onSubmit,
 }: CommentFormProps) {
+  // 엔터 키 댓글 등록 함수
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
 
-      if (value.trim()) {
+      if (!e.nativeEvent.isComposing && value.trim()) {
         onSubmit();
       }
     }

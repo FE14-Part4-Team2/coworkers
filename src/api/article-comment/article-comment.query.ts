@@ -7,9 +7,22 @@ import { CreateArticleCommentResponse } from "./article-comment.schema";
 import { articleCommentService } from "./article-comment.service";
 import { UpdateArticleCommentResponse } from "./article-comment.schema";
 
+// 댓글 불러오기 params
 type GetArticleCommentParams = {
   limit: number;
   cursor?: number;
+};
+
+// 댓글 작성하기 params
+type CreateArticleCommentParams = {
+  articleId: string;
+  body: CreateArticleCommentRequest;
+};
+
+// 댓글 수정하기 params
+type EditArticleCommentParams = {
+  commentId: string;
+  body: UpdateArticleCommentRequest;
 };
 
 // 게시글 댓글 작성
@@ -19,7 +32,7 @@ export const useCreateArticleComment = () => {
   return useMutation<
     CreateArticleCommentResponse,
     Error,
-    { articleId: string; body: CreateArticleCommentRequest }
+    CreateArticleCommentParams
   >({
     mutationFn: ({ articleId, body }) =>
       articleCommentService.createArticleComment(articleId, body),
@@ -52,7 +65,7 @@ export const useEditArticleComment = () => {
   return useMutation<
     UpdateArticleCommentResponse,
     Error,
-    { commentId: string; body: UpdateArticleCommentRequest }
+    EditArticleCommentParams
   >({
     mutationFn: ({ commentId, body }) =>
       articleCommentService.updateArticleComment(commentId, body),
