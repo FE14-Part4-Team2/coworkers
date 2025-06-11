@@ -20,6 +20,10 @@ abbr:where([title]) {
   @apply text-white;
 }
 
+.react-calendar__navigation button:enabled:focus {
+  @apply bg-transparent;
+}
+
 /* 선택된 날짜 */
 .react-calendar__tile--active {
   @apply bg-bg-primary text-white rounded;
@@ -27,5 +31,5 @@ abbr:where([title]) {
 
 /* 오늘 날짜 */
 .react-calendar__tile--now {
-  @apply bg-bg-primary border border-blue-500;
+  @apply bg-transparent text-brand-primary font-bold;
 }

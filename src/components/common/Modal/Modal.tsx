@@ -3,6 +3,7 @@
 import { useEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useModalStore } from "@/stores/modalStore";
+import clsx from "clsx";
 
 type ModalButtonType =
   | "single-green"
@@ -37,7 +38,7 @@ export default function Modal({
   confirmButtonType = "button",
   onSubmit,
 }: ModalProps) {
-  const { closeModal } = useModalStore();
+  const { closeModal, modalType } = useModalStore();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -45,6 +46,14 @@ export default function Modal({
   }, []);
 
   if (!isMounted) return null;
+
+  const modalRadiusClass = clsx(
+    "w-full sm:max-w-md sm:w-[384px] p-8 bg-bg-secondary relative",
+    {
+      "rounded-t-[0.75rem] sm:rounded-[1.5rem]": modalType === "profile",
+      "rounded-t-[0.75rem] sm:rounded-[0.75rem]": modalType !== "profile",
+    },
+  );
 
   const renderButtons = () => {
     switch (buttonType) {
@@ -109,10 +118,7 @@ export default function Modal({
       className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end justify-center sm:items-center sm:justify-center"
       onClick={closeModal}
     >
-      <div
-        className="bg-bg-secondary p-8 w-full sm:w-[384px] sm:max-w-md rounded-t-lg sm:rounded-lg relative"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={modalRadiusClass} onClick={(e) => e.stopPropagation()}>
         {confirmButtonType === "submit" ? (
           <form onSubmit={onSubmit}>
             {showCloseIcon && (
