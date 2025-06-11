@@ -33,7 +33,7 @@ function ReportCircle({ done, total }: Props) {
   const radius = (size - stroke) / 2;
   const center = size / 2;
   const circumference = 2 * Math.PI * radius;
-  const progress = (done / total) * circumference;
+  const progress = total === 0 ? 0 : (done / total) * circumference;
 
   return (
     <svg width={size} height={size} className="rotate-[-90deg] w-full h-full">
@@ -67,7 +67,7 @@ function ReportCircle({ done, total }: Props) {
 }
 
 export default function ReportChart({ done, total }: Props) {
-  const percentage = total === 0 ? 100 : (done / total) * 100;
+  const percentage = total === 0 ? 0 : (done / total) * 100;
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-12">
