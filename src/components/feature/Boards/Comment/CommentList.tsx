@@ -5,9 +5,13 @@ import CommentDropdown from "./CommentDropdown";
 interface ArticleCommentProps {
   comments: ArticleComment[];
   articleId: number;
+  onDelete: (commentId: number) => void;
 }
 
-export default function CommentList({ comments }: ArticleCommentProps) {
+export default function CommentList({
+  comments,
+  onDelete,
+}: ArticleCommentProps) {
   return (
     <>
       <section aria-label="댓글 목록" className="flex flex-col">
@@ -19,7 +23,7 @@ export default function CommentList({ comments }: ArticleCommentProps) {
                   <span className="text-md sm:text-lg text-text-primary">
                     {comment.content}
                   </span>
-                  <CommentDropdown />
+                  <CommentDropdown onDelete={() => onDelete(comment.id)} />
                 </div>
                 <div className="flex items-center gap-2 sm:gap-4">
                   <span className="flex items-center text-sm sm:text-md text-text-primary gap-1.5 sm:gap-3">

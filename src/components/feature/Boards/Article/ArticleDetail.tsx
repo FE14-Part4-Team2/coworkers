@@ -41,7 +41,7 @@ export default function ArticleDetail({ data }: { data: ArticleDetailType }) {
         </div>
       )}
 
-      <section className="text-text-secondary text-md sm:text-lg py-12 sm:py-16 whitespace-pre-line">
+      <section className="text-text-secondary text-md sm:text-lg py-12 sm:py-16 whitespace-pre-line !leading-6">
         {data.content}
       </section>
 

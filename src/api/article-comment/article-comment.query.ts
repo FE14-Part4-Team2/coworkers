@@ -40,3 +40,17 @@ export const useGetArticleComment = (
     enabled: !!articleId,
   });
 };
+
+// 댓글 삭제하기
+export const useDeleteArticleComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, Error, string>({
+    mutationFn: (commentId) =>
+      articleCommentService.deleteArticleComment(commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articleComment"] });
+      queryClient.invalidateQueries({ queryKey: ["article"] });
+    },
+  });
+};
