@@ -68,6 +68,7 @@ export const useImageUploader = (
   return {
     fileInputRef,
     preview,
+    setPreview,
     isDragging,
     handleBoxClick,
     handleFileChange,

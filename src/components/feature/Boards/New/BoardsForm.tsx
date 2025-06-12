@@ -5,6 +5,7 @@ import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export interface FormValues {
   title: string;
@@ -17,6 +18,9 @@ export interface BoardsFormProps {
   imageUrl?: string;
   onImageUpload: (file: File | null) => void;
   isImageUploading: boolean;
+  mode: "create" | "edit";
+  defaultValues?: FormValues;
+  articleId?: string;
 }
 
 export default function BoardsForm({
@@ -24,25 +28,34 @@ export default function BoardsForm({
   onSubmit,
   onImageUpload,
   isImageUploading,
+  mode,
+  defaultValues,
+  imageUrl,
 }: BoardsFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: {
-      title: "",
-      content: "",
-    },
+    defaultValues: defaultValues ?? { title: "", content: "" },
     shouldFocusError: false,
   });
+
+  useEffect(() => {
+    if (defaultValues) reset(defaultValues);
+  }, [defaultValues, reset]);
+
+  const isEdit = mode == "edit";
 
   const errorStyle = "block mt-2 text-status-danger text-sm";
 
   const submitButton = (
     <Button
-      label={isSubmitting ? "등록중" : "등록"}
+      label={
+        isSubmitting ? (isEdit ? "수정중" : "등록중") : isEdit ? "수정" : "등록"
+      }
       variant="primary"
       type="submit"
       disabled={isSubmitting}
@@ -58,7 +71,9 @@ export default function BoardsForm({
   return (
     <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
-        <h1 className="text-text-primary text-2lg sm:text-xl">게시글 쓰기</h1>
+        <h1 className="text-text-primary text-2lg sm:text-xl">
+          {isEdit ? "게시글 수정" : "게시글 쓰기"}
+        </h1>
         <div className="hidden sm:block">{submitButton}</div>
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
@@ -98,7 +113,11 @@ export default function BoardsForm({
         )}
       </LabeledField>
       <section aria-label="이미지 등록">
-        <ImageUploader onChange={onImageUpload} disabled={isImageUploading} />
+        <ImageUploader
+          onChange={onImageUpload}
+          disabled={isImageUploading}
+          imageUrl={imageUrl}
+        />
         {isImageUploading && (
           <p className="mt-2 text-sm text-text-secondary">
             이미지 업로드 중...

@@ -39,7 +39,7 @@ export default function ArticlePage() {
 
   // 수정 클릭했을 때 수정 페이지로 이동
   const handleEditArticle = () => {
-    router.push(`/boards/new?id=${articleId}`);
+    router.push(`/boards/${articleId}/edit`);
   };
 
   // 삭제 완료됐을 때 /게시글 목록 페이지로 이동
