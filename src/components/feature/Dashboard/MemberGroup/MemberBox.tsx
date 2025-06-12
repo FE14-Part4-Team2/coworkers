@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   isSelf: boolean;
   isAbleButton: boolean;
   onClickProfile: () => void;
+  onClickDelete: () => void;
 };
 
 export default function MemberBox({
@@ -20,11 +21,8 @@ export default function MemberBox({
   isSelf,
   isAbleButton,
   onClickProfile,
+  onClickDelete,
 }: Props) {
-  const handleDelete = useCallback(() => {
-    alert("팀원 삭제하기"); // TODO: 모달, API 연결
-  }, []);
-
   const hoverAnimation = useMemo(() => ({ scale: 1.04 }), []);
   const transitionSpring = useMemo(
     () => ({ type: "spring", stiffness: 300, damping: 20 }),
@@ -94,7 +92,7 @@ export default function MemberBox({
             className="cursor-pointer text-red-500 ml-4"
             onClick={(e) => {
               e.stopPropagation();
-              handleDelete();
+              onClickDelete();
             }}
           />
         )}
