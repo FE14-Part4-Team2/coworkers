@@ -37,13 +37,18 @@ export default function ArticlePage() {
     setComment("");
   };
 
+  // 수정 클릭했을 때 수정 페이지로 이동
   const handleEditArticle = () => {
-    console.log("수정 잘 동작하게 해주세요");
-    router.push(`/boards/new`);
+    router.push(`/boards/new?id=${articleId}`);
   };
 
+  // 삭제 완료됐을 때 /게시글 목록 페이지로 이동
   const handleDeleteArticle = (articleId: number) => {
-    deleteArticle(articleId.toString());
+    deleteArticle(articleId.toString(), {
+      onSuccess: () => {
+        router.push("/boards");
+      },
+    });
   };
 
   const handleEditComment = (commentId: number, content: string) => {

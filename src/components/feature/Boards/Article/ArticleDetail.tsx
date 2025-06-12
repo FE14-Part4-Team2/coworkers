@@ -24,7 +24,7 @@ export default function ArticleDetail({
   };
   return (
     <>
-      <div className="flex justify-between items-center my-5">
+      <div className="flex justify-between items-center mb-5">
         <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data.title}
         </h1>
