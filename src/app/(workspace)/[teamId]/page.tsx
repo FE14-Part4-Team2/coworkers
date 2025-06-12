@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { mockTeamData, currentUser } from "../mock";
+import { useMemo, useState } from "react";
 import TeamBar from "@/components/feature/Dashboard/TeamBar/TeamBar";
 import ListBar from "@/components/feature/Dashboard/ListGroup/ListBar";
 import ReportChart from "@/components/feature/Dashboard/ReportGroup/ReportChart";
@@ -14,18 +13,26 @@ import ProfileModal from "@/components/common/Modal/ProfileModal";
 import Label from "@/components/feature/Dashboard/Label/Label";
 import TodoModal from "@/components/common/Modal/TodoModal";
 import InviteModal from "@/components/common/Modal/InviteModal";
+import { useGroupQuery } from "@/api/group/group.query";
+import { TaskDetailType } from "@/api/task/task.schema";
+import { useMyMemberships } from "@/api/user/user.query";
 
 export default function DashboardPage() {
   const router = useRouter();
   const { teamId } = useParams();
   const { openModal } = useModalStore();
 
-  const isCurrentAdmin =
-    mockTeamData.members.find((m) => m.userEmail === currentUser.userEmail)
-      ?.role === "ADMIN";
+  const [selectedProfile, setSelectedProfile] = useState<{
+    name: string;
+    email: string;
+    profileImageUrl: string;
+  } | null>(null);
 
-  const taskListCount = mockTeamData.taskLists.length;
-  const memberCount = mockTeamData.members.length;
+  const [todoTitle, setTodoTitle] = useState("");
+
+  const { data: groupData, isLoading } = useGroupQuery(teamId as string);
+  const { data: memberships, isLoading: isMembershipLoading } =
+    useMyMemberships();
 
   const pointColors = [
     "bg-point-purple",
@@ -37,44 +44,38 @@ export default function DashboardPage() {
     "bg-point-yellow",
   ];
 
-  useEffect(() => {
-    if (Number(teamId) !== mockTeamData.id) {
-      router.push("/");
-    }
-  }, [teamId, router]);
+  const today = useMemo(() => new Date(), []);
 
-  {
-    /* TODO: API 연결 */
-  }
-  const handleListClick = (listId: number) => {
-    router.push(`/${teamId}/task-lists/${listId}`);
-  };
-
-  const today = new Date();
-
-  {
-    /* TODO: API 연결 */
-  }
-  const todayTasks = mockTeamData.taskLists
-    .flatMap((list) => list.tasks)
-    .filter((task) => isSameDay(parseISO(task.date), today));
+  const todayTasks = useMemo(() => {
+    if (!groupData) return [];
+    return groupData.taskLists
+      .flatMap((list) => list.tasks)
+      .filter((task: TaskDetailType) => isSameDay(parseISO(task.date), today));
+  }, [groupData, today]);
 
   const todayDoneCount = todayTasks.filter(
     (task) => task.doneAt !== null,
   ).length;
   const todayTotalCount = todayTasks.length;
 
-  const [selectedProfile, setSelectedProfile] = useState<{
-    name: string;
-    email: string;
-    profileImageUrl: string;
-  } | null>(null);
+  if (isLoading || isMembershipLoading || !groupData || !memberships) {
+    return (
+      <div className="w-full pt-20 flex items-center justify-center text-text-default">
+        로딩 중 ...
+      </div>
+    );
+  }
 
-  const [todoTitle, setTodoTitle] = useState("");
+  const myMembership = memberships.find((m) => m.groupId === Number(teamId));
+  const currentUserEmail = myMembership?.userEmail;
+  const isCurrentAdmin = myMembership?.role === "ADMIN";
+
+  const taskListCount = groupData.taskLists.length;
+  const memberCount = groupData.members.length;
 
   return (
     <div className="w-full flex-col flex gap-12">
-      <TeamBar teamName={mockTeamData.name} />
+      <TeamBar teamName={groupData.name} showDropdown={isCurrentAdmin} />
       <div className="flex flex-col gap-4">
         <Label
           title="할 일 목록"
@@ -89,16 +90,18 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          // TODO: API 연결
-          mockTeamData.taskLists.map((list, index) => {
+          groupData.taskLists.map((list, index) => {
             const doneCount = list.tasks.filter(
-              (task) => task.doneAt !== null,
+              (task: TaskDetailType) => task.doneAt !== null,
             ).length;
             const totalCount = list.tasks.length;
             const colorClass = pointColors[index % pointColors.length];
 
             return (
-              <div key={list.id} onClick={() => handleListClick(list.id)}>
+              <div
+                key={list.id}
+                onClick={() => router.push(`/${teamId}/task-lists/${list.id}`)}
+              >
                 <ListBar
                   listName={list.name}
                   done={doneCount}
@@ -138,15 +141,14 @@ export default function DashboardPage() {
           onClickModalButton={() => openModal("invite")}
         />
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
-          {/* TODO: API 연결 */}
-          {mockTeamData.members.map((member) => {
-            const isSelf = member.userEmail === currentUser.userEmail;
+          {groupData.members.map((member) => {
+            const isSelf = member.userEmail === currentUserEmail;
             const isAbleButton = isCurrentAdmin ? !isSelf : isSelf;
 
             return (
               <MemberBox
                 key={member.userId + member.userEmail}
-                profile={member.userImage}
+                profile={member.userImage || "/icons/icon-profile-default.svg"}
                 name={member.userName}
                 email={member.userEmail}
                 isAdmin={member.role === "ADMIN"}
@@ -156,7 +158,7 @@ export default function DashboardPage() {
                   setSelectedProfile({
                     name: member.userName,
                     email: member.userEmail,
-                    profileImageUrl: member.userImage,
+                    profileImageUrl: member.userImage || "",
                   });
                   openModal("profile");
                 }}
