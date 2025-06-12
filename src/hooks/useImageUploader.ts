@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import {
   processImageFile,
   removeImage,
@@ -9,9 +9,15 @@ import {
 export const useImageUploader = (
   onChange?: (file: File | null) => void,
   disabled = false,
+  initialImageUrl?: string,
 ) => {
+  useEffect(() => {
+    if (initialImageUrl) setPreview(initialImageUrl);
+  }, [initialImageUrl]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(
+    initialImageUrl ?? null,
+  );
   const [isDragging, setIsDragging] = useState(false);
 
   const updateImage = useCallback(

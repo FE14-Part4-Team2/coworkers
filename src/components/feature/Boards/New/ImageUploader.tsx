@@ -28,7 +28,7 @@ export default function ImageUploader({
     handleFileChange,
     handleRemoveClick,
     dragHandlers,
-  } = useImageUploader(onChange, disabled);
+  } = useImageUploader(onChange, disabled, imageUrl);
 
   useEffect(() => {
     if (imageUrl && !preview) {
