@@ -1,6 +1,6 @@
 "use client";
-import TeamFormLayout from "@/components/team/TeamFormLayout";
-import ProfileUploader from "@/components/team/ProfileUploader";
+import TeamFormLayout from "@/components/feature/Team/TeamFormLayout";
+import ProfileUploader from "@/components/feature/Team/ProfileUploader";
 import { TEAM_FORM_LABELS } from "@/constants/team";
 
 const handleCreate = () => {};
