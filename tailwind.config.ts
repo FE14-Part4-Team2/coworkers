@@ -62,6 +62,8 @@ const config: Config = {
       },
       backgroundImage: {
         "brand-gradient": "linear-gradient(90deg, #10B981 0%, #A3E635 100%)",
+        "landing-top-mobile": "url('/images/landing/landing-top-sm.png')",
+        "landing-top-tablet": "url('/images/landing/landing-top-md.png')",
       },
     },
   },
