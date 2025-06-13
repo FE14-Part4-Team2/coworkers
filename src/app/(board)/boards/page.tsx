@@ -5,13 +5,16 @@ import BoardList from "@/components/feature/Boards/List/BoardList";
 import { useArticleList, useBestArticles } from "@/api/article/article.query";
 import { useState } from "react";
 import { ORDER_TYPE, OrderType } from "@/constants/orderType";
+import Pagination from "@/components/common/Pagination/Pagination";
 
 export default function BoardsPage() {
   const [orderBy, setOrderBy] = useState<OrderType>(ORDER_TYPE.RECENT);
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
   const { data: bestList } = useBestArticles();
-  const { data: articleList } = useArticleList({
-    page: 1,
-    pageSize: 6,
+  const { data: articleList, totalCount } = useArticleList({
+    page,
+    pageSize,
     orderBy,
   });
 
@@ -24,6 +27,12 @@ export default function BoardsPage() {
           data={articleList}
           orderBy={orderBy}
           setOrderBy={setOrderBy}
+        />
+        <Pagination
+          page={page}
+          setPage={setPage}
+          total={totalCount || 0}
+          pageSize={pageSize}
         />
       </div>
     </>
