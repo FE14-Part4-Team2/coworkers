@@ -36,10 +36,11 @@ export default function CommentDropdown({
     <div ref={ref} className="relative z-10">
       <button type="button" onClick={toggleOpen} className="cursor-pointer">
         <Image
-          src="/icons/icon-kebabs.svg"
+          src="/icons/icon-more-vertical-sm.svg"
           alt="더보기"
-          width={3}
-          height={12}
+          width={25}
+          height={25}
+          className="cursor-pointer"
         />
       </button>
       <DropDownMenu
