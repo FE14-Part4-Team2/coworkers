@@ -51,7 +51,7 @@ export default function InviteAcceptPage() {
   }, [acceptInvitation, myInfo?.email, refetch, router, showToast, token]);
 
   return (
-    <div className="w-full h-screen flex justify-center items-center text-lg text-text-default">
+    <div className="w-full h-full flex justify-center pt-32 text-lg text-text-default">
       초대 수락 중...
     </div>
   );

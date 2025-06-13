@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/layouts/Header/Header";
-import SimpleLayout from "@/layouts/SimpleLayout";
+import InnerLayout from "@/layouts/InnerLayout";
 
 export default function TeamEditLayout({
   children,
@@ -11,7 +11,7 @@ export default function TeamEditLayout({
   return (
     <>
       <Header />
-      <SimpleLayout>{children}</SimpleLayout>
+      <InnerLayout>{children}</InnerLayout>
     </>
   );
 }
