@@ -4,12 +4,14 @@ type ModalType =
   | "invite"
   | "todo"
   | "todo-create"
+  | "todo-edit"
   | "password-reset"
   | "profile"
   | "delete-account"
   | "logout"
   | "password-change"
   | "calendar"
+  | "delete"
   | null;
 
 interface ModalState {
