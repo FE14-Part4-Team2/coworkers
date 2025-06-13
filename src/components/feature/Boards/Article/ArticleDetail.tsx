@@ -3,6 +3,7 @@ import { ArticleDetailType } from "@/api/article/article.schema";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import CommentDropdown from "../Comment/CommentDropdown";
+import { useAuthStore } from "@/stores/authStore";
 
 interface ArticleDetailProps {
   data: ArticleDetailType;
@@ -22,17 +23,24 @@ export default function ArticleDetail({
   const handleDelete = () => {
     if (onDelete) onDelete();
   };
+
+  // 본인이 작성한 글에만 수정, 삭제 드롭다운이 보이게
+  const user = useAuthStore((state) => state.user);
+  const isMyArticle = user?.id === data.writer.id;
+
   return (
     <>
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data.title}
         </h1>
-        <CommentDropdown
-          isEditing={false}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        {isMyArticle && (
+          <CommentDropdown
+            isEditing={false}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
       <div className="flex justify-between items-center mt-5">
