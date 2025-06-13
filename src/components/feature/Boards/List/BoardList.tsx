@@ -5,7 +5,7 @@ import WriteButton from "./WriteButton";
 import { useRouter } from "next/navigation";
 import { OrderType, ORDER_TYPE } from "@/constants/orderType";
 import { useState } from "react";
-import Pagination from "@/components/common/Pagination/Pagination";
+import Pagination from "@/components/feature/Boards/Pagination/Pagination";
 import { useArticleList } from "@/api/article/article.query";
 
 export default function BoardList() {
