@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   isSelf: boolean;
   isAbleButton: boolean;
   onClickProfile: () => void;
+  onClickDelete: () => void;
 };
 
 export default function MemberBox({
@@ -20,11 +21,8 @@ export default function MemberBox({
   isSelf,
   isAbleButton,
   onClickProfile,
+  onClickDelete,
 }: Props) {
-  const handleDelete = useCallback(() => {
-    alert("팀원 삭제하기"); // TODO: 모달, API 연결
-  }, []);
-
   const hoverAnimation = useMemo(() => ({ scale: 1.04 }), []);
   const transitionSpring = useMemo(
     () => ({ type: "spring", stiffness: 300, damping: 20 }),
@@ -41,14 +39,20 @@ export default function MemberBox({
       <div className="w-full hidden sm:flex gap-3 min-w-0">
         <Image src={profile} alt="프로필 이미지" width={32} height={32} />
         <div className="flex flex-col w-full gap-0.5 min-w-0">
-          <div className="flex items-center font-medium text-md text-text-primary line-clamp-1">
-            {name}
-            <div className="font-light text-xs text-text-disabled ml-1">
-              {isAdmin && "(관리자)"}
+          <div className="flex items-center font-medium text-md text-text-primary gap-1 w-full">
+            <div className="truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+              {name}
             </div>
-            <div className="font-light text-xs text-text-disabled">
-              {!isAdmin && isSelf && "(나)"}
-            </div>
+            {isAdmin && (
+              <div className="flex-shrink-0 font-light text-xs text-text-disabled">
+                (관리자)
+              </div>
+            )}
+            {!isAdmin && isSelf && (
+              <div className="flex-shrink-0 font-light text-xs text-text-disabled">
+                (나)
+              </div>
+            )}
           </div>
           <div className="font-normal text-sm text-text-secondary break-words overflow-hidden text-ellipsis line-clamp-2">
             {email}
@@ -58,14 +62,20 @@ export default function MemberBox({
       <div className="flex flex-col w-full h-full sm:hidden items-center gap-1.5 min-w-0">
         <div className="flex w-full gap-2 items-center">
           <Image src={profile} alt="프로필 이미지" width={24} height={24} />
-          <div className="flex items-center font-medium text-md text-text-primary line-clamp-1">
-            {name}
-            <div className="font-light text-xs text-text-disabled ml-1">
-              {isAdmin && "(관리자)"}
+          <div className="flex-1 flex items-center font-medium text-md text-text-primary gap-1 min-w-0">
+            <div className="truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+              {name}
             </div>
-            <div className="font-light text-xs text-text-disabled">
-              {!isAdmin && isSelf && "(나)"}
-            </div>
+            {isAdmin && (
+              <div className="flex-shrink-0 font-light text-xs text-text-disabled">
+                (관리자)
+              </div>
+            )}
+            {!isAdmin && isSelf && (
+              <div className="flex-shrink-0 font-light text-xs text-text-disabled">
+                (나)
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full font-normal text-sm text-text-secondary break-words overflow-hidden text-ellipsis line-clamp-1">
@@ -82,7 +92,7 @@ export default function MemberBox({
             className="cursor-pointer text-red-500 ml-4"
             onClick={(e) => {
               e.stopPropagation();
-              handleDelete();
+              onClickDelete();
             }}
           />
         )}
