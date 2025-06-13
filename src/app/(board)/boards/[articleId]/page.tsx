@@ -15,14 +15,8 @@ export default function ArticlePage() {
   const { data: article } = useArticleDetail(articleId as string);
   const deleteArticleMutation = useDeleteArticle();
   const router = useRouter();
-  const {
-    comments,
-    comment,
-    setComment,
-    createComment,
-    editComment,
-    deleteComment,
-  } = useArticleComments(articleId as string);
+  const { comments, comment, setComment, createComment, editComment } =
+    useArticleComments(articleId as string);
 
   // 게시글 수정 -> 수정 페이지로 이동
   const handleEditArticle = () => router.push(`/boards/${articleId}/edit`);
@@ -32,13 +26,6 @@ export default function ArticlePage() {
     deleteArticleMutation.mutate(articleId.toString(), {
       onSuccess: () => router.push("/boards"),
     });
-  };
-
-  // LATER: 삭제 모달 및 토스트 팝업 추가
-  const handleDeleteComment = (commentId: number) => {
-    if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      deleteComment(commentId);
-    }
   };
 
   if (!article) return null;
@@ -59,7 +46,6 @@ export default function ArticlePage() {
         articleId={article.id}
         comments={comments}
         onEdit={editComment}
-        onDelete={handleDeleteComment}
       />
     </article>
   );

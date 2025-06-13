@@ -6,18 +6,21 @@ import Image from "next/image";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Button from "@/components/common/Button";
 import { useAuthStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
+import DeleteModal from "@/components/common/Modal/DeleteModal";
+import useArticleComments from "@/hooks/useArticleComments";
 
 export default function CommentItem({
   comment,
   onEdit,
-  onDelete,
 }: {
   comment: ArticleComment;
   onEdit: (commentId: number, content: string) => void;
-  onDelete: (commentId: number) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const { modalType, openModal, closeModal } = useModalStore();
+  const { deleteComment } = useArticleComments(comment.id.toString());
   // 본인이 작성한 댓글에만 수정, 삭제 드롭다운이 보이게
   const user = useAuthStore((state) => state.user);
   const isMyComment = user?.id === comment.writer.id;
@@ -30,6 +33,14 @@ export default function CommentItem({
   const handleCancel = () => {
     setEditContent(comment.content);
     setIsEditing(false);
+  };
+  const handleDeleteClick = () => {
+    openModal("delete");
+  };
+
+  const handleConfirmDelete = () => {
+    deleteComment(comment.id);
+    closeModal();
   };
 
   return (
@@ -72,7 +83,7 @@ export default function CommentItem({
                 onEdit={handleEdit}
                 onSave={handleSave}
                 onCancel={handleCancel}
-                onDelete={() => onDelete(comment.id)}
+                onDelete={handleDeleteClick}
               />
             )}
           </>
@@ -100,6 +111,13 @@ export default function CommentItem({
             {comment.createdAt.slice(0, 10).replace(/-/g, ".")}
           </span>
         </div>
+      )}
+      {modalType === "delete" && (
+        <DeleteModal
+          title="댓글을 삭제하시겠습니까?"
+          description="삭제된 댓글은 복구할 수 없습니다."
+          onConfirm={handleConfirmDelete}
+        />
       )}
     </div>
   );
