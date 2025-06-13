@@ -5,92 +5,60 @@ import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
-import { useCreateArticle } from "@/api/article/article.query";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { useUploadImage } from "@/api/image/image-api";
+import { useEffect } from "react";
 
-interface FormValues {
+export interface FormValues {
   title: string;
   content: string;
 }
 
-interface CreateArticlePayload extends FormValues {
-  image?: string;
+export interface BoardsFormProps {
+  isSubmitting: boolean;
+  onSubmit: (data: FormValues) => void;
+  imageUrl?: string;
+  onImageUpload: (file: File | null) => void;
+  isImageUploading: boolean;
+  mode: "create" | "edit";
+  defaultValues?: FormValues;
+  articleId?: string;
 }
 
-export default function BoardsForm() {
-  const router = useRouter();
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-  const uploadImageMutation = useUploadImage();
-
+export default function BoardsForm({
+  isSubmitting,
+  onSubmit,
+  onImageUpload,
+  isImageUploading,
+  mode,
+  defaultValues,
+  imageUrl,
+}: BoardsFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: {
-      title: "",
-      content: "",
-    },
+    defaultValues: defaultValues ?? { title: "", content: "" },
     shouldFocusError: false,
   });
 
-  const { mutate: createArticle, isPending: isCreatingArticle } =
-    useCreateArticle();
+  useEffect(() => {
+    if (defaultValues) reset(defaultValues);
+  }, [defaultValues, reset]);
 
-  const handleImageUpload = useCallback(
-    (file: File | null) => {
-      if (file) {
-        uploadImageMutation.mutate(file, {
-          onSuccess: (url: string) => {
-            setImageUrl(url);
-          },
-        });
-      } else {
-        setImageUrl(undefined);
-      }
-    },
-    [uploadImageMutation],
-  );
+  const isEdit = mode == "edit";
 
-  const onSubmit = useCallback(
-    (data: FormValues) => {
-      const payload: CreateArticlePayload = {
-        ...data,
-        ...(imageUrl && { image: imageUrl }),
-      };
-
-      createArticle(payload, {
-        onSuccess: () => {
-          reset();
-          setImageUrl(undefined);
-          router.push("/boards");
-        },
-        onError: (error) => {
-          const errorMessage =
-            error instanceof Error
-              ? error.message
-              : "게시글 등록에 실패했습니다.";
-          alert(errorMessage);
-        },
-      });
-    },
-    [createArticle, imageUrl, reset, router],
-  );
-
-  const isLoading =
-    isSubmitting || isCreatingArticle || uploadImageMutation.isPending;
   const errorStyle = "block mt-2 text-status-danger text-sm";
 
   const submitButton = (
     <Button
-      label={isLoading ? "등록중" : "등록"}
+      label={
+        isSubmitting ? (isEdit ? "수정중" : "등록중") : isEdit ? "수정" : "등록"
+      }
       variant="primary"
       type="submit"
-      disabled={isLoading}
+      disabled={isSubmitting}
       className="
         w-full sm:w-[11.5rem] 
         h-[3rem] 
@@ -103,7 +71,9 @@ export default function BoardsForm() {
   return (
     <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
-        <h1 className="text-text-primary text-2lg sm:text-xl">게시글 쓰기</h1>
+        <h1 className="text-text-primary text-2lg sm:text-xl">
+          {isEdit ? "게시글 수정" : "게시글 쓰기"}
+        </h1>
         <div className="hidden sm:block">{submitButton}</div>
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
@@ -144,10 +114,11 @@ export default function BoardsForm() {
       </LabeledField>
       <section aria-label="이미지 등록">
         <ImageUploader
-          onChange={handleImageUpload}
-          disabled={uploadImageMutation.isPending}
+          onChange={onImageUpload}
+          disabled={isImageUploading}
+          imageUrl={imageUrl}
         />
-        {uploadImageMutation.isPending && (
+        {isImageUploading && (
           <p className="mt-2 text-sm text-text-secondary">
             이미지 업로드 중...
           </p>

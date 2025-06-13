@@ -2,67 +2,64 @@
 import ArticleDetail from "@/components/feature/Boards/Article/ArticleDetail";
 import CommentList from "@/components/feature/Boards/Comment/CommentList";
 import CommentForm from "@/components/feature/Boards/Comment/CommentForm";
-import { useArticleDetail } from "@/api/article/article.query";
-import { useParams } from "next/navigation";
 import {
-  useCreateArticleComment,
-  useDeleteArticleComment,
-  useEditArticleComment,
-} from "@/api/article-comment/article-comment.query";
-import { useState } from "react";
-import { useGetArticleComment } from "@/api/article-comment/article-comment.query";
+  useArticleDetail,
+  useDeleteArticle,
+} from "@/api/article/article.query";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import useArticleComments from "@/hooks/useArticleComments";
 
 export default function ArticlePage() {
   const { articleId } = useParams();
-  const [comment, setComment] = useState("");
   const { data: article } = useArticleDetail(articleId as string);
-  const { mutate: createComment } = useCreateArticleComment();
-  const { data: comments } = useGetArticleComment(articleId as string, {
-    limit: 10,
-  });
-  const { mutate: deleteComment } = useDeleteArticleComment();
-  const { mutate: editComment } = useEditArticleComment();
+  const deleteArticleMutation = useDeleteArticle();
+  const router = useRouter();
+  const {
+    comments,
+    comment,
+    setComment,
+    createComment,
+    editComment,
+    deleteComment,
+  } = useArticleComments(articleId as string);
 
-  const handleSubmit = () => {
-    createComment({
-      articleId: articleId as string,
-      body: { content: comment },
+  // 게시글 수정 -> 수정 페이지로 이동
+  const handleEditArticle = () => router.push(`/boards/${articleId}/edit`);
+
+  // 게시글 삭제 -> 성공 시 게시글 목록 페이지로 이동
+  const handleDeleteArticle = (articleId: number) => {
+    deleteArticleMutation.mutate(articleId.toString(), {
+      onSuccess: () => router.push("/boards"),
     });
-    setComment("");
   };
 
-  const handleEdit = (commentId: number, content: string) => {
-    editComment({
-      commentId: commentId.toString(),
-      body: { content },
-    });
-  };
-
-  // LATER : 삭제 확인 모달 띄우기
-  const handleDelete = (commentId: number) => {
+  // LATER: 삭제 모달 및 토스트 팝업 추가
+  const handleDeleteComment = (commentId: number) => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      deleteComment(commentId.toString());
+      deleteComment(commentId);
     }
   };
 
-  const commentList = comments?.list || [];
-
-  // LATER : 에러 처리 구현 (스켈레톤 UI 등등)
   if (!article) return null;
 
   return (
     <article className="w-full">
-      <ArticleDetail data={article} />
+      <ArticleDetail
+        data={article}
+        onEdit={handleEditArticle}
+        onDelete={() => handleDeleteArticle(article.id)}
+      />
       <CommentForm
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        onSubmit={handleSubmit}
+        onSubmit={() => createComment(comment)}
       />
       <CommentList
         articleId={article.id}
-        comments={commentList}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        comments={comments}
+        onEdit={editComment}
+        onDelete={handleDeleteComment}
       />
     </article>
   );

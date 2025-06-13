@@ -5,6 +5,7 @@ import CommentDropdown from "./CommentDropdown";
 import Image from "next/image";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Button from "@/components/common/Button";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function CommentItem({
   comment,
@@ -17,6 +18,9 @@ export default function CommentItem({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  // 본인이 작성한 댓글에만 수정, 삭제 드롭다운이 보이게
+  const user = useAuthStore((state) => state.user);
+  const isMyComment = user?.id === comment.writer.id;
 
   const handleEdit = () => setIsEditing(true);
   const handleSave = () => {
@@ -46,15 +50,15 @@ export default function CommentItem({
                 size="sm"
                 variant="secondary"
                 onClick={handleCancel}
-                className="border-none"
-              ></Button>
+                className="border-none w-10"
+              />
               <Button
                 label="저장"
                 size="sm"
                 variant="primary"
                 onClick={handleSave}
-                className="border-none"
-              ></Button>
+                className="border-none w-10"
+              />
             </div>
           </div>
         ) : (
@@ -62,13 +66,15 @@ export default function CommentItem({
             <span className="text-md sm:text-lg text-text-primary flex-1">
               {comment.content}
             </span>
-            <CommentDropdown
-              isEditing={isEditing}
-              onEdit={handleEdit}
-              onSave={handleSave}
-              onCancel={handleCancel}
-              onDelete={() => onDelete(comment.id)}
-            />
+            {isMyComment && (
+              <CommentDropdown
+                isEditing={isEditing}
+                onEdit={handleEdit}
+                onSave={handleSave}
+                onCancel={handleCancel}
+                onDelete={() => onDelete(comment.id)}
+              />
+            )}
           </>
         )}
       </div>

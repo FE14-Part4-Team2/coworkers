@@ -34,7 +34,7 @@ class ArticleService {
     return api.get<GetArticleDetailResponse>(this.getBasePath(articleId));
   }
   updateArticle(articleId: string, body: UpdateArticleRequest) {
-    return api.post<UpdateArticleResponse>(this.getBasePath(articleId), body);
+    return api.patch<UpdateArticleResponse>(this.getBasePath(articleId), body);
   }
   deleteArticle(articleId: string) {
     return api.delete(this.getBasePath(articleId));

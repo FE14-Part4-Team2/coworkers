@@ -1,9 +1,9 @@
 import Header from "@/layouts/Header/Header";
-import MainLayout from "@/layouts/MainLayout";
+import InnerLayout from "@/layouts/InnerLayout";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function DashboardLayout({
+export default async function InvitePageLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export default async function DashboardLayout({
   return (
     <>
       <Header />
-      <MainLayout>{children}</MainLayout>
+      <InnerLayout>{children}</InnerLayout>
     </>
   );
 }

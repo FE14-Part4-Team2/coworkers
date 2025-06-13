@@ -5,6 +5,8 @@ import {
   CreateArticleRequest,
   CreateArticleResponse,
   GetArticleDetailResponse,
+  UpdateArticleRequest,
+  UpdateArticleResponse,
 } from "./article.schema";
 
 const STALE_TIME_5_MIN = 1000 * 60 * 5;
@@ -76,5 +78,30 @@ export const useArticleDetail = (articleId: string) => {
     queryKey: ["article", articleId],
     queryFn: () => articleService.getArticleDetail(articleId),
     enabled: !!articleId,
+  });
+};
+
+// 게시글 수정하기
+export const useEditArticle = (articleId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<UpdateArticleResponse, Error, UpdateArticleRequest>({
+    mutationFn: (body) => articleService.updateArticle(articleId, body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["article"] });
+    },
+  });
+};
+
+// 게시글 삭제하기
+export const useDeleteArticle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, Error, string>({
+    mutationFn: (articleId) => articleService.deleteArticle(articleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["article"] });
+    },
   });
 };
