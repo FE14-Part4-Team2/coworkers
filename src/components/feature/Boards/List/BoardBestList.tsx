@@ -1,7 +1,9 @@
 import ShortCard from "../Card/ShortCard";
 import { ArticleType } from "@/api/article/article.schema";
+import { useBestArticles } from "@/api/article/article.query";
 
-export default function BoardBestList({ data }: { data: ArticleType[] }) {
+export default function BoardBestList() {
+  const { data: bestList } = useBestArticles();
   return (
     <>
       <div className="flex items-center mt-[2.5rem] justify-between mb-[3.5rem]">
@@ -10,7 +12,7 @@ export default function BoardBestList({ data }: { data: ArticleType[] }) {
         </span>
       </div>
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-[1.5rem] w-full overflow-hidden">
-        {data.map((post) => (
+        {bestList.map((post: ArticleType) => (
           <li key={post.id}>
             <ShortCard article={post} />
           </li>
