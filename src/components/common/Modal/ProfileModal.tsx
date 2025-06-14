@@ -9,6 +9,8 @@ interface ProfileModalProps {
   email: string;
   profileImageUrl?: string;
   onCopy: () => void;
+  isSelf?: boolean;
+  onClickUserSetting?: () => void;
 }
 
 export default function ProfileModal({
@@ -16,6 +18,8 @@ export default function ProfileModal({
   email,
   profileImageUrl,
   onCopy,
+  isSelf = false,
+  onClickUserSetting,
 }: ProfileModalProps) {
   const { isOpen, modalType } = useModalStore();
 
@@ -25,9 +29,7 @@ export default function ProfileModal({
     <Modal
       title={name}
       description={email}
-      buttonType="single-green"
-      confirmText="이메일 복사하기"
-      onConfirm={onCopy}
+      buttonType="none-button"
       headerImage={
         <Image
           src={profileImageUrl || "/icons/icon-profile-default.svg"}
@@ -37,6 +39,23 @@ export default function ProfileModal({
           className="rounded-full object-cover"
         />
       }
-    />
+    >
+      <div className="mt-3 flex flex-col gap-2">
+        <button
+          className="w-full bg-brand-primary text-white py-2 rounded"
+          onClick={onCopy}
+        >
+          이메일 복사하기
+        </button>
+        {isSelf && (
+          <button
+            className="w-full border border-border-primary text-text-primary py-2 rounded"
+            onClick={onClickUserSetting}
+          >
+            계정 설정
+          </button>
+        )}
+      </div>
+    </Modal>
   );
 }

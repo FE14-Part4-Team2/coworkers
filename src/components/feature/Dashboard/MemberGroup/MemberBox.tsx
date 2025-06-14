@@ -36,8 +36,14 @@ export default function MemberBox({
       whileHover={hoverAnimation}
       transition={transitionSpring}
     >
-      <div className="w-full hidden sm:flex gap-3 min-w-0">
-        <Image src={profile} alt="프로필 이미지" width={32} height={32} />
+      <div className="w-full hidden sm:flex gap-3 items-center min-w-0">
+        <Image
+          src={profile}
+          alt="프로필 이미지"
+          width={32}
+          height={32}
+          className="w-8 h-8 object-cover rounded-full shrink-0"
+        />
         <div className="flex flex-col w-full gap-0.5 min-w-0">
           <div className="flex items-center font-medium text-md text-text-primary gap-1 w-full">
             <div className="truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
@@ -61,7 +67,13 @@ export default function MemberBox({
       </div>
       <div className="flex flex-col w-full h-full sm:hidden items-center gap-1.5 min-w-0">
         <div className="flex w-full gap-2 items-center">
-          <Image src={profile} alt="프로필 이미지" width={24} height={24} />
+          <Image
+            src={profile}
+            alt="프로필 이미지"
+            width={24}
+            height={24}
+            className="w-6 h-6 object-cover rounded-full shrink-0"
+          />
           <div className="flex-1 flex items-center font-medium text-md text-text-primary gap-1 min-w-0">
             <div className="truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
               {name}

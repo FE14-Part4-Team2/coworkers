@@ -17,7 +17,7 @@ export default function InviteAcceptPage() {
 
   useEffect(() => {
     if (!token) {
-      showToast("초대 토큰이 없습니다.");
+      showToast("초대 토큰이 없습니다.", "error");
       router.push("/");
       return;
     }
@@ -32,15 +32,15 @@ export default function InviteAcceptPage() {
 
             if (memberships.length > 0) {
               const lastGroup = memberships[memberships.length - 1].group;
-              showToast("초대 수락 완료!");
+              showToast("초대 수락 완료!", "success");
               router.push(`/${lastGroup.id}`);
             } else {
-              showToast("초대 수락은 되었으나 접근 가능한 그룹이 없습니다.");
+              showToast("접근 가능한 그룹이 없습니다.", "error");
               router.push("/");
             }
           },
           onError: () => {
-            showToast("초대 수락에 실패했습니다.");
+            showToast("초대 수락에 실패했습니다.", "error");
             router.push("/");
           },
         },

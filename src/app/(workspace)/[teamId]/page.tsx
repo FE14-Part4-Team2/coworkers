@@ -123,11 +123,11 @@ export default function DashboardPage() {
         onSuccess: () => {
           setEditList(null);
           closeModal();
-          showToast("수정 완료!");
+          showToast("수정 완료!", "success");
         },
         onError: () => {
           closeModal();
-          showToast("수정 실패");
+          showToast("수정 실패", "error");
         },
       },
     );
@@ -139,11 +139,11 @@ export default function DashboardPage() {
       onSuccess: () => {
         setDeleteList(null);
         closeModal();
-        showToast("삭제 완료!");
+        showToast("삭제 완료!", "success");
       },
       onError: () => {
         closeModal();
-        showToast("삭제 실패");
+        showToast("삭제 실패", "error");
       },
     });
   };
@@ -154,11 +154,11 @@ export default function DashboardPage() {
       onSuccess: () => {
         setMemberToDelete(null);
         closeModal();
-        showToast("삭제 완료!");
+        showToast("삭제 완료!", "success");
       },
       onError: () => {
         closeModal();
-        showToast("삭제 실패");
+        showToast("삭제 실패", "error");
       },
     });
   };
@@ -167,7 +167,7 @@ export default function DashboardPage() {
     groupService.getInvitationToken(teamId).then((token) => {
       const inviteUrl = `${window.location.origin}/invite?token=${token}`;
       navigator.clipboard.writeText(inviteUrl);
-      showToast("초대 링크 복사 완료!");
+      showToast("초대 링크 복사 완료!", "success");
       closeModal();
     });
   };
@@ -316,11 +316,16 @@ export default function DashboardPage() {
           name={selectedProfile.name}
           email={selectedProfile.email}
           profileImageUrl={selectedProfile.profileImageUrl}
+          isSelf={selectedProfile.email === currentUserEmail}
           onCopy={() => {
             navigator.clipboard.writeText(selectedProfile.email);
             closeModal();
             setSelectedProfile(null);
-            showToast("이메일 복사 완료!");
+            showToast("이메일 복사 완료!", "success");
+          }}
+          onClickUserSetting={() => {
+            closeModal();
+            router.push("/user-setting");
           }}
         />
       )}
@@ -336,11 +341,11 @@ export default function DashboardPage() {
               onSuccess: () => {
                 setTodoTitle("");
                 closeModal();
-                showToast("목록 추가 완료!");
+                showToast("목록 추가 완료!", "success");
               },
               onError: () => {
                 closeModal();
-                showToast("목록 추가 실패");
+                showToast("목록 추가 실패", "error");
               },
             },
           );

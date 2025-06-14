@@ -42,7 +42,7 @@ export default function TeamBarDropdown() {
       },
       onError: () => {
         closeModal();
-        showToast("팀 삭제 중 오류 발생");
+        showToast("팀 삭제 중 오류 발생", "error");
       },
     });
   }, [deleteGroupMutation, closeModal, router, showToast]);
