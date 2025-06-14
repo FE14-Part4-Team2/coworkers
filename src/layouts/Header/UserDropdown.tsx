@@ -8,6 +8,7 @@ import { useSignOut } from "@/api/auth/auth.query";
 
 interface UserDropdownProps {
   userName: string;
+  userImg: string;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
@@ -15,6 +16,7 @@ interface UserDropdownProps {
 
 export default function UserDropdown({
   userName,
+  userImg,
   isOpen,
   onToggle,
   onClose,
@@ -36,7 +38,7 @@ export default function UserDropdown({
     <div ref={ref} className="relative">
       <button onClick={onToggle} className="flex gap-2 cursor-pointer">
         <Image
-          src="/icons/icon-user.svg"
+          src={userImg}
           alt="프로필"
           width={16}
           height={16}

@@ -120,6 +120,7 @@ export default function Header() {
             <div className="relative">
               <UserDropdown
                 userName={user?.nickname ?? ""}
+                userImg={user?.image ?? "/icons/icon-user.svg"}
                 isOpen={isMenuOpen}
                 onToggle={toggleMenu}
                 onClose={() => setIsMenuOpen(false)}
