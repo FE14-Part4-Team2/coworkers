@@ -20,7 +20,7 @@ export default function CommentItem({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const { modalType, openModal, closeModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
   const { showToast } = useToastStore();
   const { deleteComment } = useArticleComments(comment.id.toString());
   // 본인이 작성한 댓글에만 수정, 삭제 드롭다운이 보이게
@@ -38,7 +38,7 @@ export default function CommentItem({
     setIsEditing(false);
   };
   const handleDeleteClick = () => {
-    openModal("delete");
+    openModal("delete-article-comment");
   };
 
   const handleConfirmDelete = () => {
@@ -116,13 +116,13 @@ export default function CommentItem({
           </span>
         </div>
       )}
-      {modalType === "delete" && (
-        <DeleteModal
-          title="댓글을 삭제하시겠습니까?"
-          description="삭제된 댓글은 복구할 수 없습니다."
-          onConfirm={handleConfirmDelete}
-        />
-      )}
+
+      <DeleteModal
+        title="댓글을 삭제하시겠습니까?"
+        description="삭제된 댓글은 복구할 수 없습니다."
+        onConfirm={handleConfirmDelete}
+        modalType="delete-article-comment"
+      />
     </div>
   );
 }

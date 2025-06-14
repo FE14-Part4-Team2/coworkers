@@ -1,35 +1,60 @@
 "use client";
 import { ArticleDetailType } from "@/api/article/article.schema";
+import { useDeleteArticle } from "@/api/article/article.query";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import LikeButton from "./LikeButton";
 import CommentDropdown from "../Comment/CommentDropdown";
 import { useAuthStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
+import { useToastStore } from "@/stores/toastStore";
+import DeleteModal from "@/components/common/Modal/DeleteModal";
 
 interface ArticleDetailProps {
   data: ArticleDetailType;
-  onDelete: () => void;
-  onEdit: () => void;
 }
 
-export default function ArticleDetail({
-  data,
-  onDelete,
-  onEdit,
-}: ArticleDetailProps) {
-  const handleEdit = () => {
-    if (onEdit) onEdit();
-  };
-
-  const handleDelete = () => {
-    if (onDelete) onDelete();
-  };
-
-  // 본인이 작성한 글에만 수정, 삭제 드롭다운이 보이게
+export default function ArticleDetail({ data }: ArticleDetailProps) {
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+  const deleteArticleMutation = useDeleteArticle();
+
   const isMyArticle = user?.id === data.writer.id;
+
+  const handleEdit = () => {
+    router.push(`/boards/${data.id}/edit`);
+  };
+
+  const handleDeleteClick = () => {
+    openModal("delete-article");
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteArticleMutation.mutateAsync(data.id.toString());
+      closeModal();
+      showToast("게시글 삭제 완료!", "success");
+
+      setTimeout(() => {
+        router.push("/boards");
+      }, 500);
+    } catch {
+      closeModal();
+      showToast("삭제 중 오류가 발생하였습니다.", "error");
+    }
+  };
 
   return (
     <>
+      <DeleteModal
+        title="게시글을 삭제하시겠습니까?"
+        description="삭제된 게시글은 복구할 수 없습니다."
+        onConfirm={handleDeleteConfirm}
+        modalType="delete-article"
+      />
+
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-lg sm:text-2lg text-text-secondary font-medium">
           {data.title}
@@ -38,11 +63,13 @@ export default function ArticleDetail({
           <CommentDropdown
             isEditing={false}
             onEdit={handleEdit}
-            onDelete={handleDelete}
+            onDelete={handleDeleteClick}
           />
         )}
       </div>
+
       <hr className="w-full border-t border-border-primary opacity-10" />
+
       <div className="flex justify-between items-center mt-5">
         <div className="flex items-center gap-4 sm:gap-8 md:gap-20">
           <span className="text-text-primary text-sm sm:text-md">
