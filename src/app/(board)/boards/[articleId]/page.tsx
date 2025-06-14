@@ -9,24 +9,15 @@ import useArticleComments from "@/hooks/useArticleComments";
 export default function ArticlePage() {
   const { articleId } = useParams();
   const { data: article } = useArticleDetail(articleId as string);
-  const { comments, comment, setComment, createComment, editComment } =
-    useArticleComments(articleId as string);
+  const { comments } = useArticleComments(articleId as string);
 
   if (!article) return null;
 
   return (
     <article className="w-full">
       <ArticleDetail data={article} />
-      <CommentForm
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onSubmit={() => createComment(comment)}
-      />
-      <CommentList
-        articleId={article.id}
-        comments={comments}
-        onEdit={editComment}
-      />
+      <CommentForm articleId={articleId as string} />
+      <CommentList articleId={article.id} comments={comments} />
     </article>
   );
 }

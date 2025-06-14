@@ -36,11 +36,10 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
       await deleteArticleMutation.mutateAsync(data.id.toString());
       closeModal();
       showToast("게시글 삭제 완료!", "success");
-
       router.push("/boards");
     } catch {
       closeModal();
-      showToast("삭제 중 오류가 발생하였습니다.", "error");
+      showToast("게시글 삭제 오류", "error");
     }
   };
 
