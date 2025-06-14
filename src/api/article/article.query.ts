@@ -68,6 +68,7 @@ export const useArticleList = (params?: {
   return {
     ...query,
     data: query.data?.list ?? [],
+    totalCount: query.data?.totalCount ?? 0,
   };
 };
 
