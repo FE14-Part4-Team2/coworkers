@@ -3,10 +3,12 @@ import Image from "next/image";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
 import DropDownItem from "@/components/common/Dropdown/Item";
 import useClickOutside from "@/hooks/useClickOutside";
+import Link from "next/link";
 
 interface Team {
   name: string;
   img: string;
+  id: number;
 }
 
 interface TeamDropdownProps {
@@ -15,6 +17,7 @@ interface TeamDropdownProps {
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
+  onTeamClick: (name: string) => void;
 }
 
 export default function TeamDropdown({
@@ -23,6 +26,7 @@ export default function TeamDropdown({
   isOpen,
   onToggle,
   onClose,
+  onTeamClick,
 }: TeamDropdownProps) {
   const ref = useClickOutside(onClose);
 
@@ -47,26 +51,33 @@ export default function TeamDropdown({
       >
         {teams.map((team) => (
           <DropDownItem
-            key={team.name}
+            key={team.id}
             className={`text-lg w-full h-11.5 flex items-center justify-between ${
               team.name === currentTeam ? "font-bold bg-bg-hover" : ""
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Image src={team.img} alt={team.name} width={24} height={24} />
-              {team.name}
-            </div>
-            <Image
-              src="/icons/icon-kebabs.svg"
-              width={3}
-              height={12}
-              alt="더보기"
-            />
+            <Link href={`/${team.id}`}>
+              <div
+                className="flex items-center gap-2"
+                onClick={() => onTeamClick(team.name)}
+              >
+                <Image
+                  src={team.img}
+                  alt={team.name}
+                  width={24}
+                  height={24}
+                  className="rounded-full object-cover"
+                />
+                {team.name}
+              </div>
+            </Link>
           </DropDownItem>
         ))}
-        <button className="mt-2 border-t w-full h-[3rem] text-center border border-white rounded-xl text-text-primary cursor-pointer">
-          + 팀 추가하기
-        </button>
+        <Link href="/create">
+          <span className="inline-block py-3.5 mt-2 border-t w-full text-center border border-white rounded-xl text-text-primary cursor-pointer">
+            + 팀 추가하기
+          </span>
+        </Link>
       </DropDownMenu>
     </div>
   );

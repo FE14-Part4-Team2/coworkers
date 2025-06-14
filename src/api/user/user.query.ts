@@ -20,7 +20,7 @@ const userQuery = {
       queryKey: userQuery.myInfoKey(),
       queryFn: () => userService.getMyInfo(),
     }),
-  myGroupsKey: () => [...userQuery.all, "myGroups"],
+  myGroupsKey: () => ["group"],
   myGroups: () =>
     queryOptions({
       queryKey: userQuery.myGroupsKey(),
