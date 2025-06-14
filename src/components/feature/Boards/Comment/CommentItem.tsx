@@ -9,6 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 import DeleteModal from "@/components/common/Modal/DeleteModal";
 import useArticleComments from "@/hooks/useArticleComments";
+import { useToastStore } from "@/stores/toastStore";
 
 export default function CommentItem({
   comment,
@@ -20,6 +21,7 @@ export default function CommentItem({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const { modalType, openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
   const { deleteComment } = useArticleComments(comment.id.toString());
   // 본인이 작성한 댓글에만 수정, 삭제 드롭다운이 보이게
   const user = useAuthStore((state) => state.user);
@@ -29,6 +31,7 @@ export default function CommentItem({
   const handleSave = () => {
     onEdit(comment.id, editContent);
     setIsEditing(false);
+    showToast("수정 완료!", "success");
   };
   const handleCancel = () => {
     setEditContent(comment.content);
@@ -41,6 +44,7 @@ export default function CommentItem({
   const handleConfirmDelete = () => {
     deleteComment(comment.id);
     closeModal();
+    showToast("삭제 완료!", "success");
   };
 
   return (
