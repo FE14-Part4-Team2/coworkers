@@ -41,7 +41,7 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-bg-secondary z-50 h-15">
-        <div className="w-full h-[3.75rem] max-w-[78rem] mx-auto flex items-center justify-between px-4 py-5 sm:px-6 sm:py-3.5 md:px-7 md:py-[0.88rem]">
+        <div className="w-full h-[3.75rem] max-w-[78rem] mx-auto flex items-center justify-between px-4 py-5 sm:px-6 sm:py-3.5 md:px-7 md:py-[0.88rem] leading-none">
           <div className="flex items-center">
             {mockUser.teams.length > 0 && (
               <button
