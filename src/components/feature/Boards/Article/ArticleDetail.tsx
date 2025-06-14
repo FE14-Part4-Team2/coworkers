@@ -37,9 +37,7 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
       closeModal();
       showToast("게시글 삭제 완료!", "success");
 
-      setTimeout(() => {
-        router.push("/boards");
-      }, 500);
+      router.push("/boards");
     } catch {
       closeModal();
       showToast("삭제 중 오류가 발생하였습니다.", "error");
