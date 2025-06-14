@@ -36,10 +36,11 @@ export default function BoardsEditPage() {
     };
     editArticle(payload, {
       onSuccess: () => {
+        showToast("게시글 수정 완료!", "success");
         router.push(`/boards/${articleId}`);
       },
       onError: () => {
-        showToast("수정 중 오류가 발생했습니다.", "error");
+        showToast("게시글 수정 오류", "error");
       },
     });
   }
