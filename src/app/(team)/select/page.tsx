@@ -1,8 +1,15 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/common/Button";
 
+import { useRouter } from "next/navigation";
+
 export default function TeamSelectPage() {
+  const router = useRouter();
+  const handleNavigate = (path: string) => {
+    router.push(path);
+  };
   return (
     <main className="mt-[10.375rem]">
       <div>
@@ -24,6 +31,7 @@ export default function TeamSelectPage() {
             label="팀 생성하기"
             variant="primary"
             className="w-[11.625rem]"
+            onClick={() => handleNavigate("/create")}
           />
         </Link>
         <Link href="/join">
@@ -32,6 +40,7 @@ export default function TeamSelectPage() {
             variant="ghost"
             size="md"
             className="w-[11.625rem]"
+            onClick={() => handleNavigate("/join")}
           />
         </Link>
       </nav>
