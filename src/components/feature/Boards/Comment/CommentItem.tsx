@@ -6,30 +6,44 @@ import Image from "next/image";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Button from "@/components/common/Button";
 import { useAuthStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
+import DeleteModal from "@/components/common/Modal/DeleteModal";
+import useArticleComments from "@/hooks/useArticleComments";
+import { useToastStore } from "@/stores/toastStore";
 
-export default function CommentItem({
-  comment,
-  onEdit,
-  onDelete,
-}: {
+interface CommentItemProps {
   comment: ArticleComment;
-  onEdit: (commentId: number, content: string) => void;
-  onDelete: (commentId: number) => void;
-}) {
+  articleId: number;
+}
+
+export default function CommentItem({ comment, articleId }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  // 본인이 작성한 댓글에만 수정, 삭제 드롭다운이 보이게
+  const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+  const { editComment } = useArticleComments(articleId.toString());
+  const { deleteComment } = useArticleComments(comment.id.toString());
   const user = useAuthStore((state) => state.user);
   const isMyComment = user?.id === comment.writer.id;
 
   const handleEdit = () => setIsEditing(true);
   const handleSave = () => {
-    onEdit(comment.id, editContent);
+    editComment(comment.id, editContent);
     setIsEditing(false);
+    showToast("댓글 수정 완료!", "success");
   };
   const handleCancel = () => {
     setEditContent(comment.content);
     setIsEditing(false);
+  };
+  const handleDeleteClick = () => {
+    openModal("delete-article-comment");
+  };
+
+  const handleConfirmDelete = () => {
+    deleteComment(comment.id);
+    closeModal();
+    showToast("댓글 삭제 완료!", "success");
   };
 
   return (
@@ -72,7 +86,7 @@ export default function CommentItem({
                 onEdit={handleEdit}
                 onSave={handleSave}
                 onCancel={handleCancel}
-                onDelete={() => onDelete(comment.id)}
+                onDelete={handleDeleteClick}
               />
             )}
           </>
@@ -101,6 +115,13 @@ export default function CommentItem({
           </span>
         </div>
       )}
+
+      <DeleteModal
+        title="댓글을 삭제하시겠습니까?"
+        description="삭제된 댓글은 복구할 수 없습니다."
+        onConfirm={handleConfirmDelete}
+        modalType="delete-article-comment"
+      />
     </div>
   );
 }

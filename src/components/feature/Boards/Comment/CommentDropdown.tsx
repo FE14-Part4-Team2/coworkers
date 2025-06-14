@@ -32,6 +32,12 @@ export default function CommentDropdown({
 
   const ref = useClickOutside(closeDropdown);
 
+  const handleDelete = () => {
+    console.log("[DEBUG] CommentDropdown handleDelete 실행됨");
+    setIsOpen(false);
+    onDelete();
+  };
+
   return (
     <div ref={ref} className="relative z-10">
       <button type="button" onClick={toggleOpen} className="cursor-pointer">
@@ -40,7 +46,6 @@ export default function CommentDropdown({
           alt="더보기"
           width={25}
           height={25}
-          className="cursor-pointer"
         />
       </button>
       <DropDownMenu
@@ -55,7 +60,7 @@ export default function CommentDropdown({
         ) : (
           <>
             <DropDownItem onClick={onEdit}>수정하기</DropDownItem>
-            <DropDownItem onClick={onDelete}>삭제하기</DropDownItem>
+            <DropDownItem onClick={handleDelete}>삭제하기</DropDownItem>
           </>
         )}
       </DropDownMenu>
