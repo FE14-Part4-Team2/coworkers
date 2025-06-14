@@ -7,6 +7,7 @@ interface TeamState {
   setTeamName: (name: string) => void;
   setTeamProfileFile: (file: File | null) => void;
   setTeamProfileUrl: (url: string) => void;
+  reset: () => void;
 }
 
 export const useTeamStore = create<TeamState>((set) => ({
@@ -16,4 +17,10 @@ export const useTeamStore = create<TeamState>((set) => ({
   setTeamName: (name) => set({ teamName: name }),
   setTeamProfileUrl: (url) => set({ teamProfileUrl: url }),
   setTeamProfileFile: (file) => set({ teamProfileFile: file }),
+  reset: () =>
+    set({
+      teamName: "",
+      teamProfileUrl: "",
+      teamProfileFile: null,
+    }),
 }));

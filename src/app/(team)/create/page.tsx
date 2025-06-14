@@ -13,6 +13,7 @@ import ProfileImageUploader from "@/components/feature/Team/ProfileImageUploader
 export default function TeamCreatePage() {
   const router = useRouter();
   const createGroupMutation = useCreateGroup();
+  const reset = useTeamStore((state) => state.reset);
 
   const { showToast } = useToastStore();
   const { teamName, setTeamName } = useTeamStore();
@@ -72,6 +73,10 @@ export default function TeamCreatePage() {
       showToast("팀 생성이 완료되었습니다.", "success");
 
       router.push(`/${id}`);
+
+      setTimeout(() => {
+        reset();
+      }, 1000);
     } catch {
       showToast("팀 생성에 실패했습니다.", "error");
     } finally {
