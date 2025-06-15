@@ -12,6 +12,8 @@ type ModalType =
   | "password-change"
   | "calendar"
   | "delete"
+  | "delete-article"
+  | "delete-article-comment"
   | null;
 
 interface ModalState {

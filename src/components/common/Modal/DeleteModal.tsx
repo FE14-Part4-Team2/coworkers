@@ -8,16 +8,18 @@ interface DeleteModalProps {
   title: string;
   description: string;
   onConfirm: () => void;
+  modalType?: string;
 }
 
 export default function DeleteModal({
   title,
   description,
   onConfirm,
+  modalType = "delete",
 }: DeleteModalProps) {
-  const { isOpen, modalType } = useModalStore();
+  const { isOpen, modalType: currentModalType } = useModalStore();
 
-  if (!isOpen || modalType !== "delete") return null;
+  if (!isOpen || currentModalType !== modalType) return null;
 
   return (
     <Modal

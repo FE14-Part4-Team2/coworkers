@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useCreateArticle } from "@/api/article/article.query";
 import { useImageUploadHandler } from "@/hooks/useImageUploadHandler";
+import { useToastStore } from "@/stores/toastStore";
 
 export default function BoardsNewPage() {
   const router = useRouter();
   const createArticleMutation = useCreateArticle();
+  const { showToast } = useToastStore();
   const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
     useImageUploadHandler();
 
@@ -23,11 +25,12 @@ export default function BoardsNewPage() {
       createArticleMutation.mutate(payload, {
         onSuccess: () => {
           setImageUrl(undefined);
+          showToast("게시글 등록 완료!", "success");
           router.push("/boards");
         },
       });
     },
-    [createArticleMutation, imageUrl, router, setImageUrl],
+    [createArticleMutation, imageUrl, router, setImageUrl, showToast],
   );
 
   const isSubmitting = createArticleMutation.isPending || isImageUploading;

@@ -4,14 +4,11 @@ import CommentItem from "./CommentItem";
 interface ArticleCommentProps {
   comments: ArticleComment[];
   articleId: number;
-  onEdit: (commentId: number, content: string) => void;
-  onDelete: (commentId: number) => void;
 }
 
 export default function CommentList({
   comments,
-  onEdit,
-  onDelete,
+  articleId,
 }: ArticleCommentProps) {
   return (
     <section aria-label="댓글 목록" className="flex flex-col">
@@ -20,8 +17,7 @@ export default function CommentList({
           <CommentItem
             key={comment.id}
             comment={comment}
-            onEdit={onEdit}
-            onDelete={onDelete}
+            articleId={articleId}
           />
         ))}
       </div>
