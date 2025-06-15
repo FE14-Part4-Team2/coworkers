@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { useUploadImage } from "@/api/image/image-api";
-import { useTeamStore } from "@/stores/\buseTeamStore";
+import { useTeamStore } from "@/stores/useTeamStore";
 import { useToastStore } from "@/stores/toastStore";
 
 export default function ProfileImageUploader() {
