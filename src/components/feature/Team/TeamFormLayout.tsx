@@ -10,6 +10,7 @@ interface TeamFormLayoutProps {
   inputValue?: string;
   children: React.ReactNode;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onInputBlur?: () => void;
   isInputError?: boolean;
@@ -25,6 +26,7 @@ export default function TeamFormLayout({
   inputValue,
   children,
   onSubmit,
+  onKeyDown,
   onInputChange,
   onInputBlur,
   isInputError,
@@ -45,6 +47,7 @@ export default function TeamFormLayout({
           onChange={onInputChange}
           onBlur={onInputBlur}
           error={!isInputError}
+          onKeyDown={onKeyDown}
         />
         {error && <TeamNameError message={errorMessage} />}
         <Button
