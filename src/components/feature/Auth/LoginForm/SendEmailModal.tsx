@@ -9,7 +9,8 @@ import React, { useState } from "react";
 export default function SendEmailModal() {
   const [email, setEmail] = useState("");
   const sendEmailMutation = useSendResetPasswordMutation();
-  const redirectUrl = window.location.origin || "";
+  const redirectUrl =
+    typeof window !== "undefined" ? window.location.origin : "";
   const { closeModal } = useModalStore();
   const { showToast } = useToastStore();
 

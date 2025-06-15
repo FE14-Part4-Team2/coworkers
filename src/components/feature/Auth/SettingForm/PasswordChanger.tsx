@@ -73,7 +73,7 @@ function PasswordChanger() {
             label="변경하기"
             variant="primary"
             size="sm"
-            className="h-8"
+            className="w-[4.3rem] h-8"
             onClick={openPasswordChangeModal}
           />
         }
