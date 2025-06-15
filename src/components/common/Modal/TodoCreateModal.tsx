@@ -10,6 +10,10 @@ import { FrequencyType } from "@/api/task/task.schema";
 import Textarea from "../TextArea/TextArea";
 import RepeatDropdown from "../Dropdown/RepeatDropdown";
 
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
 interface TodoCreateModalProps {
   formData: {
     name: string;
@@ -29,17 +33,11 @@ interface TodoCreateModalProps {
   onMonthDayChange: (day: number) => void;
 }
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const formatDateToKSTString = (date: Date) => {
-  const pad = (num: number) => String(num).padStart(2, "0");
-
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hour = pad(date.getHours());
-  const minute = pad(date.getMinutes());
-  const second = pad(date.getSeconds());
-
-  return `${year}-${month}-${day}T${hour}:${minute}:${second}+09:00`;
+  return dayjs(date).tz("Asia/Seoul").format("YYYY-MM-DDTHH:mm:ssZ");
 };
 
 const handleMonthDayChange = (
@@ -120,6 +118,8 @@ const handleCalendarChange = (
     targetDate = new Date(targetYear, targetMonth, targetDay);
     targetDate.setHours(0, 0, 0, 0);
   }
+
+  console.log(formatDateToKSTString(targetDate));
 
   onDateChange(formatDateToKSTString(targetDate));
 };

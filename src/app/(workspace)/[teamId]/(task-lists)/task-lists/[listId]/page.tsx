@@ -42,7 +42,7 @@ export default function TaskListPage() {
     ? "오늘"
     : format(selectedDate, "M월 d일 (EEE)", { locale: ko });
 
-  const formattedDateForQuery = format(selectedDate, "yyyy-MM-dd");
+  const formattedDateForQuery = selectedDate.toLocaleDateString("sv-SE");
 
   interface FormData {
     name: string;
@@ -54,10 +54,10 @@ export default function TaskListPage() {
   }
   const getTodayKoreaISOString = () => {
     const now = new Date();
-    const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-    koreaTime.setUTCHours(0, 0, 0, 0);
-    return koreaTime.toISOString();
+    const koreaNow = new Date(now.getTime());
+    return koreaNow.toISOString();
   };
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -119,7 +119,6 @@ export default function TaskListPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // frequencyType에 따라 body 타입이 달라짐
     let body: CreateTaskRequest;
 
     switch (formData.frequencyType) {
@@ -194,7 +193,7 @@ export default function TaskListPage() {
           setFormData({
             name: "",
             description: "",
-            startDate: new Date().toISOString(),
+            startDate: getTodayKoreaISOString(),
             frequencyType: "ONCE",
             // monthDay, weekDays 초기화도 필요하면 여기에 추가
           });

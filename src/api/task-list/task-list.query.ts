@@ -7,12 +7,15 @@ import {
 } from "./task-list.schema";
 
 // 할 일 목록 정보 조회
-export const useTaskListQuery = (params: {
+export const useTaskListQuery = ({
+  groupId,
+  taskListId,
+  date,
+}: {
   groupId: string;
   taskListId: string;
   date: string;
 }) => {
-  const { groupId, taskListId, date } = params;
   return useQuery<GetTaskListResponse>({
     queryKey: ["taskList", groupId, taskListId, date],
     queryFn: () => taskListService.getTaskList(groupId, taskListId, { date }),
