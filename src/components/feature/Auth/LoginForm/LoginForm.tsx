@@ -9,9 +9,6 @@ import SendEmailModal from "./SendEmailModal";
 import { useForm } from "react-hook-form";
 import { useSignIn } from "@/api/auth/auth.query";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
-import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "next/navigation";
-import { useToastStore } from "@/stores/toastStore";
 
 type LoginForm = {
   email: string;
@@ -20,12 +17,9 @@ type LoginForm = {
 
 export default function LoginForm() {
   const { openModal } = useModalStore();
-  const { showToast } = useToastStore();
   const [showPassword, setShowPasword] = useState(false);
 
   const loginMutation = useSignIn();
-  const { setAuth } = useAuthStore();
-  const router = useRouter();
 
   const {
     register,
@@ -44,22 +38,10 @@ export default function LoginForm() {
   };
 
   const onSubmit = (data: LoginForm) => {
-    loginMutation.mutate(
-      {
-        email: data.email,
-        password: data.password,
-      },
-      {
-        onSuccess: (data) => {
-          setAuth(data.user);
-          showToast("로그인 성공", "success");
-          router.push("/");
-        },
-        onError: () => {
-          showToast("이메일 혹은 비밀번호를 확인해주세요.", "error");
-        },
-      },
-    );
+    loginMutation.mutate({
+      email: data.email,
+      password: data.password,
+    });
   };
 
   return (

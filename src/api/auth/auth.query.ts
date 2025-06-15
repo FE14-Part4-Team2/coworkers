@@ -1,6 +1,10 @@
 import { useAuthStore } from "@/stores/authStore";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authService } from "./auth.service";
+import { useRouter } from "next/navigation";
+import { userQuery } from "../user/user.query";
+import { userService } from "../user/user.service";
+import { useToastStore } from "@/stores/toastStore";
 
 //회원가입 뮤테이션
 export const useSignUp = () => {
@@ -17,11 +21,38 @@ export const useSignUp = () => {
 //로그인 뮤테이션
 export const useSignIn = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+  const queryClient = useQueryClient();
+  const { showToast } = useToastStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: authService.signIn,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setAuth(data.user);
+      try {
+        await queryClient.invalidateQueries({
+          queryKey: userQuery.myGroupsKey(),
+        });
+
+        const groups = await queryClient.fetchQuery({
+          queryKey: userQuery.myGroupsKey(),
+          queryFn: () => userService.getMyGroups(),
+        });
+
+        if (groups.length > 0) {
+          router.push(`/${groups[0].id}`);
+        } else {
+          router.push("/select");
+        }
+        showToast("로그인 성공", "success");
+      } catch (error) {
+        console.log(error);
+        showToast("그룹 정보를 불러오는 데 실패했습니다.", "error");
+        router.push("/select");
+      }
+    },
+    onError: () => {
+      showToast("이메일 혹은 비밀번호를 확인해주세요.", "error");
     },
   });
 };
