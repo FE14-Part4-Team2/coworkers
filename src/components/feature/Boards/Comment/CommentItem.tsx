@@ -96,12 +96,14 @@ export default function CommentItem({ comment, articleId }: CommentItemProps) {
       {!isEditing && (
         <div className="flex items-center gap-2 sm:gap-4 mt-3">
           <span className="flex items-center text-sm sm:text-md text-text-primary gap-1.5 sm:gap-3">
-            <Image
-              src={comment.writer.image || "/icons/icon-profile-default.svg"}
-              alt="프로필 이미지"
-              width={32}
-              height={32}
-            />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white overflow-hidden">
+              <Image
+                src={comment.writer.image || "/icons/icon-profile-default.svg"}
+                alt="프로필 이미지"
+                width={36}
+                height={36}
+              />
+            </div>
             {comment.writer.nickname}
           </span>
           <span className="flex items-center text-sm sm:text-md text-text-disabled gap-2 sm:gap-4">
