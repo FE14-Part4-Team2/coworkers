@@ -18,7 +18,11 @@ export default function BoardsNewPage() {
   const handleSubmit = useCallback(
     (data: FormValues) => {
       const payload = {
-        ...data,
+        title: data.title,
+        content: JSON.stringify({
+          content: data.content,
+          token: data.token,
+        }),
         ...(imageUrl && { image: imageUrl }),
       };
 
