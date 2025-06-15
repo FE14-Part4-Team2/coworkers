@@ -72,11 +72,35 @@ export const useSignOut = () => {
 // 카카오 로그인 뮤테이션
 export const useKakaoOauth = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+  const queryClient = useQueryClient();
+  const { showToast } = useToastStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: authService.kakaoSignIn,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setAuth(data.user);
+      try {
+        await queryClient.invalidateQueries({
+          queryKey: userQuery.myGroupsKey(),
+        });
+
+        const groups = await queryClient.fetchQuery({
+          queryKey: userQuery.myGroupsKey(),
+          queryFn: () => userService.getMyGroups(),
+        });
+
+        if (groups.length > 0) {
+          router.push(`/${groups[0].id}`);
+        } else {
+          router.push("/select");
+        }
+        showToast("로그인 성공", "success");
+      } catch (error) {
+        console.log(error);
+        showToast("그룹 정보를 불러오는 데 실패했습니다.", "error");
+        router.push("/select");
+      }
     },
   });
 };

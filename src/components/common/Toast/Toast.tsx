@@ -56,7 +56,7 @@ function Toast() {
             exit={exitVariants}
             transition={transition}
             onClick={hideToast}
-            className={`fixed left-1/2 bottom-20 relative overflow-hidden pointer-events-auto pl-[3.5rem] pr-6 py-3 rounded-xl bg-bg-secondary text-lg z-100 max-w-[22.5rem] w-full flex items-center relative ${typeTextColor[type]}`}
+            className={`fixed left-1/2 bottom-20 overflow-hidden pointer-events-auto pl-[3.5rem] pr-6 py-3 rounded-xl bg-bg-secondary text-lg z-100 max-w-[22.5rem] w-full flex items-center relative ${typeTextColor[type]}`}
           >
             <Icon type={type} />
             <div className="flex-1 flex items-center justify-center">

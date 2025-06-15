@@ -32,7 +32,6 @@ export default function KakaoCallbackPage() {
         {
           onSuccess: () => {
             showToast("로그인 성공", "success");
-            router.push("/");
           },
           onError: () => {
             showToast("로그인 실패", "error");
