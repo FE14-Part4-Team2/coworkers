@@ -1,30 +1,15 @@
 "use client";
-import { useState, useCallback } from "react";
 import Image from "next/image";
 
 interface SearchInputProps {
-  placeholder?: string;
-  onSearch?: (query: string) => void;
+  value?: string;
+  onChange?: (query: string) => void;
 }
 
-//LATER: search API 연결
-export default function SearchInput({
-  placeholder = "검색어를 입력하세요",
-  onSearch,
-}: SearchInputProps) {
-  const [value, setValue] = useState("");
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  }, []);
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      if (onSearch) onSearch(value);
-    },
-    [onSearch, value],
-  );
+export default function SearchInput({ value, onChange }: SearchInputProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e.target.value);
+  };
 
   return (
     <>
@@ -32,7 +17,7 @@ export default function SearchInput({
         모집게시판
       </span>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => e.preventDefault()}
         className="w-full p-[1rem] h-[3rem] sm:h-[3.5rem] gap-[0.75rem] bg-bg-secondary border border-card-border rounded-xl flex"
       >
         <Image
@@ -43,9 +28,9 @@ export default function SearchInput({
         />
         <input
           type="text"
-          placeholder={placeholder}
           value={value}
           onChange={handleChange}
+          placeholder="검색어를 입력하세요"
           className="bg-bg-secondary w-full outline-none"
         />
       </form>

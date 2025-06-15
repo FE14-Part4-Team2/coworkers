@@ -4,9 +4,11 @@ import Link from "next/link";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
 import DropDownItem from "@/components/common/Dropdown/Item";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useSignOut } from "@/api/auth/auth.query";
 
 interface UserDropdownProps {
   userName: string;
+  userImg: string;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
@@ -14,21 +16,36 @@ interface UserDropdownProps {
 
 export default function UserDropdown({
   userName,
+  userImg,
   isOpen,
   onToggle,
   onClose,
 }: UserDropdownProps) {
   const ref = useClickOutside(onClose);
+  const signOutMutation = useSignOut();
+
+  const handleSignOut = () => {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        if (typeof window !== "undefined") {
+          window.location.href = "/";
+        }
+      },
+    });
+  };
+
   return (
     <div ref={ref} className="relative">
       <button onClick={onToggle} className="flex gap-2 cursor-pointer">
-        <Image
-          src="/icons/icon-user.svg"
-          alt="프로필"
-          width={16}
-          height={16}
-          className="rounded-full cursor-pointer"
-        />
+        <div className="relative w-6 h-6 sm:w-4 sm:h-4">
+          <Image
+            src={userImg}
+            alt="프로필"
+            fill
+            className="rounded-full cursor-pointer"
+          />
+        </div>
+
         <span className="whitespace-nowrap text-md text-text-primary hidden md:inline-block">
           {userName}
         </span>
@@ -47,7 +64,7 @@ export default function UserDropdown({
         <DropDownItem>
           <Link href="/user-setting">계정 설정</Link>
         </DropDownItem>
-        <DropDownItem>로그아웃</DropDownItem>
+        <DropDownItem onClick={handleSignOut}>로그아웃</DropDownItem>
       </DropDownMenu>
     </div>
   );

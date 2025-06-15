@@ -6,6 +6,7 @@ import LandingHeader from "@/layouts/Header/LandingHeader";
 import Toast from "@/components/common/Toast/Toast";
 import AuthProvider from "@/components/feature/Auth/AuthProvider/AuthProvider";
 import { cookies } from "next/headers";
+import Header from "@/layouts/Header/Header";
 
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
@@ -31,7 +32,7 @@ export default async function RootLayout({
       <body className="bg-bg-primary text-white">
         <ReactQueryProvider>
           <AuthProvider hasToken={!!token}>
-            <LandingHeader />
+            {!token ? <LandingHeader /> : <Header />}
             {children}
             <div
               id="toast-root"
