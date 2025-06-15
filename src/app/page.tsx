@@ -71,7 +71,7 @@ export default function Home() {
         <FeatureSection />
       </div>
 
-      <div className="mt-[20rem] pb-[8rem] text-center">
+      <div className="mt-[20rem] text-center">
         <p className="text-2xl font-semibold sm:text-4xl">
           지금 바로 시작해보세요
         </p>

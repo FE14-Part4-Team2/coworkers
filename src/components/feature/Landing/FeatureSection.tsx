@@ -1,7 +1,13 @@
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 // motion variants
 const motionVariants = {
@@ -45,6 +51,8 @@ function FeatureSection() {
   const containerRef = useRef(null);
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
+  const stickySectionRef1 = useRef<HTMLDivElement>(null);
+  const stickySectionRef2 = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -62,6 +70,26 @@ function FeatureSection() {
   const inviteTextOpacity = useTransform(scrollYProgress, [0.7, 0.9], [0, 1]);
 
   const [textVisible, setTextVisible] = useState(false);
+
+  useLayoutEffect(() => {
+    const el1 = stickySectionRef1.current;
+    const el2 = stickySectionRef2.current;
+
+    const update = () => {
+      if (el1) el1.style.setProperty("--half-h-1", `${el1.offsetHeight / 2}px`);
+      if (el2) el2.style.setProperty("--half-h-2", `${el2.offsetHeight / 2}px`);
+      document.documentElement.style.setProperty("--header-h", "60px");
+    };
+
+    update();
+
+    const resizeObserver = new ResizeObserver(update);
+
+    if (el1) resizeObserver.observe(el1);
+    if (el2) resizeObserver.observe(el2);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useEffect(() => {
     return groupTextOpacity.onChange((latest) => {
@@ -86,7 +114,10 @@ function FeatureSection() {
   return (
     <>
       <div ref={containerRef} className="px-4 h-[400vh] relative ">
-        <motion.section className={`sticky top-[5rem] sm:top-[30%] px-4 `}>
+        <motion.section
+          ref={stickySectionRef1}
+          className={`sticky top-[calc(50vh-var(--half-h-1)+var(--header-h)/2)] px-4 `}
+        >
           <motion.div
             ref={sectionRef1}
             className={`p-[1px] max-w-[62rem] mx-auto rounded-[2.5rem] h-[85vh] sm:h-[30rem] ${
@@ -165,7 +196,10 @@ function FeatureSection() {
         </motion.section>
       </div>
       <div className="px-4 h-[200vh] mt-8">
-        <motion.section className="sticky top-[5rem] sm:top-[30%] px-4">
+        <motion.section
+          ref={stickySectionRef2}
+          className="sticky top-[calc(50vh-var(--half-h-2)+var(--header-h)/2)] px-4"
+        >
           <motion.div
             ref={sectionRef2}
             className={`p-[1px] max-w-[62rem] mx-auto rounded-[2.5rem] h-[85vh] sm:h-[30rem] ${
