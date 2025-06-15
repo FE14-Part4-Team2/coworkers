@@ -13,7 +13,7 @@ export default function JoinButton({ token }: JoinButtonProps) {
   if (!token) return null;
 
   const handleClick = () => {
-    router.push(token);
+    router.push(`/invite?token=${token}`);
   };
 
   return (
