@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { useTeamStore } from "@/stores/\buseTeamStore";
+import { useTeamStore } from "@/stores/useTeamStore";
 import { useToastStore } from "@/stores/toastStore";
 import { useCreateGroup } from "@/api/group/group.query";
 import { TEAM_FORM_LABELS, TEAM_ERROR_MESSAGES } from "@/constants/team";
