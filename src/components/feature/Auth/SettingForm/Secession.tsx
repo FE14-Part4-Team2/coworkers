@@ -1,5 +1,6 @@
 "use client";
 
+import { useDeleteMyInfoMutation } from "@/api/user/user.query";
 import DeleteAccountModal from "@/components/common/Modal/DeleteAccountModal";
 import { useModalStore } from "@/stores/modalStore";
 import Image from "next/image";
@@ -7,14 +8,14 @@ import React from "react";
 
 function Secession() {
   const { openModal } = useModalStore();
+  const deleteMyInfoMutation = useDeleteMyInfoMutation();
 
   const openDeleteAccountModal = () => {
     openModal("delete-account");
   };
 
   const handleDeleteAccount = () => {
-    // 회원 탈퇴 API 연결
-    console.log("탈퇴");
+    deleteMyInfoMutation.mutate();
   };
 
   return (

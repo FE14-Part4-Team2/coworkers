@@ -6,25 +6,35 @@ import {
   interactionStyle,
 } from "@/components/common/Input/Input";
 import { useImageUploader } from "@/hooks/useImageUploader";
+import { useEffect } from "react";
 
 interface ImageUploaderProps {
   onChange?: (file: File | null) => void;
   disabled?: boolean;
+  imageUrl?: string;
 }
 
 export default function ImageUploader({
   onChange,
   disabled = false,
+  imageUrl,
 }: ImageUploaderProps) {
   const {
     fileInputRef,
     preview,
+    setPreview,
     isDragging,
     handleBoxClick,
     handleFileChange,
     handleRemoveClick,
     dragHandlers,
-  } = useImageUploader(onChange, disabled);
+  } = useImageUploader(onChange, disabled, imageUrl);
+
+  useEffect(() => {
+    if (imageUrl && !preview) {
+      setPreview(imageUrl);
+    }
+  }, [imageUrl]);
 
   const uploaderBoxStyle = [
     containerStyle,

@@ -6,19 +6,19 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 
-export default function ListBarDropdown() {
+interface ListBarDropdownProps {
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+export default function ListBarDropdown({
+  onEdit,
+  onDelete,
+}: ListBarDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
-  }, []);
-
-  const handleEdit = useCallback(() => {
-    alert("수정하기"); // TODO: 페이지 연결
-  }, []);
-
-  const handleDelete = useCallback(() => {
-    alert("삭제하기"); // TODO: API 연결
   }, []);
 
   const closeDropdown = useCallback(() => {
@@ -28,7 +28,7 @@ export default function ListBarDropdown() {
   const dropdownRef = useClickOutside(closeDropdown);
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div ref={dropdownRef} className="relative prevent-list-click">
       <Image
         src="/icons/icon-more-vertical-sm.svg"
         alt="setting"
@@ -44,8 +44,22 @@ export default function ListBarDropdown() {
         isOpen={isOpen}
         className="absolute mt-2 right-0 text-center w-[7.5rem] z-[999]"
       >
-        <DropDownItem onClick={handleEdit}>수정하기</DropDownItem>
-        <DropDownItem onClick={handleDelete}>삭제하기</DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            setIsOpen(false);
+            onEdit();
+          }}
+        >
+          수정하기
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            setIsOpen(false);
+            onDelete();
+          }}
+        >
+          삭제하기
+        </DropDownItem>
       </DropDownMenu>
     </div>
   );

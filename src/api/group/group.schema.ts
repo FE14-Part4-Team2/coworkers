@@ -1,4 +1,5 @@
 import { TaskListType } from "../task-list/task-list.schema";
+import { TaskDetailType } from "../task/task.schema";
 
 export type GroupType = {
   teamId?: string;
@@ -20,7 +21,7 @@ export type MemberType = {
 
 export type GetGroupResponse = GroupType & {
   members: MemberType[];
-  taskLists: (TaskListType & { tasks: string[] })[];
+  taskLists: (TaskListType & { tasks: TaskDetailType[] })[];
 };
 
 export type UpdateGroupRequest = {

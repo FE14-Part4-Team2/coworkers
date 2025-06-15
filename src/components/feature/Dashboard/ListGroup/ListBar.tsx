@@ -8,6 +8,8 @@ interface ListBarProps {
   done: number;
   total: number;
   colorClass: string;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 export default function ListBar({
@@ -15,6 +17,8 @@ export default function ListBar({
   done,
   total,
   colorClass,
+  onEdit,
+  onDelete,
 }: ListBarProps) {
   const [isHover, setIsHover] = useState(false);
 
@@ -38,7 +42,7 @@ export default function ListBar({
       </div>
       <div className="flex justify-center items-center gap-1">
         <ListBadge done={done} total={total} />
-        <ListBarDropdown />
+        <ListBarDropdown onEdit={onEdit} onDelete={onDelete} />
       </div>
     </div>
   );

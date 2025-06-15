@@ -8,8 +8,6 @@ interface ArticleCommentProps {
   onDelete: (commentId: number) => void;
 }
 
-// 추후 zustand 리팩토링 예정
-
 export default function CommentList({
   comments,
   onEdit,

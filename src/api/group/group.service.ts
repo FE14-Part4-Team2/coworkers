@@ -36,7 +36,7 @@ class GroupService {
     return api.delete(`${PATH}/${id}/member/${memberUserId}`);
   }
   getInvitationToken(id: string) {
-    return api.get(`${PATH}/${id}/invitation`);
+    return api.get<string>(`${PATH}/${id}/invitation`);
   }
   acceptInvitation(body: AcceptInvitationRequest) {
     return api.post<AcceptInvitationResponse>(

@@ -1,5 +1,5 @@
 "use client";
-import TeamFormLayout from "@/components/team/TeamFormLayout";
+import TeamFormLayout from "@/components/feature/Team/TeamFormLayout";
 import { TEAM_FORM_LABELS } from "@/constants/team";
 
 const handleJoin = () => {};

@@ -10,6 +10,7 @@ import { authService } from "../auth/auth.service";
 import { useRouter } from "next/navigation";
 import { UpdateMyInfoRequest } from "./user.schema";
 import { Message } from "../auth/auth.schema";
+import { useToastStore } from "@/stores/toastStore";
 
 const userQuery = {
   all: ["user"],
@@ -64,6 +65,7 @@ export const useUpdateMyInfoMutation = () => {
 export const useDeleteMyInfoMutation = () => {
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const router = useRouter();
+  const { showToast } = useToastStore();
 
   return useMutation({
     mutationFn: async () => {
@@ -73,6 +75,7 @@ export const useDeleteMyInfoMutation = () => {
     },
     onSuccess: () => {
       router.push("/");
+      showToast("탈퇴되었습니다.");
     },
   });
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useGroupQuery } from "@/api/group/group.query";
 import { useRouter } from "next/navigation";
 
@@ -22,6 +22,10 @@ import Button from "@/components/common/Button";
 import TodoCreateModal from "@/components/common/Modal/TodoCreateModal";
 
 export default function TaskListPage() {
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get("date");
+
+  const initialDate = dateParam ? new Date(dateParam) : new Date();
   const params = useParams();
   const groupId = String(params.teamId);
   const listId = Number(params.listId);
@@ -33,7 +37,7 @@ export default function TaskListPage() {
   const { data: group, isLoading, isError } = useGroupQuery(groupId);
 
   const [activeTab, setActiveTab] = useState(listId);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(initialDate);
   const formattedDate = isToday(selectedDate)
     ? "오늘"
     : format(selectedDate, "M월 d일 (EEE)", { locale: ko });
@@ -321,7 +325,12 @@ export default function TaskListPage() {
       {/* 달력 모달 */}
       <CalendarModal
         selectedDate={selectedDate}
-        onSelectDate={(date) => setSelectedDate(date)}
+        onSelectDate={(date) => {
+          setSelectedDate(date);
+          router.push(
+            `/${groupId}/task-lists/${activeTab}?date=${format(date, "yyyy-MM-dd")}`,
+          );
+        }}
       />
 
       {/* 탭 영역 */}
