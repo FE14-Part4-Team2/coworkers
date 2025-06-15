@@ -25,13 +25,15 @@ export default function TodoModal({
       confirmButtonType="submit"
       onSubmit={onSubmit}
     >
-      <Input
-        id="list"
-        placeholder="목록 명을 입력해주세요."
-        value={value}
-        onChange={onChange}
-        required
-      />
+      <div className="mt-4 mb-6">
+        <Input
+          id="list"
+          placeholder="목록 명을 입력해주세요."
+          value={value}
+          onChange={onChange}
+          required
+        />
+      </div>
     </Modal>
   );
 }
