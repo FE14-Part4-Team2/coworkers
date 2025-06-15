@@ -17,7 +17,7 @@ type LoginForm = {
 
 export default function LoginForm() {
   const { openModal } = useModalStore();
-  const [showPassword, setShowPasword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useSignIn();
 
@@ -30,7 +30,7 @@ export default function LoginForm() {
   });
 
   const handlePasswordToggle = () => {
-    setShowPasword((prev) => !prev);
+    setShowPassword((prev) => !prev);
   };
 
   const openPasswordResetModal = () => {
@@ -81,7 +81,7 @@ export default function LoginForm() {
         <ErrorMsg message={errors.password?.message} />
         <button
           type="button"
-          className="absolute right-0 mt-3 text-brand-primary text-lg font-medium underline text-md sm:text-lg"
+          className="absolute right-0 mt-3 text-brand-primary font-medium underline text-md sm:text-lg"
           onClick={openPasswordResetModal}
         >
           비밀번호를 잊으셨나요?
