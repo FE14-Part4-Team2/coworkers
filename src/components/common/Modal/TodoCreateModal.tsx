@@ -79,49 +79,14 @@ const handleCalendarChange = (
   date: Date,
   onDateChange: (date: string) => void,
 ) => {
-  const now = new Date();
+  const dateKST = dayjs(date).tz("Asia/Seoul");
 
-  const todayYear = now.getFullYear();
-  const todayMonth = now.getMonth();
-  const todayDate = now.getDate();
+  const fixedDateKST = dayjs.tz(
+    `${dateKST.format("YYYY-MM-DD")}T21:00:00`,
+    "Asia/Seoul",
+  );
 
-  let targetYear = date.getFullYear();
-  let targetMonth = date.getMonth();
-  const targetDay = date.getDate();
-
-  const isToday =
-    targetYear === todayYear &&
-    targetMonth === todayMonth &&
-    targetDay === todayDate;
-
-  const isPast =
-    targetYear < todayYear ||
-    (targetYear === todayYear && targetMonth < todayMonth) ||
-    (targetYear === todayYear &&
-      targetMonth === todayMonth &&
-      targetDay < todayDate);
-
-  if (isPast) {
-    if (todayMonth === 11) {
-      targetYear = todayYear + 1;
-      targetMonth = 0;
-    } else {
-      targetYear = todayYear;
-      targetMonth = todayMonth + 1;
-    }
-  }
-
-  let targetDate: Date;
-  if (isToday) {
-    targetDate = now;
-  } else {
-    targetDate = new Date(targetYear, targetMonth, targetDay);
-    targetDate.setHours(0, 0, 0, 0);
-  }
-
-  console.log(formatDateToKSTString(targetDate));
-
-  onDateChange(formatDateToKSTString(targetDate));
+  onDateChange(fixedDateKST.format());
 };
 
 export default function TodoCreateModal({

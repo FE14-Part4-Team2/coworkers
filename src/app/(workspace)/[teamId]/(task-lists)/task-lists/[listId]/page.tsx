@@ -42,7 +42,7 @@ export default function TaskListPage() {
     ? "오늘"
     : format(selectedDate, "M월 d일 (EEE)", { locale: ko });
 
-  const formattedDateForQuery = selectedDate.toLocaleDateString("sv-SE");
+  const formattedDateForQuery = format(selectedDate, "yyyy-MM-dd");
 
   interface FormData {
     name: string;
@@ -55,9 +55,10 @@ export default function TaskListPage() {
   const getTodayKoreaISOString = () => {
     const now = new Date();
     const koreaNow = new Date(now.getTime());
+
+    console.log(koreaNow);
     return koreaNow.toISOString();
   };
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -193,9 +194,8 @@ export default function TaskListPage() {
           setFormData({
             name: "",
             description: "",
-            startDate: getTodayKoreaISOString(),
+            startDate: new Date().toISOString(),
             frequencyType: "ONCE",
-            // monthDay, weekDays 초기화도 필요하면 여기에 추가
           });
         },
         onError: (error) => {
