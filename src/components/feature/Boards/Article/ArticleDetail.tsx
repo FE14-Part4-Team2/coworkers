@@ -9,6 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 import { useToastStore } from "@/stores/toastStore";
 import DeleteModal from "@/components/common/Modal/DeleteModal";
+import JoinButton from "./JoinButton";
 
 interface ArticleDetailProps {
   data: ArticleDetailType;
@@ -22,6 +23,14 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
   const deleteArticleMutation = useDeleteArticle();
 
   const isMyArticle = user?.id === data.writer.id;
+
+  let parsedContent = { content: data.content, token: null };
+
+  try {
+    parsedContent = JSON.parse(data.content);
+  } catch {
+    parsedContent = { content: data.content, token: null };
+  }
 
   const handleEdit = () => {
     router.push(`/boards/${data.id}/edit`);
@@ -68,7 +77,7 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
       <hr className="w-full border-t border-border-primary opacity-10" />
 
       <div className="flex justify-between items-center mt-5">
-        <div className="flex items-center gap-4 sm:gap-8 md:gap-20">
+        <div className="flex items-center gap-4 sm:gap-8 md:gap-10">
           <span className="text-text-primary text-sm sm:text-md">
             {data.writer.nickname}
           </span>
@@ -91,27 +100,34 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
         </div>
       )}
 
-      <section className="text-text-secondary text-md sm:text-lg py-12 sm:py-16 whitespace-pre-line !leading-6">
-        {data.content}
+      {parsedContent.token && <JoinButton token={parsedContent.token} />}
+
+      <section className="text-text-secondary text-md sm:text-lg py-10 sm:py-12 whitespace-pre-line !leading-6">
+        {parsedContent.content}
       </section>
 
-      <div className="flex items-center gap-4 border-b pb-6 mb-12">
-        <div className="flex items-center gap-3">
-          <Image
-            src="/icons/icon-comment.svg"
-            alt="댓글"
-            width={28}
-            height={28}
-          />
-          <span className="text-text-primary text-base">
+      <div className="flex items-center gap-4 border-b pb-6 mb-12 group">
+        <div className="flex items-center gap-3 transition-all duration-300 hover:scale-105">
+          <div className="relative">
+            <Image
+              src="/icons/icon-comment.svg"
+              alt="댓글"
+              width={28}
+              height={28}
+              className="transition-transform duration-300 group-hover:rotate-12"
+            />
+          </div>
+          <span className="text-text-primary text-base font-medium">
             {data.commentCount}개의 댓글
           </span>
         </div>
-        <LikeButton
-          isLiked={data.isLiked}
-          articleId={data.id}
-          likeCount={data.likeCount}
-        />
+        <div className="transform transition-all duration-300 hover:scale-110">
+          <LikeButton
+            isLiked={data.isLiked}
+            articleId={data.id}
+            likeCount={data.likeCount}
+          />
+        </div>
       </div>
     </>
   );
