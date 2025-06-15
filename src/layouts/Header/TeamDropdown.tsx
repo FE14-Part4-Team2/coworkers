@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import DropDownMenu from "@/components/common/Dropdown/Menu";
-import DropDownItem from "@/components/common/Dropdown/Item";
 import useClickOutside from "@/hooks/useClickOutside";
 import Link from "next/link";
+import TeamListItem from "./TeamListItem";
 
 interface Team {
   name: string;
@@ -50,28 +50,7 @@ export default function TeamDropdown({
         className="absolute w-[13.5rem] text-center top-full mt-2 right-0"
       >
         {teams.map((team) => (
-          <DropDownItem
-            key={team.id}
-            className={`text-lg w-full h-11.5 flex items-center justify-between ${
-              team.name === currentTeam ? "font-bold bg-bg-hover" : ""
-            }`}
-          >
-            <Link href={`/${team.id}`}>
-              <div
-                className="flex items-center gap-2"
-                onClick={() => onTeamClick(team.name)}
-              >
-                <Image
-                  src={team.img}
-                  alt={team.name}
-                  width={24}
-                  height={24}
-                  className="rounded-full object-cover"
-                />
-                {team.name}
-              </div>
-            </Link>
-          </DropDownItem>
+          <TeamListItem key={team.id} team={team} onTeamClick={onTeamClick} />
         ))}
         <Link href="/create">
           <span className="inline-block py-3.5 mt-2 border-t w-full text-center border border-white rounded-xl text-text-primary cursor-pointer">

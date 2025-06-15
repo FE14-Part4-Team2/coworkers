@@ -8,6 +8,7 @@ import TeamDropdown from "./TeamDropdown";
 import { useAuthStore } from "@/stores/authStore";
 import { useMyGroups } from "@/api/user/user.query";
 import { useTeamStore } from "@/stores/teamStore";
+import useImageFallback from "@/hooks/useImageFallback";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Header() {
   const { data: teams } = useMyGroups();
   const { user } = useAuthStore();
   const { currentTeam, setCurrentTeam } = useTeamStore();
+  const userImg = useImageFallback(user?.image, "/icons/icon-avatar.svg");
 
   useEffect(() => {
     if (!teams) return;
@@ -96,7 +98,7 @@ export default function Header() {
                   teams={teams.map((team) => ({
                     name: team.name,
                     img: team.image ?? "/icons/icon-avatar.svg",
-                    id: team.id, // 기본 이미지 처리
+                    id: team.id,
                   }))}
                   currentTeam={currentTeam}
                   isOpen={isTeamMenuOpen}
@@ -120,7 +122,7 @@ export default function Header() {
             <div className="relative">
               <UserDropdown
                 userName={user?.nickname ?? ""}
-                userImg={user?.image ?? "/icons/icon-user.svg"}
+                userImg={userImg}
                 isOpen={isMenuOpen}
                 onToggle={toggleMenu}
                 onClose={() => setIsMenuOpen(false)}

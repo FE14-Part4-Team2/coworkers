@@ -37,13 +37,15 @@ export default function UserDropdown({
   return (
     <div ref={ref} className="relative">
       <button onClick={onToggle} className="flex gap-2 cursor-pointer">
-        <Image
-          src={userImg}
-          alt="프로필"
-          width={16}
-          height={16}
-          className="rounded-full cursor-pointer"
-        />
+        <div className="relative w-6 h-6 sm:w-4 sm:h-4">
+          <Image
+            src={userImg}
+            alt="프로필"
+            fill
+            className="rounded-full cursor-pointer"
+          />
+        </div>
+
         <span className="whitespace-nowrap text-md text-text-primary hidden md:inline-block">
           {userName}
         </span>
