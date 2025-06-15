@@ -26,6 +26,7 @@ export default function DropDownTrigger({
       `}
       whileHover={hoverAnimation}
       whileTap={tapAnimation}
+      type="button"
     >
       {children}
       <Image

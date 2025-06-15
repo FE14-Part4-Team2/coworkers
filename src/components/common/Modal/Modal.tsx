@@ -48,7 +48,7 @@ export default function Modal({
   if (!isMounted) return null;
 
   const modalRadiusClass = clsx(
-    "w-full sm:max-w-md sm:w-[384px] p-8 bg-bg-secondary relative",
+    "w-full sm:max-w-md sm:w-[384px] p-1 bg-bg-secondary relative",
     {
       "rounded-t-[0.75rem] sm:rounded-[1.5rem]": modalType === "profile",
       "rounded-t-[0.75rem] sm:rounded-[0.75rem]": modalType !== "profile",
@@ -119,64 +119,66 @@ export default function Modal({
       onClick={closeModal}
     >
       <div className={modalRadiusClass} onClick={(e) => e.stopPropagation()}>
-        {confirmButtonType === "submit" ? (
-          <form onSubmit={onSubmit}>
-            {showCloseIcon && (
-              <button
-                type="button"
-                className="absolute top-4 right-4"
-                onClick={closeModal}
-                aria-label="close"
-              >
-                <img
-                  src="/icons/icon-close.svg"
-                  alt="닫기"
-                  className="w-5 h-5"
-                />
-              </button>
-            )}
-            <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
-              {title}
-            </h2>
-            {description && (
-              <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
-                {description}
-              </p>
-            )}
-            {children}
-            {renderButtons()}
-          </form>
-        ) : (
-          <>
-            {showCloseIcon && (
-              <button
-                type="button"
-                className="absolute top-4 right-4"
-                onClick={closeModal}
-                aria-label="close"
-              >
-                <img
-                  src="/icons/icon-close.svg"
-                  alt="닫기"
-                  className="w-5 h-5"
-                />
-              </button>
-            )}
-            {headerImage && (
-              <div className="flex justify-center mb-4">{headerImage}</div>
-            )}
-            <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
-              {title}
-            </h2>
-            {description && (
-              <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
-                {description}
-              </p>
-            )}
-            {children}
-            {renderButtons()}
-          </>
-        )}
+        <div className="max-h-[80vh] overflow-y-auto p-8 scroll-custom">
+          {confirmButtonType === "submit" ? (
+            <form onSubmit={onSubmit}>
+              {showCloseIcon && (
+                <button
+                  type="button"
+                  className="absolute top-4 right-4"
+                  onClick={closeModal}
+                  aria-label="close"
+                >
+                  <img
+                    src="/icons/icon-close.svg"
+                    alt="닫기"
+                    className="w-5 h-5"
+                  />
+                </button>
+              )}
+              <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
+                {title}
+              </h2>
+              {description && (
+                <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
+                  {description}
+                </p>
+              )}
+              {children}
+              {renderButtons()}
+            </form>
+          ) : (
+            <>
+              {showCloseIcon && (
+                <button
+                  type="button"
+                  className="absolute top-4 right-4"
+                  onClick={closeModal}
+                  aria-label="close"
+                >
+                  <img
+                    src="/icons/icon-close.svg"
+                    alt="닫기"
+                    className="w-5 h-5"
+                  />
+                </button>
+              )}
+              {headerImage && (
+                <div className="flex justify-center mb-4">{headerImage}</div>
+              )}
+              <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
+                {title}
+              </h2>
+              {description && (
+                <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
+                  {description}
+                </p>
+              )}
+              {children}
+              {renderButtons()}
+            </>
+          )}
+        </div>
       </div>
     </div>,
     document.body,
