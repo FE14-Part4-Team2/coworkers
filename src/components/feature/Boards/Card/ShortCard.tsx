@@ -8,13 +8,9 @@ export const DEFAULT_PROFILE_IMG = "/icons/icon-profile-default.svg";
 
 export interface CardProps {
   article: ArticleType;
-  profileImg?: string;
 }
 
-export default function ShortCard({
-  article,
-  profileImg = DEFAULT_PROFILE_IMG,
-}: CardProps) {
+export default function ShortCard({ article }: CardProps) {
   const router = useRouter();
 
   const handleCardClick = () => {
@@ -48,15 +44,6 @@ export default function ShortCard({
 
             <div className="border-gray-100 pt-[2.125rem]">
               <div className="flex gap-3 items-center">
-                <div>
-                  <Image
-                    src={profileImg}
-                    alt="작성자"
-                    width={32}
-                    height={32}
-                    className={sharedCardStyles.profileImage}
-                  />
-                </div>
                 <div className="flex-grow">
                   <div className={sharedCardStyles.authorName}>
                     {article.writer.nickname}
@@ -105,13 +92,6 @@ export default function ShortCard({
 
           <div className="mt-auto">
             <div className="flex gap-2 sm:gap-3  items-center">
-              <Image
-                src={profileImg}
-                alt="작성자"
-                width={32}
-                height={32}
-                className={sharedCardStyles.profileImage}
-              />
               <div className="flex-grow">
                 <div className={sharedCardStyles.authorName}>
                   {article.writer.nickname}

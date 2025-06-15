@@ -2,13 +2,9 @@
 import Image from "next/image";
 import { sharedCardStyles, longCardStyles } from "@/styles/sharedCardStyles";
 import { CardProps } from "./ShortCard";
-import { DEFAULT_PROFILE_IMG } from "./ShortCard";
 import { useRouter } from "next/navigation";
 
-export default function LongCard({
-  article,
-  profileImg = DEFAULT_PROFILE_IMG,
-}: CardProps) {
+export default function LongCard({ article }: CardProps) {
   const router = useRouter();
 
   const handleCardClick = () => {
@@ -48,15 +44,6 @@ export default function LongCard({
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={profileImg}
-                          alt="작성자"
-                          width={32}
-                          height={32}
-                          className={sharedCardStyles.profileImage}
-                        />
-                      </div>
                       <div className="flex-1 min-w-0">
                         <div
                           className={`${sharedCardStyles.authorName} truncate`}
@@ -85,15 +72,6 @@ export default function LongCard({
                 <div className="hidden sm:flex items-center justify-between gap-4 min-w-0">
                   <div className="flex items-center gap-4 min-w-0 flex-1">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={profileImg}
-                          alt="작성자"
-                          width={32}
-                          height={32}
-                          className={sharedCardStyles.profileImage}
-                        />
-                      </div>
                       <div className="min-w-0 flex-1">
                         <div className={`${sharedCardStyles.authorName}`}>
                           {article.writer.nickname}
@@ -157,15 +135,6 @@ export default function LongCard({
 
             <div className="flex items-center justify-between">
               <div className={sharedCardStyles.authorSection}>
-                <div className="relative">
-                  <Image
-                    src={profileImg}
-                    alt="작성자"
-                    width={32}
-                    height={32}
-                    className={sharedCardStyles.profileImage}
-                  />
-                </div>
                 <div>
                   <div className={sharedCardStyles.authorName}>
                     {article.writer.nickname}
