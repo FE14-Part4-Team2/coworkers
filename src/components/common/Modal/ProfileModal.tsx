@@ -3,6 +3,7 @@
 import { useModalStore } from "@/stores/modalStore";
 import Modal from "./Modal";
 import Image from "next/image";
+import Button from "../Button";
 
 interface ProfileModalProps {
   name: string;
@@ -31,29 +32,32 @@ export default function ProfileModal({
       description={email}
       buttonType="none-button"
       headerImage={
-        <Image
-          src={profileImageUrl || "/icons/icon-profile-default.svg"}
-          alt="프로필 이미지"
-          width={50}
-          height={50}
-          className="rounded-full object-cover"
-        />
+        <div className="relative rounded-full w-[46px] h-[46px] sm:w-[52px] sm:h-[52px] overflow-hidden">
+          <Image
+            src={profileImageUrl || "/icons/icon-profile-default.svg"}
+            alt="프로필 이미지"
+            fill
+            className="rounded-full object-cover"
+          />
+        </div>
       }
     >
-      <div className="mt-3 flex flex-col gap-2">
-        <button
-          className="w-full bg-brand-primary text-white py-2 rounded"
+      <div className="mt-3 flex flex-col gap-3">
+        <Button
+          label="이메일 복사하기"
+          variant="primary"
+          size="md"
+          className="w-full"
           onClick={onCopy}
-        >
-          이메일 복사하기
-        </button>
+        />
         {isSelf && (
-          <button
-            className="w-full border border-border-primary text-text-primary py-2 rounded"
+          <Button
+            label="내 계정 설정"
+            variant="ghost"
+            size="md"
+            className="w-full"
             onClick={onClickUserSetting}
-          >
-            계정 설정
-          </button>
+          />
         )}
       </div>
     </Modal>

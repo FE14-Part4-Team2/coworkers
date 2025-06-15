@@ -301,13 +301,13 @@ export default function DashboardPage() {
         (deleteList ? (
           <DeleteModal
             title={`\"${deleteList?.name}"을(를) 삭제하시겠습니까?`}
-            description={`해당 할 일 목록에 포함된 할 일 리스트가 모두 삭제됩니다.`}
+            description={`해당 할 일 목록에 포함된 할 일 리스트가 \n 모두 삭제됩니다.`}
             onConfirm={handleListDelete}
           />
         ) : memberToDelete ? (
           <DeleteModal
-            title={`${memberToDelete.name} 을(를) 팀에서 삭제하시겠습니까?`}
-            description={`해당 멤버에 관한 모든 정보가 팀에서 삭제되며 \n 본인을 팀에서 삭제할 경우 팀에 접근이 불가능합니다.`}
+            title={`\"${memberToDelete.name}" 님을 내보내시겠습니까?`}
+            description={`해당 멤버에 관한 모든 정보가 팀에서 삭제되며 \n 본인을 팀에서 삭제할 경우 접근이 불가능합니다.`}
             onConfirm={handleMemberDelete}
           />
         ) : null)}
