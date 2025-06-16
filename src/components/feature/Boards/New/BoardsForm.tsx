@@ -10,7 +10,7 @@ import { useEffect } from "react";
 export interface FormValues {
   title: string;
   content: string;
-  token: string;
+  token?: string;
 }
 
 export interface BoardsFormProps {
@@ -97,13 +97,11 @@ export default function BoardsForm({
           <span className={errorStyle}>{errors.title.message}</span>
         )}
       </LabeledField>
-      <LabeledField id="token" label="팀 참여 토큰" required>
+      <LabeledField id="token" label="팀 참여 링크 ">
         <Input
           id="token"
-          placeholder="팀 참여 토큰을 입력해주세요."
-          {...register("token", {
-            required: "팀 참여 토큰은 필수 입력입니다.",
-          })}
+          placeholder="팀 참여 링크를 입력해주세요."
+          {...register("token")}
           error={!!errors.token}
           className={!!errors.token ? "hover:border-status-danger" : ""}
         />

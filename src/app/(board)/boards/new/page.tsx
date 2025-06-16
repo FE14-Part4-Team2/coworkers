@@ -17,12 +17,17 @@ export default function BoardsNewPage() {
 
   const handleSubmit = useCallback(
     (data: FormValues) => {
+      const contentPayload: { content: string; token?: string } = {
+        content: data.content,
+      };
+
+      if (data.token?.trim()) {
+        contentPayload.token = data.token;
+      }
+
       const payload = {
         title: data.title,
-        content: JSON.stringify({
-          content: data.content,
-          token: data.token,
-        }),
+        content: JSON.stringify(contentPayload),
         ...(imageUrl && { image: imageUrl }),
       };
 
