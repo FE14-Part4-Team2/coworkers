@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ReactQueryProvider } from "@/lib/reactQueryProvider";
-import LandingHeader from "@/layouts/Header/LandingHeader";
 import Toast from "@/components/common/Toast/Toast";
 import AuthProvider from "@/components/feature/Auth/AuthProvider/AuthProvider";
 import { cookies } from "next/headers";
-import Header from "@/layouts/Header/Header";
+import LandingHeaderWrap from "@/layouts/Header/LandingHeaderWrap";
 
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
@@ -32,7 +31,7 @@ export default async function RootLayout({
       <body className="bg-bg-primary text-white">
         <ReactQueryProvider>
           <AuthProvider hasToken={!!token}>
-            {!token ? <LandingHeader /> : <Header />}
+            <LandingHeaderWrap />
             {children}
             <div
               id="toast-root"
