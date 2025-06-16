@@ -12,7 +12,7 @@ import { UpdateMyInfoRequest } from "./user.schema";
 import { Message } from "../auth/auth.schema";
 import { useToastStore } from "@/stores/toastStore";
 
-const userQuery = {
+export const userQuery = {
   all: ["user"],
   myInfoKey: () => [...userQuery.all, "myInfo"],
   myInfo: () =>
