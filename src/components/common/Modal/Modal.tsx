@@ -4,6 +4,7 @@ import { useEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useModalStore } from "@/stores/modalStore";
 import clsx from "clsx";
+import Button from "../Button";
 
 type ModalButtonType =
   | "single-green"
@@ -48,10 +49,17 @@ export default function Modal({
   if (!isMounted) return null;
 
   const modalRadiusClass = clsx(
-    "w-full sm:max-w-md sm:w-[384px] p-8 bg-bg-secondary relative",
+    "w-full sm:max-w-md sm:w-96 bg-bg-secondary relative",
     {
-      "rounded-t-[0.75rem] sm:rounded-[1.5rem]": modalType === "profile",
-      "rounded-t-[0.75rem] sm:rounded-[0.75rem]": modalType !== "profile",
+      "rounded-t-xl px-12 pt-12 pb-8 sm:rounded-3xl sm:p-8":
+        modalType === "profile",
+      "rounded-t-3xl px-12 pt-12 pb-8 sm:rounded-xl": modalType === "invite",
+      "rounded-t-3xl p-8 sm:rounded-xl sm:px-12 pt-12":
+        modalType === "calendar",
+      "rounded-t-xl px-12 pt-12 pb-8 sm:rounded-xl":
+        modalType !== "profile" &&
+        modalType !== "invite" &&
+        modalType !== "calendar",
     },
   );
 
@@ -59,31 +67,34 @@ export default function Modal({
     switch (buttonType) {
       case "single-green":
         return (
-          <button
+          <Button
+            label={confirmText}
             type={confirmButtonType}
-            className="mt-3 w-full bg-brand-primary text-white py-2 rounded"
+            variant="primary"
+            size="md"
+            className="mt-3 w-full"
             onClick={confirmButtonType === "button" ? onConfirm : undefined}
-          >
-            {confirmText}
-          </button>
+          />
         );
       case "double-white-green":
         return (
           <div className="mt-6 flex gap-2">
-            <button
+            <Button
+              label={cancelText}
               type="button"
-              className="w-1/2 border border-gray-300 text-gray-700 py-2 rounded"
+              variant="secondary"
+              size="md"
+              className="w-1/2"
               onClick={closeModal}
-            >
-              {cancelText}
-            </button>
-            <button
+            />
+            <Button
+              label={confirmText}
               type={confirmButtonType}
-              className="w-1/2 bg-brand-primary text-white py-2 rounded"
+              variant="primary"
+              size="md"
+              className="w-1/2"
               onClick={onConfirm}
-            >
-              {confirmText}
-            </button>
+            />
           </div>
         );
       case "double-white-red":
@@ -91,23 +102,22 @@ export default function Modal({
           <div className="mt-6 flex gap-2">
             <button
               type="button"
-              className="w-1/2 border border-gray-300 text-gray-700 py-2 rounded "
+              className="w-1/2 border border-text-secondary bg-white text-text-default font-semibold text-lg py-3 rounded-xl"
               onClick={closeModal}
             >
               {cancelText}
             </button>
-            <button
+            <Button
+              label={confirmText}
               type={confirmButtonType}
-              className="w-1/2 bg-red-500 text-white py-2 rounded"
+              variant="danger"
+              size="md"
+              className="w-1/2"
               onClick={onConfirm}
-            >
-              {confirmText}
-            </button>
+            />
           </div>
         );
       case "none-button":
-        return null;
-
       default:
         return null;
     }
@@ -131,15 +141,15 @@ export default function Modal({
                 <img
                   src="/icons/icon-close.svg"
                   alt="닫기"
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                 />
               </button>
             )}
-            <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
+            <h2 className="text-lg text-center text-text-primary font-medium mb-2">
               {title}
             </h2>
             {description && (
-              <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
+              <p className="text-md text-center text-text-secondary font-medium mb-6 whitespace-pre-line">
                 {description}
               </p>
             )}
@@ -158,18 +168,18 @@ export default function Modal({
                 <img
                   src="/icons/icon-close.svg"
                   alt="닫기"
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                 />
               </button>
             )}
             {headerImage && (
               <div className="flex justify-center mb-4">{headerImage}</div>
             )}
-            <h2 className="text-lg text-center text-text-inverse font-medium mb-2">
+            <h2 className="text-lg text-center text-text-primary font-medium mb-2">
               {title}
             </h2>
             {description && (
-              <p className="text-sm text-center text-text-default font-medium mb-4 whitespace-pre-line">
+              <p className="text-md text-center text-text-secondary font-medium mb-6 whitespace-pre-line">
                 {description}
               </p>
             )}
