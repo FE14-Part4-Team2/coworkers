@@ -76,7 +76,7 @@ export default function PasswordChangeModal({
           id="confirm-password"
           type="password"
           label="새 비밀번호 확인"
-          placeholder="비밀번호를 다시 한 번 입력해주세요."
+          placeholder="새 비밀번호를 다시 한 번 입력해주세요."
           {...register("confirmPassword", {
             required: "비밀번호 확인을 입력해주세요.",
             validate: (value) =>

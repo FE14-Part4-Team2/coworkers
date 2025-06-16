@@ -33,7 +33,7 @@ export default function TodoCreateModal({
       confirmButtonType="submit"
       onSubmit={onSubmit}
     >
-      <div className="mb-4">
+      <div className="my-4">
         <Input
           id="todo-title"
           name="title"
@@ -46,14 +46,14 @@ export default function TodoCreateModal({
         />
       </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-white mb-1">
+      <div className="mb-6">
+        <label className="block text-lg font-medium text-text-primary mb-2">
           할 일 메모
         </label>
         <textarea
           name="memo"
           placeholder="메모를 입력해주세요."
-          className="w-full border border-gray-300 rounded px-3 py-2 text-black"
+          className="w-full border border-border-primary/10 rounded-xl px-4 py-3 bg-bg-secondary text-text-primary text-lg placeholder:text-text-default placeholder:text-lg placeholder:font-normal"
           value={formData.memo}
           onChange={onChange}
         />
