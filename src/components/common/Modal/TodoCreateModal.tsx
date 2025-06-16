@@ -122,7 +122,7 @@ export default function TodoCreateModal({
       confirmButtonType="submit"
       onSubmit={onSubmit}
     >
-      <div className="mb-4">
+      <div className="my-4">
         <Input
           id="todo-title"
           name="name"

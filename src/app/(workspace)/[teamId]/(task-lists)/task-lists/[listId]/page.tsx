@@ -20,6 +20,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTaskListQuery } from "@/api/task-list/task-list.query";
 import Button from "@/components/common/Button";
 import TodoCreateModal from "@/components/common/Modal/TodoCreateModal";
+import TaskDetail from "@/components/feature/TaskList/TaskDetail";
 
 export default function TaskListPage() {
   const searchParams = useSearchParams();
@@ -43,6 +44,14 @@ export default function TaskListPage() {
     : format(selectedDate, "M월 d일 (EEE)", { locale: ko });
 
   const formattedDateForQuery = format(selectedDate, "yyyy-MM-dd");
+
+  const [selectedTask, setSelectedTask] = useState<TaskType | null>(null);
+  const [detail, setDetail] = useState(false);
+
+  const handleTaskClick = (task: TaskType) => {
+    setSelectedTask(task);
+    setDetail(true);
+  };
 
   interface FormData {
     name: string;
@@ -364,11 +373,16 @@ export default function TaskListPage() {
                 key={task.id}
                 task={task}
                 onToggle={() => handleCheckToggle(task)}
+                onClick={() => handleTaskClick(task)}
               />
             ))}
           </ul>
         )}
       </div>
+
+      {detail && selectedTask && (
+        <TaskDetail task={selectedTask} onClose={() => setDetail(false)} />
+      )}
       <div className="mt-4 flex justify-end">
         <Button
           type="button"

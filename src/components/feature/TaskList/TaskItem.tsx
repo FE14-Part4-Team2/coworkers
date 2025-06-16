@@ -14,9 +14,10 @@ interface TaskItemProps {
     frequency: FrequencyType;
   };
   onToggle: () => void;
+  onClick: () => void;
 }
 
-export default function TaskItem({ task, onToggle }: TaskItemProps) {
+export default function TaskItem({ task, onToggle, onClick }: TaskItemProps) {
   const frequencyTextMap: Record<FrequencyType, string> = {
     ONCE: "한 번",
     DAILY: "매일 반복",
@@ -24,7 +25,10 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
     MONTHLY: "월 반복",
   };
   return (
-    <li className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2  cursor-pointer">
+    <li
+      className="bg-bg-secondary px-[14px] py-[12px] rounded-[8px] flex flex-col gap-2  cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex items-center">
         <div className="flex items-center gap-2">
           <button

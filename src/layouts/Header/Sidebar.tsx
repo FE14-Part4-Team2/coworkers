@@ -2,20 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 
 interface Team {
+  teamId: number;
   name: string;
-  img: string;
 }
-
 interface SidebarProps {
-  user: {
-    name: string;
-    teams: Team[];
-  };
+  groups: Team[] | null;
   currentTeam: string | null;
   onClose: () => void;
 }
 
-export default function Sidebar({ user, onClose }: SidebarProps) {
+export default function Sidebar({ groups, onClose }: SidebarProps) {
   return (
     <aside className="fixed top-0 left-0 z-50 w-64 h-full bg-bg-secondary shadow-md p-6">
       <div className="flex justify-end mb-9">
@@ -30,8 +26,10 @@ export default function Sidebar({ user, onClose }: SidebarProps) {
       </div>
 
       <div className="flex flex-col gap-6">
-        {user.teams.map((team) => (
-          <div key={team.name}>{team.name}</div>
+        {groups?.map((team) => (
+          <Link href={`/${team.teamId}`} key={team.teamId}>
+            <span className="block">{team.name}</span>
+          </Link>
         ))}
 
         <Link href="/boards" className={"text-lg text-interaction-focus"}>
