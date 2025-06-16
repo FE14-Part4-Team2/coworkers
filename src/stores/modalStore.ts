@@ -14,6 +14,7 @@ type ModalType =
   | "delete"
   | "delete-article"
   | "delete-article-comment"
+  | "no-token"
   | null;
 
 interface ModalState {
