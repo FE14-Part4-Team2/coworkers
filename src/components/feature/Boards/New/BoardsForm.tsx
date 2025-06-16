@@ -97,7 +97,17 @@ export default function BoardsForm({
           <span className={errorStyle}>{errors.title.message}</span>
         )}
       </LabeledField>
-      <LabeledField id="token" label="팀 참여 링크 ">
+      <LabeledField
+        id="token"
+        label={
+          <>
+            팀 참여 링크{" "}
+            <span className="ml-1 text-sm text-text-secondary">
+              (관리자는 팀페이지에서 복사할 수 있습니다.)
+            </span>
+          </>
+        }
+      >
         <Input
           id="token"
           placeholder="팀 참여 링크를 입력해주세요."

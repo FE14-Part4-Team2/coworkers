@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 interface LabeledFieldProps {
   id: string;
-  label: string;
+  label: ReactNode;
   required?: boolean;
   children: React.ReactNode;
   className?: string;
