@@ -25,6 +25,7 @@ import {
 } from "@/api/task-list/task-list.query";
 import TodoEditModal from "@/components/common/Modal/TodoEditModal";
 import { groupService } from "@/api/group/group.service";
+import Skeleton from "@/components/common/Skeleton/Skeleton";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -101,8 +102,26 @@ export default function DashboardPage() {
 
   if (isLoading || isMembershipLoading || !groupData || !memberships) {
     return (
-      <div className="w-full pt-20 flex items-center justify-center text-text-default">
-        로딩 중 ...
+      <div className="w-full flex flex-col gap-12">
+        <Skeleton className="h-16 w-full rounded-xl" />
+        <div className="flex flex-col gap-4">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="w-full h-[13.5625rem] rounded-xl" />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Skeleton className="h-6 w-24" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-[4.25rem] rounded-xl w-full" />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
