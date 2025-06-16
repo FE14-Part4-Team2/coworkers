@@ -103,7 +103,7 @@ export default function BoardsForm({
           <>
             팀 참여 링크{" "}
             <span className="ml-1 text-sm text-text-secondary">
-              (관리자는 팀페이지에서 복사할 수 있습니다.)
+              (팀 참여 링크는 팀페이지에서 복사할 수 있습니다.)
             </span>
           </>
         }
