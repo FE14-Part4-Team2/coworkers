@@ -46,11 +46,12 @@ export default function TeamFormLayout({
           value={inputValue}
           onChange={onInputChange}
           onBlur={onInputBlur}
-          error={!isInputError}
+          error={isInputError}
           onKeyDown={onKeyDown}
         />
         {error && <TeamNameError message={errorMessage} />}
         <Button
+          type="submit"
           label={buttonLabel}
           variant="primary"
           className="w-full mt-[2.5rem] mb-[1.5rem]"
