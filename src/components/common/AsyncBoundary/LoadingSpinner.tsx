@@ -10,7 +10,7 @@ export default function LoadingSpinner({
       <div className="relative mb-6">
         <div className="absolute inset-0 w-16 h-16 bg-brand-primary/10 rounded-full blur-md"></div>
 
-        <div className="relative w-16 h-16 border-3 border-gray-700 border-t-brand-primary border-r-brand-primary rounded-full animate-spin"></div>
+        <div className="relative w-16 h-16 border-3 border-bg-tertiary border-t-brand-primary border-r-brand-primary rounded-full animate-spin"></div>
 
         <div className="absolute inset-2 w-12 h-12 border-2 border-transparent border-b-brand-secondary rounded-full animate-spin animate-reverse"></div>
       </div>
