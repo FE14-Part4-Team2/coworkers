@@ -55,7 +55,7 @@ export default function TeamEditPage() {
     try {
       await updateGroupMutation.mutateAsync({
         name: editedTeamName,
-        image: teamProfileUrl,
+        image: teamProfileUrl?.trim() ? teamProfileUrl : undefined,
       });
 
       showToast("팀 정보가 성공적으로 수정되었습니다.", "success");
