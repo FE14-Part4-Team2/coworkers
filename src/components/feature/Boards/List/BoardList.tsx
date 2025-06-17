@@ -20,11 +20,7 @@ export default function BoardList({ keyword }: BoardListProps) {
   const pageSize = 6;
   const debouncedKeyword = useDebounce(keyword, 300);
 
-  const {
-    data: articleList = [],
-    totalCount = 0,
-    isLoading,
-  } = useArticleList({
+  const { data: articleList = [], totalCount = 0 } = useArticleList({
     page,
     pageSize,
     orderBy,
@@ -46,9 +42,7 @@ export default function BoardList({ keyword }: BoardListProps) {
         />
       </div>
 
-      {!isLoading &&
-      debouncedKeyword.trim() !== "" &&
-      articleList.length === 0 ? (
+      {debouncedKeyword.trim() !== "" && articleList.length === 0 ? (
         <EmptyCard keyword={debouncedKeyword} />
       ) : (
         <>

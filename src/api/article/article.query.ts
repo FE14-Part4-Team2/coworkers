@@ -8,6 +8,7 @@ import {
   UpdateArticleRequest,
   UpdateArticleResponse,
 } from "./article.schema";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 const STALE_TIME_5_MIN = 1000 * 60 * 5;
 const GC_TIME_10_MIN = 1000 * 60 * 10;
@@ -58,7 +59,7 @@ export const useArticleList = (params?: {
   orderBy?: string;
   keyword?: string;
 }) => {
-  const query = useQuery({
+  const query = useSuspenseQuery({
     queryKey: ["articles", params],
     queryFn: () => articleService.getArticleList(params),
     staleTime: STALE_TIME_5_MIN,
