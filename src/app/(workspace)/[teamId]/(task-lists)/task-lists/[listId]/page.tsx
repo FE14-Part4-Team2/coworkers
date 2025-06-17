@@ -13,14 +13,24 @@ import { useModalStore } from "@/stores/modalStore";
 import TaskItem from "@/components/feature/TaskList/TaskItem";
 import {
   useCreateTaskMutation,
+  useDeleteTaskMutation,
   useUpdateTaskMutation,
 } from "@/api/task/task.query";
-import { TaskType, CreateTaskRequest } from "@/api/task/task.schema";
+import {
+  TaskType,
+  CreateTaskRequest,
+  TaskDetailType,
+} from "@/api/task/task.schema";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTaskListQuery } from "@/api/task-list/task-list.query";
+import {
+  useTaskListQuery,
+  useCreateTaskList,
+} from "@/api/task-list/task-list.query";
 import Button from "@/components/common/Button";
 import TodoCreateModal from "@/components/common/Modal/TodoCreateModal";
 import TaskDetail from "@/components/feature/TaskList/TaskDetail";
+import TodoModal from "@/components/common/Modal/TodoModal";
+import { useToastStore } from "@/stores/toastStore";
 
 export default function TaskListPage() {
   const searchParams = useSearchParams();
@@ -33,8 +43,11 @@ export default function TaskListPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
   const { mutate: updateTask } = useUpdateTaskMutation();
+  const { mutate: deleteTask } = useDeleteTaskMutation();
   const { mutate: createTask } = useCreateTaskMutation();
+  const { mutate: createTaskList } = useCreateTaskList(groupId);
   const { data: group, isLoading, isError } = useGroupQuery(groupId);
 
   const [activeTab, setActiveTab] = useState(listId);
@@ -45,11 +58,12 @@ export default function TaskListPage() {
 
   const formattedDateForQuery = format(selectedDate, "yyyy-MM-dd");
 
-  const [selectedTask, setSelectedTask] = useState<TaskType | null>(null);
+  const [selectedTask, setSelectedTask] = useState<TaskDetailType | null>(null);
   const [detail, setDetail] = useState(false);
+  const [todoTitle, setTodoTitle] = useState("");
 
   const handleTaskClick = (task: TaskType) => {
-    setSelectedTask(task);
+    setSelectedTask(task as unknown as TaskDetailType);
     setDetail(true);
   };
 
@@ -65,7 +79,6 @@ export default function TaskListPage() {
     const now = new Date();
     const koreaNow = new Date(now.getTime());
 
-    console.log(koreaNow);
     return koreaNow.toISOString();
   };
   const [formData, setFormData] = useState<FormData>({
@@ -218,11 +231,27 @@ export default function TaskListPage() {
     data: taskListData,
     isLoading: taskLoading,
     isError: taskError,
+    refetch: refetchTaskList,
   } = useTaskListQuery({
     groupId,
     taskListId: String(activeTab),
     date: formattedDateForQuery,
   });
+
+  const handleCommentChange = () => {
+    refetchTaskList();
+  };
+
+  useEffect(() => {
+    if (!selectedTask) return;
+
+    const updatedTask = taskListData?.tasks.find(
+      (t) => t.id === selectedTask.id,
+    );
+    if (updatedTask) {
+      setSelectedTask(updatedTask as unknown as TaskDetailType);
+    }
+  }, [taskListData, selectedTask?.id, selectedTask]);
 
   const handlePrev = () => {
     const newDate = subDays(selectedDate, 1);
@@ -251,7 +280,7 @@ export default function TaskListPage() {
     );
   };
 
-  const handleCheckToggle = (task: TaskType) => {
+  const handleEditToggle = (task: TaskType | TaskDetailType) => {
     const isDone = task.doneAt !== null;
     updateTask(
       {
@@ -260,6 +289,8 @@ export default function TaskListPage() {
         taskId: String(task.id),
         body: {
           done: !isDone,
+          name: task.name,
+          description: task.description || "",
         },
       },
       {
@@ -272,6 +303,58 @@ export default function TaskListPage() {
               formattedDateForQuery,
             ],
           });
+        },
+      },
+    );
+  };
+
+  const handleTaskUpdate = (updatedTask: {
+    id: number;
+    name: string;
+    description: string;
+  }) => {
+    updateTask(
+      {
+        groupId,
+        taskListId: String(activeTab),
+        taskId: String(updatedTask.id),
+        body: {
+          name: updatedTask.name,
+          description: updatedTask.description,
+        },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "taskList",
+              groupId,
+              String(activeTab),
+              formattedDateForQuery,
+            ],
+          });
+        },
+      },
+    );
+  };
+  const handleTaskDelete = (taskId: number) => {
+    deleteTask(
+      {
+        groupId,
+        taskListId: String(activeTab),
+        taskId: String(taskId),
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "taskList",
+              groupId,
+              String(activeTab),
+              formattedDateForQuery,
+            ],
+          });
+          setDetail(false); // 모달 닫기
         },
       },
     );
@@ -342,7 +425,7 @@ export default function TaskListPage() {
       />
 
       {/* 탭 영역 */}
-      <div className="flex space-x-3 mb-4">
+      <div className="flex items-center space-x-3 mb-4">
         {group.taskLists.map((taskList) => (
           <div
             key={taskList.id}
@@ -356,7 +439,45 @@ export default function TaskListPage() {
             {taskList.name}
           </div>
         ))}
+        <div
+          className="flex items-center pb-2 cursor-pointer"
+          onClick={() => openModal("todo")}
+        >
+          <Image
+            src="/icons/icon-plus-green.svg"
+            width={15}
+            height={15}
+            alt="plus"
+            className="mr-1"
+          />
+          <span className="text-md font-medium text-brand-primary">
+            새로운 목록 추가하기
+          </span>
+        </div>
       </div>
+
+      <TodoModal
+        value={todoTitle}
+        onChange={(e) => setTodoTitle(e.target.value)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!todoTitle.trim()) return;
+          createTaskList(
+            { name: todoTitle.trim() },
+            {
+              onSuccess: () => {
+                setTodoTitle("");
+                closeModal();
+                showToast("목록 추가 완료!", "success");
+              },
+              onError: () => {
+                closeModal();
+                showToast("목록 추가 실패", "error");
+              },
+            },
+          );
+        }}
+      />
 
       {/* 선택된 탭의 tasks 보여주기 */}
       <div className="mt-4 space-y-3">
@@ -372,7 +493,7 @@ export default function TaskListPage() {
               <TaskItem
                 key={task.id}
                 task={task}
-                onToggle={() => handleCheckToggle(task)}
+                onToggle={() => handleEditToggle(task)}
                 onClick={() => handleTaskClick(task)}
               />
             ))}
@@ -381,7 +502,14 @@ export default function TaskListPage() {
       </div>
 
       {detail && selectedTask && (
-        <TaskDetail task={selectedTask} onClose={() => setDetail(false)} />
+        <TaskDetail
+          task={selectedTask}
+          onClose={() => setDetail(false)}
+          onCommentChange={handleCommentChange}
+          onToggle={() => handleEditToggle(selectedTask)}
+          onUpdate={handleTaskUpdate}
+          onDeleteTask={handleTaskDelete}
+        />
       )}
       <div className="mt-4 flex justify-end">
         <Button
@@ -389,6 +517,7 @@ export default function TaskListPage() {
           label="할 일 추가"
           variant="primary"
           size="floating-md"
+          className="w-[6.5rem]"
           icon={
             <Image
               src="/icons/icon-plus.svg"

@@ -19,6 +19,12 @@ type CreateTaskArgs = {
   body: CreateTaskRequest;
 };
 
+type DeleteTaskArgs = {
+  groupId: string;
+  taskListId: string;
+  taskId: string;
+};
+
 export const useUpdateTaskMutation = () => {
   return useMutation({
     mutationFn: ({ groupId, taskListId, taskId, body }: UpdateTaskArgs) =>
@@ -30,5 +36,12 @@ export const useCreateTaskMutation = () => {
   return useMutation({
     mutationFn: ({ groupId, taskListId, body }: CreateTaskArgs) =>
       taskService.createTask(groupId, taskListId, body),
+  });
+};
+
+export const useDeleteTaskMutation = () => {
+  return useMutation({
+    mutationFn: ({ groupId, taskListId, taskId }: DeleteTaskArgs) =>
+      taskService.deleteTask(groupId, taskListId, taskId),
   });
 };

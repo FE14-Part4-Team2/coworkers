@@ -181,7 +181,7 @@ export default function TodoCreateModal({
           <div>
             <label className="block mb-2">반복 날짜 입력 (1~31)</label>
             <Input
-              type="number"
+              type="text"
               name="monthDay"
               min={1}
               max={31}
