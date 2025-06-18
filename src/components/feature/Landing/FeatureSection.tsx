@@ -14,13 +14,26 @@ const motionVariants = {
   groupImage: {
     hidden: { top: "-7rem", transition: { duration: 0.8, ease: "easeInOut" } },
     visible: (isMobile: boolean) => ({
-      top: isMobile ? "30vh" : "7vh",
+      top: isMobile ? "12rem" : "7vh",
       transition: { duration: 0.8, ease: "easeInOut" },
     }),
   },
   imageSlide: {
-    hidden: { y: "-30vh", transition: { duration: 0.8, ease: "easeInOut" } },
-    visible: { y: 0, transition: { duration: 0.8, ease: "easeInOut" } },
+    hidden: (custom: { isMobile: boolean; isShort: boolean }) => {
+      const { isMobile, isShort } = custom;
+
+      if (isMobile && isShort)
+        return { y: "-50%", transition: { duration: 0.8, ease: "easeInOut" } };
+
+      if (isMobile)
+        return { y: "-10%", transition: { duration: 0.8, ease: "easeInOut" } };
+
+      return { y: "-30vh", transition: { duration: 0.8, ease: "easeInOut" } };
+    },
+    visible: {
+      y: 0,
+      transition: { duration: 0.8, ease: "easeInOut" },
+    },
   },
   floating: {
     initial: { scale: 1 },
@@ -48,6 +61,7 @@ const motionVariants = {
 
 function FeatureSection() {
   const isMobile = useMediaQuery("(max-width: 640px)");
+  const isShort = useMediaQuery("(max-height: 650px)");
   const containerRef = useRef(null);
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
@@ -70,6 +84,11 @@ function FeatureSection() {
   const inviteTextOpacity = useTransform(scrollYProgress, [0.7, 0.9], [0, 1]);
 
   const [textVisible, setTextVisible] = useState(false);
+
+  const customValue = React.useMemo(
+    () => ({ isMobile, isShort }),
+    [isMobile, isShort],
+  );
 
   useLayoutEffect(() => {
     const el1 = stickySectionRef1.current;
@@ -129,7 +148,7 @@ function FeatureSection() {
             <div className="relative w-full h-full rounded-[2.5rem] bg-bg-primary backdrop-blur-[12px] shadow-[0_0_12px_2px_rgba(255,255,255,0.25)] overflow-hidden">
               <motion.p
                 style={groupTextStyle}
-                className="absolute top-12 left-8 sm:top-[5.3rem] sm:left-[4rem] md:text-2xl"
+                className="absolute top-12 left-8 sm:top-[5.3rem] sm:left-[2rem] md:left-[4rem] md:text-2xl"
               >
                 <Image
                   src="/icons/landing/icon-landing-folder.svg"
@@ -151,9 +170,10 @@ function FeatureSection() {
               >
                 <motion.div
                   variants={motionVariants.imageSlide}
+                  custom={customValue}
                   initial="hidden"
                   animate={textVisible ? "visible" : "hidden"}
-                  className="relative sm:absolute w-full max-w-[23rem] aspect-[375/812] overflow-hidden rounded-[1.5rem] sm:right-[4rem]"
+                  className="relative sm:absolute w-full max-w-[23rem] mx-auto aspect-[375/812] overflow-hidden rounded-[1.5rem] sm:right-[2rem] md:right-[4rem]"
                 >
                   <Image
                     src="/images/landing/landing-feature-bg.png"
@@ -179,7 +199,7 @@ function FeatureSection() {
               </motion.div>
               <motion.p
                 style={inviteTextStyle}
-                className="absolute bottom-12 left-8 sm:bottom-[5.3rem] sm:left-[4rem] md:text-2xl"
+                className="absolute bottom-12 left-8 sm:bottom-[5.3rem] sm:left-[2rem] md:left-[4rem] md:text-2xl"
               >
                 <Image
                   src="/icons/landing/icon-landing-message.svg"
@@ -209,8 +229,10 @@ function FeatureSection() {
             }`}
           >
             <div className="relative w-full h-full rounded-[2.5rem] bg-[#020617] backdrop-blur-[12px] shadow-[0_0_12px_2px_rgba(255,255,255,0.25)] overflow-hidden">
-              <div className="relative bottom-0 h-[calc(100vh-8rem)] overflow-hidden px-8 sm:px-[4rem]">
-                <div className="relative w-full max-w-[23rem] aspect-[375/566] sm:-translate-y-[15vh]">
+              <div className="relative bottom-0 h-[calc(100vh-8rem)] overflow-hidden px-8 sm:px-[2rem] md:px-[4rem]">
+                <div
+                  className={`relative w-full max-w-[23rem] aspect-[375/566] sm:-translate-y-[15vh] mx-auto sm:mx-0 ${isMobile && "-translate-y-[20%]"} ${isShort && "-translate-y-[50%]"}`}
+                >
                   <Image
                     src="/images/landing/landing-feature-bg02.png"
                     alt="할일 완료 예시"
@@ -239,7 +261,7 @@ function FeatureSection() {
                 variants={motionVariants.fadeText}
                 initial="initial"
                 animate={isInView2 ? "visible" : "initial"}
-                className="absolute bottom-12 left-8 sm:right-[4rem] sm:left-auto md:text-2xl"
+                className="absolute bottom-12 left-8 sm:right-[2rem] md:right-[4rem] sm:left-auto md:text-2xl"
               >
                 <Image
                   src="/icons/landing/icon-landing-check.svg"
