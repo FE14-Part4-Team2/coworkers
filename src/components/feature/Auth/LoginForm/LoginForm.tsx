@@ -88,9 +88,10 @@ export default function LoginForm() {
         </button>
         <Button
           type="submit"
-          label="로그인"
+          label={loginMutation.isPending ? "로그인 중.." : "로그인"}
           variant="primary"
           className="mt-[4.75rem] w-full"
+          disabled={loginMutation.isPending}
         />
       </form>
       <SendEmailModal />

@@ -131,6 +131,7 @@ export default function ResetPasswordPage() {
             variant="primary"
             size="md"
             className="mt-10 w-full"
+            disabled={resetPasswordMutation.isPending}
           />
         </form>
       </div>
