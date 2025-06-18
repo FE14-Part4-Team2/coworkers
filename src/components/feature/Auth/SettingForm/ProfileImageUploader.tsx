@@ -51,11 +51,11 @@ function ProfileImageUploader() {
                 if (user) {
                   setAuth({ ...user, image: uploadedUrl });
                 }
-                setPreviewSrc(null); // 성공하면 preview 초기화
+                setPreviewSrc(null);
               },
               onError: () => {
                 showToast("정보 수정을 실패했습니다.", "error");
-                setPreviewSrc(null); // 실패 시 되돌림
+                setPreviewSrc(null);
               },
             },
           );
