@@ -70,6 +70,9 @@ export default function LoginForm() {
           error={!!errors.password}
           {...register("password", {
             required: "비밀번호는 필수 입력입니다.",
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           suffix={
             <PasswordToggle

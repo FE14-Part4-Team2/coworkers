@@ -132,6 +132,9 @@ export default function SignupForm() {
                 );
               },
             },
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           hasTopMargin
           suffix={
@@ -152,6 +155,9 @@ export default function SignupForm() {
             required: "비밀번호 확인을 입력해주세요.",
             validate: (value) =>
               value === password || "비밀번호가 일치하지 않습니다.",
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           hasTopMargin
           suffix={

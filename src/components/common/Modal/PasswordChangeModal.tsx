@@ -65,6 +65,9 @@ export default function PasswordChangeModal({
                 );
               },
             },
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           error={!!errors.newPassword?.message}
         />
@@ -81,6 +84,9 @@ export default function PasswordChangeModal({
             required: "비밀번호 확인을 입력해주세요.",
             validate: (value) =>
               value === newPassword || "비밀번호가 일치하지 않습니다.",
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           error={!!errors.confirmPassword?.message}
         />
