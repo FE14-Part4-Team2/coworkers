@@ -24,13 +24,7 @@ export default function BoardsEditPage() {
     if (isAuthenticated === false || user === undefined) {
       router.replace("/login");
     }
-  }, [isAuthenticated, user, router]);
-
-  useEffect(() => {
-    if (user && article && article.writer.id != user.id) {
-      router.replace(`/boards/${articleId}`);
-    }
-  }, [user, article, articleId, router]);
+  }, [user, isAuthenticated, router]);
 
   const { imageUrl, isImageUploading, handleImageUpload } =
     useImageUploadHandler();
@@ -50,7 +44,7 @@ export default function BoardsEditPage() {
     };
   }, [article]);
 
-  if (!article) return null;
+  if (user === undefined || !article) return null;
 
   function handleSubmit(data: FormValues) {
     const contentPayload: { content: string; token?: string } = {

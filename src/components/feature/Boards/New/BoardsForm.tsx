@@ -57,7 +57,8 @@ export default function BoardsForm({
       label={
         isSubmitting ? (isEdit ? "수정중" : "등록중") : isEdit ? "수정" : "등록"
       }
-      variant={isSubmitting ? "primary" : "ghost"}
+      variant="primary"
+      state={isSubmitting ? "disabled" : "default"}
       type="submit"
       disabled={isSubmitting}
       className="
