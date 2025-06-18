@@ -10,19 +10,14 @@ import Image from "next/image";
 import React, { useCallback, useRef, useState } from "react";
 
 function ProfileImageUploader() {
-  const DEFAULT_IMAGE = "/icons/icon-profile-default.svg";
-  const DEFAULT_IMAGE_URL =
-    "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Coworkers/user/2186/icon-profile-default.svg";
+  const DEFAULT_IMAGE =
+    "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Coworkers/user/2194/profile-default.png";
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { user, setAuth } = useAuthStore();
   const { showToast } = useToastStore();
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
-  const imgSrc =
-    previewSrc ??
-    (user?.image === DEFAULT_IMAGE_URL
-      ? DEFAULT_IMAGE
-      : user?.image || DEFAULT_IMAGE);
+  const imgSrc = previewSrc ?? previewSrc ?? user?.image ?? DEFAULT_IMAGE;
   const imageUpload = useUploadImage();
   const updateMyInfoMutation = useUpdateMyInfoMutation();
 
@@ -71,12 +66,12 @@ function ProfileImageUploader() {
 
   const resetToDefaultImage = useCallback(() => {
     updateMyInfoMutation.mutate(
-      { image: DEFAULT_IMAGE_URL },
+      { image: DEFAULT_IMAGE },
       {
         onSuccess: () => {
           showToast("기본 이미지로 변경하였습니다.", "success");
           if (user) {
-            setAuth({ ...user, image: DEFAULT_IMAGE_URL });
+            setAuth({ ...user, image: DEFAULT_IMAGE });
           }
           setPreviewSrc(null);
         },
