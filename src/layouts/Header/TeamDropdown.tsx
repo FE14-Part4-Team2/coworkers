@@ -53,8 +53,14 @@ export default function TeamDropdown({
           <TeamListItem key={team.id} team={team} onTeamClick={onTeamClick} />
         ))}
         <Link href="/create">
-          <span className="inline-block py-3.5 mt-2 border-t w-full text-center border border-white rounded-xl text-text-primary cursor-pointer">
-            + 팀 추가하기
+          <span className="inline-block py-3.5 mt-2 w-full text-center rounded-xl text-brand-secondary cursor-pointer bg-bg-secondary border border-text-primary hover:bg-bg-primary transition-colors">
+            팀 생성하기
+          </span>
+        </Link>
+
+        <Link href="/join">
+          <span className="inline-block py-3.5 mt-2 w-full text-center rounded-xl text-brand-tertiary cursor-pointer bg-bg-secondary border border-text-primary hover:bg-bg-primary transition-colors">
+            팀 참여하기
           </span>
         </Link>
       </DropDownMenu>
