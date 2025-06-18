@@ -219,11 +219,9 @@ export default function TaskDetail({
 
             <TaskDetailDropdown
               onEdit={() => {
-                console.log("디테일 클릭한 task 정보:", task);
                 setIsEditMode(true);
               }}
               onDelete={() => {
-                console.log("삭제하려는 task 정보:", task);
                 openDeleteModal("task", task.id);
                 openModal("delete");
               }}
@@ -354,6 +352,18 @@ export default function TaskDetail({
             </div>
           </div>
 
+          {modalType === "delete" && deleteTarget && (
+            <DeleteModal
+              title={deleteTarget.type === "task" ? "할 일 삭제" : "댓글 삭제"}
+              description={
+                deleteTarget.type === "task"
+                  ? "할 일을 정말 삭제하시겠습니까?"
+                  : "댓글을 정말 삭제하시겠습니까?"
+              }
+              onConfirm={handleConfirmDelete}
+            />
+          )}
+
           <div>
             {comments
               ?.slice()
@@ -388,21 +398,6 @@ export default function TaskDetail({
                         />
                       )}
                     </div>
-                    {modalType === "delete" && deleteTarget && (
-                      <DeleteModal
-                        title={
-                          deleteTarget.type === "task"
-                            ? "할 일 삭제"
-                            : "댓글 삭제"
-                        }
-                        description={
-                          deleteTarget.type === "task"
-                            ? "할 일을 정말 삭제하시겠습니까?"
-                            : "댓글을 정말 삭제하시겠습니까?"
-                        }
-                        onConfirm={handleConfirmDelete}
-                      />
-                    )}
 
                     {isEditing && (
                       <div className="flex gap-2 mt-2">
