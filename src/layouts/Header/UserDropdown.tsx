@@ -5,6 +5,10 @@ import DropDownMenu from "@/components/common/Dropdown/Menu";
 import DropDownItem from "@/components/common/Dropdown/Item";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useSignOut } from "@/api/auth/auth.query";
+import { useModalStore } from "@/stores/modalStore";
+import LogoutModal from "@/components/common/Modal/LogoutModal";
+import { useToastStore } from "@/stores/toastStore";
+import { useRouter } from "next/navigation";
 
 interface UserDropdownProps {
   userName: string;
@@ -23,12 +27,17 @@ export default function UserDropdown({
 }: UserDropdownProps) {
   const ref = useClickOutside(onClose);
   const signOutMutation = useSignOut();
+  const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+  const router = useRouter();
 
   const handleSignOut = () => {
     signOutMutation.mutate(undefined, {
       onSuccess: () => {
-        if (typeof window !== "undefined") {
-          window.location.href = "/";
+        {
+          closeModal();
+          showToast("로그아웃 되었습니다.", "success");
+          router.replace("/");
         }
       },
     });
@@ -64,8 +73,12 @@ export default function UserDropdown({
         <DropDownItem>
           <Link href="/user-setting">계정 설정</Link>
         </DropDownItem>
-        <DropDownItem onClick={handleSignOut}>로그아웃</DropDownItem>
+        <DropDownItem onClick={() => openModal("logout")}>
+          로그아웃
+        </DropDownItem>
       </DropDownMenu>
+
+      <LogoutModal onConfirm={handleSignOut} />
     </div>
   );
 }
