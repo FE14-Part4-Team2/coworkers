@@ -40,7 +40,7 @@ export type GetMyGroupsResponse = Group[];
 
 export type GetMyMemberships = Membership[];
 
-export type GetMyHistoryResponse = { taskDone: TaskType[] };
+export type GetMyHistoryResponse = { tasksDone: TaskType[] };
 
 export type UpdatePasswordRequest = {
   passwordConfirmation: string;
