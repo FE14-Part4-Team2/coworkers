@@ -15,15 +15,15 @@ function TeamListItem({ team, onTeamClick }: Props) {
   const teamImg = useImageFallback(team.img, "/icons/icon-avatar.svg");
 
   return (
-    <DropDownItem
-      key={team.id}
-      className={`text-lg w-full h-11.5 flex items-center justify-between ${
-        team.name === currentTeam ? "font-bold bg-bg-hover" : ""
-      }`}
-    >
-      <Link href={`/${team.id}`}>
+    <Link href={`/${team.id}`}>
+      <DropDownItem
+        key={team.id}
+        className={`text-lg w-full h-[2.8rem] flex items-center justify-between ${
+          team.name === currentTeam ? "bg-bg-hover" : ""
+        }`}
+      >
         <div
-          className="flex items-center gap-2"
+          className="flex items-center gap-[0.75rem]"
           onClick={() => onTeamClick(team.name)}
         >
           <Image
@@ -31,12 +31,12 @@ function TeamListItem({ team, onTeamClick }: Props) {
             alt={team.name}
             width={24}
             height={24}
-            className="rounded-full object-cover"
+            className="w-[2rem] h-[2rem] rounded-md object-cover"
           />
           {team.name}
         </div>
-      </Link>
-    </DropDownItem>
+      </DropDownItem>
+    </Link>
   );
 }
 
