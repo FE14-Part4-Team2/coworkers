@@ -23,6 +23,8 @@ export default function TeamCreatePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
+  const isInputError = isTouched && !!teamNameError;
+
   const validateTeamName = (teamName: string) =>
     teamName.trim() === "" ? TEAM_ERROR_MESSAGES.MESSAGE : "";
 
@@ -95,7 +97,7 @@ export default function TeamCreatePage() {
         onSubmit={handleCreate}
         onInputChange={handleInputChange}
         onInputBlur={handleInputBlur}
-        isInputError={!teamNameError}
+        isInputError={isInputError}
         isButtonDisabled={isButtonDisabled || isLoading}
         errorMessage={isTouched && teamName.trim() === "" ? teamNameError : ""}
       >

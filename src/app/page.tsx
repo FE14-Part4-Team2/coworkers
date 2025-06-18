@@ -2,6 +2,7 @@
 
 import FeatureSection from "@/components/feature/Landing/FeatureSection";
 import InteractiveGridBg from "@/components/feature/Landing/InteractiveGridBg";
+import { useAuthStore } from "@/stores/authStore";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { useCallback, useState } from "react";
 
 export default function Home() {
   const [mousePos, setMousePos] = useState({ x: -1, y: -1 });
+  const { isAuthenticated } = useAuthStore();
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -61,7 +63,7 @@ export default function Home() {
           </div>
         </div>
         <Link
-          href="/login"
+          href={isAuthenticated ? "/boards" : "/login"}
           className="absolute z-30 bottom-[9rem] sm:bottom-[12rem] left-4 right-4 max-w-[373px] bg-brand-gradient rounded py-3 mx-auto text-center rounded-[2rem]"
         >
           지금 시작하기

@@ -9,7 +9,9 @@ import { useAuthStore } from "@/stores/authStore";
 export default function UserSettingPage() {
   const { user } = useAuthStore();
 
-  if (!user) return <div>로그인 정보가 없습니다.</div>;
+  if (user === undefined) return <div>로그인 정보 확인 중...</div>;
+
+  if (user === null) return <div>로그인 정보가 없습니다.</div>;
 
   return (
     <div className="w-full">

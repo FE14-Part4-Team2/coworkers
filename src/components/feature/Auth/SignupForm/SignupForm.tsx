@@ -54,7 +54,11 @@ export default function SignupForm() {
         onSuccess: (data) => {
           showToast("회원가입을 성공했습니다", "success");
           setAuth(data.user);
-          router.push("/");
+          if (typeof window !== "undefined") {
+            window.location.href = "/select";
+          } else {
+            router.push("/select");
+          }
         },
         onError: (error) => {
           showToast(error.message, "error");

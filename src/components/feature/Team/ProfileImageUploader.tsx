@@ -7,8 +7,12 @@ import { useTeamStore } from "@/stores/useTeamStore";
 import { useToastStore } from "@/stores/toastStore";
 
 export default function ProfileImageUploader() {
-  const { teamProfileFile, setTeamProfileFile, setTeamProfileUrl } =
-    useTeamStore();
+  const {
+    teamProfileFile,
+    setTeamProfileFile,
+    teamProfileUrl,
+    setTeamProfileUrl,
+  } = useTeamStore();
   const { showToast } = useToastStore();
   const uploadImageMutation = useUploadImage();
 
@@ -30,7 +34,9 @@ export default function ProfileImageUploader() {
     document.getElementById("team-profile-input")?.click();
   };
 
-  const preview = teamProfileFile ? URL.createObjectURL(teamProfileFile) : null;
+  const preview = teamProfileFile
+    ? URL.createObjectURL(teamProfileFile)
+    : teamProfileUrl || null;
 
   return (
     <div

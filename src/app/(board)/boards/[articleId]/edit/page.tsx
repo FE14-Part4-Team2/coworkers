@@ -19,21 +19,38 @@ export default function BoardsEditPage() {
   const { imageUrl, isImageUploading, handleImageUpload } =
     useImageUploadHandler();
 
-  const defaultFormValues = useMemo(
-    () => ({
+  const defaultFormValues = useMemo(() => {
+    let parsed = { content: "", token: "" };
+    try {
+      parsed = JSON.parse(article?.content ?? "");
+    } catch {
+      parsed = { content: article?.content ?? "", token: "" };
+    }
+
+    return {
       title: article?.title ?? "",
-      content: article?.content ?? "",
-    }),
-    [article?.title, article?.content],
-  );
+      content: parsed.content,
+      token: parsed.token,
+    };
+  }, [article]);
 
   if (isLoading || !article) return null;
 
   function handleSubmit(data: FormValues) {
+    const contentPayload: { content: string; token?: string } = {
+      content: data.content,
+    };
+
+    if (data.token?.trim()) {
+      contentPayload.token = data.token;
+    }
+
     const payload = {
-      ...data,
+      title: data.title,
+      content: JSON.stringify(contentPayload),
       image: imageUrl ?? article?.image ?? undefined,
     };
+
     editArticle(payload, {
       onSuccess: () => {
         showToast("게시글 수정 완료!", "success");

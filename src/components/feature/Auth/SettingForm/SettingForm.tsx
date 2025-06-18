@@ -59,7 +59,7 @@ function SettingForm({ userName }: { userName: string }) {
               label="저장"
               variant="primary"
               size="sm"
-              className="w-18 h-8"
+              className="w-[3rem] h-8"
             />
           }
         />
