@@ -3,14 +3,26 @@
 import FeatureSection from "@/components/feature/Landing/FeatureSection";
 import InteractiveGridBg from "@/components/feature/Landing/InteractiveGridBg";
 import { useAuthStore } from "@/stores/authStore";
+import { useToastStore } from "@/stores/toastStore";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
   const [mousePos, setMousePos] = useState({ x: -1, y: -1 });
   const { isAuthenticated } = useAuthStore();
+  const searchParams = useSearchParams();
+  const { showToast } = useToastStore();
+
+  useEffect(() => {
+    const from = searchParams.get("from");
+
+    if (from === "guest-only") {
+      showToast("이미 로그인 되었습니다.");
+    }
+  }, [searchParams, showToast]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();

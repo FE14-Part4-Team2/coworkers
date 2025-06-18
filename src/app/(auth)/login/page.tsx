@@ -3,9 +3,23 @@
 import DividerWithText from "@/components/feature/Auth/DividerWithText";
 import KakaoLogin from "@/components/feature/Auth/KakaoLogin";
 import LoginForm from "@/components/feature/Auth/LoginForm/LoginForm";
+import { useToastStore } from "@/stores/toastStore";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const { showToast } = useToastStore();
+
+  useEffect(() => {
+    const from = searchParams.get("from");
+
+    if (from === "auth-only") {
+      showToast("로그인이 필요한 페이지입니다.", "error");
+    }
+  }, [searchParams, showToast]);
+
   return (
     <div className="w-full relative mt-5 sm:mt-0">
       <h2 className="md:text-4xl text-2xl font-medium text-center">로그인</h2>

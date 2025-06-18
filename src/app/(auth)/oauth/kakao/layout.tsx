@@ -12,7 +12,7 @@ export default async function LoginLayout({
   const token = cookieStore.get("accessToken")?.value;
 
   if (token) {
-    redirect("/");
+    redirect("/?from=guest-only");
   }
 
   return (
