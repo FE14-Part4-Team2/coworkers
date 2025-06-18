@@ -42,7 +42,7 @@ const motionVariants = {
       transition: {
         duration: 0.6,
         ease: "circInOut",
-        delay: 1,
+        delay: 0.3,
       },
     },
   },
@@ -53,7 +53,7 @@ const motionVariants = {
       transition: {
         duration: 0.8,
         ease: "easeInOut",
-        delay: 1.6,
+        delay: 0.5,
       },
     },
   },
@@ -74,7 +74,7 @@ function FeatureSection() {
   });
 
   const isInView1 = useInView(sectionRef1, { once: true, margin: "-50%" });
-  const isInView2 = useInView(sectionRef2, { once: true, margin: "-50%" });
+  const isInView2 = useInView(sectionRef2, { once: false, margin: "-50%" });
 
   const groupTextOpacity = useTransform(
     scrollYProgress,
@@ -215,7 +215,7 @@ function FeatureSection() {
           </motion.div>
         </motion.section>
       </div>
-      <div className="px-4 h-[200vh] mt-8">
+      <div className="px-4 h-[300vh] mt-8">
         <motion.section
           ref={stickySectionRef2}
           className="sticky top-[calc(50vh-var(--half-h-2)+var(--header-h)/2)] px-4"
