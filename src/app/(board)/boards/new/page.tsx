@@ -24,14 +24,20 @@ export default function BoardsNewPage() {
 
   const handleSubmit = useCallback(
     (data: FormValues) => {
+      if (isImageUploading) {
+        showToast("이미지 업로드 중입니다.", "info");
+        return;
+      }
+
       if (!data.token) {
         setPendingFormData(data);
         openModal("no-token");
         return;
       }
+
       submitForm(data);
     },
-    [openModal],
+    [isImageUploading, openModal, imageUrl],
   );
 
   const submitForm = (data: FormValues) => {
