@@ -16,7 +16,7 @@ export interface FormValues {
 export interface BoardsFormProps {
   isSubmitting: boolean;
   onSubmit: (data: FormValues) => void;
-  imageUrl?: string;
+  imageUrl?: string | null;
   onImageUpload: (file: File | null) => void;
   isImageUploading: boolean;
   mode: "create" | "edit";
