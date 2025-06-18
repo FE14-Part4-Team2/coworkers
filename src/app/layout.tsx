@@ -29,14 +29,14 @@ export default async function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable} font-pretendard`}>
       <body className="bg-bg-primary text-white">
+        <div
+          id="toast-root"
+          className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-[9999]"
+        ></div>
         <ReactQueryProvider>
           <AuthProvider hasToken={!!token}>
             <LandingHeaderWrap />
             {children}
-            <div
-              id="toast-root"
-              className="fixed bottom-0 left-1/2 transform -translate-x-1/2"
-            ></div>
             <Toast />
           </AuthProvider>
         </ReactQueryProvider>
