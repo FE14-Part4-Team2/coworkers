@@ -5,7 +5,7 @@ export type TaskPathParams = {
 
 export type FrequencyType = "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
 
-interface RecurringBody {
+export interface RecurringBody {
   name: string;
   description?: string;
   startDate?: string;

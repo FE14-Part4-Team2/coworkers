@@ -1,21 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { taskListService } from "./task-list.service";
+import { GetTaskListResponse } from "./task-list.schema";
 import {
   CreateTaskListRequest,
   UpdateTaskListRequest,
 } from "./task-list.schema";
 
 // 할 일 목록 정보 조회
-export const useTaskListQuery = (params: {
+export const useTaskListQuery = ({
+  groupId,
+  taskListId,
+  date,
+}: {
   groupId: string;
   taskListId: string;
   date: string;
 }) => {
-  const { groupId, taskListId, ...queryParams } = params;
-  return useQuery({
-    queryKey: ["taskList", params],
-    queryFn: () =>
-      taskListService.getTaskList(groupId, taskListId, queryParams),
+  return useQuery<GetTaskListResponse>({
+    queryKey: ["taskList", groupId, taskListId, date],
+    queryFn: () => taskListService.getTaskList(groupId, taskListId, { date }),
   });
 };
 

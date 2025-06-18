@@ -3,18 +3,29 @@
 import GenericDropdown from "./GenericDropdown";
 import useGenericDropdown from "@/hooks/useGenericDropdown";
 
+interface RepeatDropdownProps {
+  value: "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY";
+  onChange: (value: "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY") => void;
+}
+
 const options = [
-  { label: "반복 안함", value: "norepeat" },
-  { label: "한 번", value: "once" },
-  { label: "매일", value: "everyday" },
-  { label: "주 반복", value: "weekly" },
-  { label: "월 반복", value: "monthly" },
+  { label: "한 번", value: "ONCE" },
+  { label: "매일", value: "DAILY" },
+  { label: "주 반복", value: "WEEKLY" },
+  { label: "월 반복", value: "MONTHLY" },
 ];
 
-// 반복 설정 드롭다운 (성빈님 페이지)
-export default function RepeatDropdown() {
+export default function RepeatDropdown({
+  value,
+  onChange,
+}: RepeatDropdownProps) {
   const { selected, isOpen, handleToggle, handleClose, handleSelect } =
-    useGenericDropdown("반복 안함");
+    useGenericDropdown(value, (val) => {
+      const matched = options.find((opt) => opt.value === val);
+      if (matched) {
+        onChange(matched.value as "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY");
+      }
+    });
 
   return (
     <GenericDropdown

@@ -49,7 +49,7 @@ export default function Modal({
   if (!isMounted) return null;
 
   const modalRadiusClass = clsx(
-    "w-full sm:max-w-md sm:w-96 bg-bg-secondary relative",
+    "w-full sm:max-w-md sm:w-96 bg-bg-secondary relative max-h-[80vh] scroll-custom overflow-y-auto ",
     {
       "rounded-t-xl px-12 pt-12 pb-8 sm:rounded-3xl sm:p-8":
         modalType === "profile",

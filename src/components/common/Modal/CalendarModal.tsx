@@ -29,8 +29,14 @@ export default function CalendarModal({
     if (!value) return;
 
     if (value instanceof Date) {
-      setValue(value);
-      onSelectDate(value);
+      const fixedDate = new Date(
+        value.getFullYear(),
+        value.getMonth(),
+        value.getDate(),
+      );
+
+      setValue(fixedDate);
+      onSelectDate(fixedDate);
     }
 
     closeModal();

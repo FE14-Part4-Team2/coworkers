@@ -16,6 +16,15 @@ abbr:where([title]) {
   @apply bg-bg-primary text-white rounded;
 }
 
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  @apply bg-bg-primary;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  @apply bg-bg-primary;
+}
+
 .react-calendar__month-view__days__day--weekend {
   @apply text-white;
 }
