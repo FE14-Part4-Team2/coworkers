@@ -10,6 +10,8 @@ import { useToastStore } from "@/stores/toastStore";
 import NoTokenModal from "@/components/common/Modal/NoTokenModal";
 import { useModalStore } from "@/stores/modalStore";
 import { useState } from "react";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 export default function BoardsNewPage() {
   const router = useRouter();
@@ -21,6 +23,13 @@ export default function BoardsNewPage() {
   const [pendingFormData, setPendingFormData] = useState<FormValues | null>(
     null,
   );
+  const { isAuthenticated, user } = useAuthStore();
+
+  useEffect(() => {
+    if (isAuthenticated === false || user === undefined) {
+      router.replace("/login");
+    }
+  }, [isAuthenticated, user, router]);
 
   const handleSubmit = useCallback(
     (data: FormValues) => {
@@ -39,6 +48,8 @@ export default function BoardsNewPage() {
     },
     [isImageUploading, openModal, imageUrl],
   );
+
+  if (user === undefined) return null;
 
   const submitForm = (data: FormValues) => {
     const payload = {
