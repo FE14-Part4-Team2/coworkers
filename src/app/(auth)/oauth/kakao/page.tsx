@@ -1,6 +1,7 @@
 "use client";
 
 import { useKakaoOauth } from "@/api/auth/auth.query";
+import LoadingSpinner from "@/components/common/AsyncBoundary/LoadingSpinner";
 import { useToastStore } from "@/stores/toastStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
@@ -45,5 +46,5 @@ export default function KakaoCallbackPage() {
     }
   }, []);
 
-  return <div>로그인 처리 중..</div>;
+  return <LoadingSpinner title="로그인 처리 중..." />;
 }
