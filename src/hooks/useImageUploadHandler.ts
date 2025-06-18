@@ -3,7 +3,7 @@ import { useUploadImage } from "@/api/image/image-api";
 
 // 이미지 업로드 공통 훅
 export function useImageUploadHandler() {
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const uploadImageMutation = useUploadImage();
 
@@ -22,7 +22,7 @@ export function useImageUploadHandler() {
           },
         });
       } else {
-        setImageUrl(undefined);
+        setImageUrl(null);
       }
     },
     [uploadImageMutation],

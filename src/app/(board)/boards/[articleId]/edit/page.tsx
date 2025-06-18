@@ -48,7 +48,7 @@ export default function BoardsEditPage() {
     const payload = {
       title: data.title,
       content: JSON.stringify(contentPayload),
-      image: imageUrl ?? article?.image ?? undefined,
+      image: imageUrl === null ? null : (imageUrl ?? article?.image),
     };
 
     editArticle(payload, {
