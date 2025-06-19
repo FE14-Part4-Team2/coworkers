@@ -31,7 +31,7 @@ export default function TeamDropdown({
   const ref = useClickOutside(onClose);
 
   return (
-    <div ref={ref} className="relative cursor-pointer">
+    <div ref={ref} className="relative cursor-pointer ">
       <div className="flex items-center gap-2.5" onClick={onToggle}>
         <span className="whitespace-nowrap text-text-primary text-lg">
           {currentTeam?.name}
@@ -47,10 +47,15 @@ export default function TeamDropdown({
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute w-[13.5rem] text-center top-full mt-2 right-0"
+        className="absolute w-[13.5rem] text-center top-full mt-2 right-0 max-h-[19rem] overflow-auto bg-bg-secondary rounded-xl shadow-lg"
       >
         {teams.map((team) => (
-          <TeamListItem key={team.id} team={team} onTeamClick={onTeamClick} />
+          <TeamListItem
+            key={team.id}
+            team={team}
+            onTeamClick={onTeamClick}
+            currentTeam={currentTeam}
+          />
         ))}
         <Link href="/create" onClick={onClose}>
           <span className="inline-block py-3.5 mt-2 w-full text-center rounded-xl text-brand-secondary cursor-pointer bg-bg-secondary border border-text-primary hover:bg-bg-primary transition-colors">
