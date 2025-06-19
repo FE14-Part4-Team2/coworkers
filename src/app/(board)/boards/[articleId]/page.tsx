@@ -6,6 +6,7 @@ import { useArticleDetail } from "@/api/article/article.query";
 import { useParams } from "next/navigation";
 import useArticleComments from "@/hooks/useArticleComments";
 import { useAuthStore } from "@/stores/authStore";
+import NoAuthModal from "@/components/common/Modal/NoAuthModal";
 
 export default function ArticlePage() {
   const { articleId } = useParams();
@@ -23,6 +24,7 @@ export default function ArticlePage() {
         disabled={!isAuthenticated}
       />
       <CommentList articleId={article.id} comments={comments} />
+      <NoAuthModal />
     </article>
   );
 }

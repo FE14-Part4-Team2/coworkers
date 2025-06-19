@@ -10,7 +10,6 @@ import { useModalStore } from "@/stores/modalStore";
 import { useToastStore } from "@/stores/toastStore";
 import DeleteModal from "@/components/common/Modal/DeleteModal";
 import JoinButton from "./JoinButton";
-import NoAuthModal from "@/components/common/Modal/NoAuthModal";
 
 interface ArticleDetailProps {
   data: ArticleDetailType;
@@ -132,8 +131,6 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
             likeCount={data.likeCount}
           />
         </div>
-
-        <NoAuthModal />
       </div>
     </>
   );
