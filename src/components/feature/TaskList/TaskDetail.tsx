@@ -23,6 +23,7 @@ import { useToastStore } from "@/stores/toastStore";
 import TaskDetailDropdown from "./TaskDetailDropdown";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Input from "@/components/common/Input/Input";
+import { useAuthStore } from "@/stores/authStore";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -44,6 +45,7 @@ export default function TaskDetail({
   onUpdate,
   onDeleteTask,
 }: TaskDetailProps) {
+  const { user: currentUser } = useAuthStore();
   const [comment, setComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editedContent, setEditedContent] = useState("");
@@ -57,20 +59,22 @@ export default function TaskDetail({
     type: "task" | "comment";
     id: number | string;
   } | null>(null);
+  const { openModal, closeModal, modalType } = useModalStore();
 
   useEffect(() => {
     if (deleteTarget) {
       openModal("delete");
     }
-  }, [deleteTarget]);
+  }, [deleteTarget, openModal]);
 
-  // 저장 버튼 클릭
+  // 수정 버튼 클릭
   const handleTaskSave = () => {
     onUpdate({
       id: task.id,
       name: editedName,
       description: editedDescription,
     });
+    showToast("수정 완료", "success");
     setIsEditMode(false);
   };
 
@@ -82,12 +86,11 @@ export default function TaskDetail({
   };
 
   const handleTaskDelete = (taskId: number) => {
-    if (!onDeleteTask) return; // 혹시 함수가 안넘어왔을 때 대비
+    if (!onDeleteTask) return;
 
-    onDeleteTask(taskId); // 부모에서 넘긴 삭제 함수 호출
+    onDeleteTask(taskId);
   };
 
-  const { openModal, closeModal, modalType } = useModalStore();
   const { showToast } = useToastStore();
 
   const handleToggle = () => {
@@ -300,25 +303,25 @@ export default function TaskDetail({
             <div className="mt-[50px] flex justify-end space-x-2">
               <Button
                 type="button"
-                label="저장"
-                variant="primary"
+                label="취소"
+                variant="ghost"
                 size="sm"
-                className="w-[6.5rem]"
-                onClick={handleTaskSave}
+                className="w-[6.5rem] border-none text-text-default"
+                onClick={handleTaskCancel}
               />
               <Button
                 type="button"
-                label="취소"
-                variant="secondary"
+                label="수정하기"
+                variant="ghost"
                 size="sm"
                 className="w-[6.5rem]"
-                onClick={handleTaskCancel}
+                onClick={handleTaskSave}
               />
             </div>
           )}
           <div className="relative mt-2">
             <textarea
-              className="w-full border-t border-b border-x-0 border-border-primary resize-none text-14-400 p-2 pr-10 h-16 focus:outline-none bg-transparent"
+              className="w-full border-t border-b border-x-0 border-border-primary resize-none text-md p-2 pr-10 h-16 focus:outline-none bg-transparent"
               rows={2}
               placeholder="댓글을 달아주세요."
               value={comment}
@@ -367,7 +370,11 @@ export default function TaskDetail({
           <div>
             {comments
               ?.slice()
-              .reverse()
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime(),
+              )
               .map((comment) => {
                 const isEditing = editingCommentId === comment.id;
 
@@ -377,76 +384,81 @@ export default function TaskDetail({
                     className="border-b border-x-0 border-border-primary pt-4 pb-4"
                   >
                     <div className="flex items-start justify-between">
-                      {isEditing ? (
-                        <input
-                          value={editedContent}
-                          onChange={(e) => setEditedContent(e.target.value)}
-                          className="border-none outline-none bg-transparent rounded px-2 py-1 w-full mr-4"
-                        />
-                      ) : (
-                        <span className="text-md whitespace-pre-line">
-                          {comment.content}
-                        </span>
-                      )}
+                      <div className="flex-1 min-w-0">
+                        {isEditing ? (
+                          <Textarea
+                            value={editedContent}
+                            onChange={(e) => setEditedContent(e.target.value)}
+                            className="border-none h-[100px]"
+                          />
+                        ) : (
+                          <span className="text-md whitespace-pre-line break-words">
+                            {comment.content}
+                          </span>
+                        )}
+                      </div>
 
-                      {!isEditing && (
-                        <TaskCommentDropdown
-                          onEdit={() => handleEdit(comment)}
-                          onDelete={() =>
-                            openDeleteModal("comment", comment.id)
-                          }
-                        />
-                      )}
+                      {!isEditing &&
+                        currentUser &&
+                        comment.user.id === currentUser.id && (
+                          <TaskCommentDropdown
+                            onEdit={() => handleEdit(comment)}
+                            onDelete={() =>
+                              openDeleteModal("comment", comment.id)
+                            }
+                          />
+                        )}
                     </div>
 
                     {isEditing && (
-                      <div className="flex gap-2 mt-2">
-                        <Button
-                          type="button"
-                          label="저장"
-                          variant="primary"
-                          size="sm"
-                          className="w-[3rem]"
-                          onClick={() => handleSaveEdit(String(comment.id))}
-                        />
+                      <div className="flex gap-2 mt-2 justify-end">
                         <Button
                           type="button"
                           label="취소"
-                          variant="secondary"
+                          variant="ghost"
                           size="sm"
-                          className="w-[3rem]"
+                          className="w-[3rem] border-none text-text-default"
                           onClick={handleCancelEdit}
+                        />
+                        <Button
+                          type="button"
+                          label="수정하기"
+                          variant="ghost"
+                          size="sm"
+                          className="w-[4.5rem]"
+                          onClick={() => handleSaveEdit(String(comment.id))}
                         />
                       </div>
                     )}
-
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="flex items-center">
-                        {task.writer?.image ? (
-                          <Image
-                            src={task.writer.image}
-                            alt="프로필 이미지"
-                            width={32}
-                            height={32}
-                          />
-                        ) : (
-                          <Image
-                            src="/icons/icon-profile-default.svg"
-                            alt="기본 프로필 이미지"
-                            width={32}
-                            height={32}
-                          />
-                        )}
-                        <span className="ml-2 text-md font-regular">
-                          {comment.user.nickname}
-                        </span>
+                    {!isEditing && (
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center">
+                          {task.writer?.image ? (
+                            <Image
+                              src={task.writer.image}
+                              alt="프로필 이미지"
+                              width={32}
+                              height={32}
+                            />
+                          ) : (
+                            <Image
+                              src="/icons/icon-profile-default.svg"
+                              alt="기본 프로필 이미지"
+                              width={32}
+                              height={32}
+                            />
+                          )}
+                          <span className="ml-2 text-md font-regular">
+                            {comment.user.nickname}
+                          </span>
+                        </div>
+                        <div className="text-md font-regular text-gray-500">
+                          {dayjs().diff(comment.createdAt, "minute") < 1
+                            ? "방금 전"
+                            : dayjs(comment.createdAt).fromNow()}
+                        </div>
                       </div>
-                      <div className="text-md font-regular text-gray-500">
-                        {dayjs().diff(comment.createdAt, "minute") < 1
-                          ? "방금 전"
-                          : dayjs(comment.createdAt).fromNow()}
-                      </div>
-                    </div>
+                    )}
                   </div>
                 );
               })}

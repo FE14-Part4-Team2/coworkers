@@ -35,7 +35,7 @@ export default async function RootLayout({
             {children}
             <div
               id="toast-root"
-              className="fixed bottom-0 left-1/2 transform -translate-x-1/2"
+              className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-[9999]"
             ></div>
             <Toast />
           </AuthProvider>

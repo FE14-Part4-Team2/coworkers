@@ -29,8 +29,8 @@ import {
 import Button from "@/components/common/Button";
 import TodoCreateModal from "@/components/common/Modal/TodoCreateModal";
 import TaskDetail from "@/components/feature/TaskList/TaskDetail";
-import TodoModal from "@/components/common/Modal/TodoModal";
 import { useToastStore } from "@/stores/toastStore";
+import TaskListTodoModal from "@/components/common/Modal/TaskListTodoModal";
 
 export default function TaskListPage() {
   const searchParams = useSearchParams();
@@ -219,9 +219,11 @@ export default function TaskListPage() {
             startDate: new Date().toISOString(),
             frequencyType: "ONCE",
           });
+          showToast("할일 추가 완료!", "success");
         },
         onError: (error) => {
           console.error("할 일 생성 실패", error);
+          showToast("시작 날짜는 현재 날짜 이후여야 합니다.", "error");
         },
       },
     );
@@ -303,6 +305,11 @@ export default function TaskListPage() {
               formattedDateForQuery,
             ],
           });
+          if (isDone) {
+            showToast("할 일 미완료", "info");
+          } else {
+            showToast("할 일 완료", "success");
+          }
         },
       },
     );
@@ -370,9 +377,9 @@ export default function TaskListPage() {
 
   return (
     <div className="w-full">
-      <h1 className="text-xl font-bold mb-4">할 일</h1>
+      <h1 className="text-xl font-bold mb-4 mx-4 sm:mx-0">할 일</h1>
       {/* 날짜 네비게이션 */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-6 mx-4 sm:mx-0">
         <span className="text-md font-medium ">{formattedDate}</span>
         <div
           onClick={handlePrev}
@@ -425,38 +432,40 @@ export default function TaskListPage() {
       />
 
       {/* 탭 영역 */}
-      <div className="flex items-center space-x-3 mb-4">
-        {group.taskLists.map((taskList) => (
+      <div className="w-full overflow-x-auto px-4 sm:px-0 max-w-full scrollbar-hidden">
+        <div className="flex items-center space-x-3 mb-4 whitespace-nowrap min-w-max">
+          {group.taskLists.map((taskList) => (
+            <div
+              key={taskList.id}
+              onClick={() => handleTabClick(taskList.id)}
+              className={`pb-1 text-lg font-medium border-b-2 cursor-pointer ${
+                taskList.id === activeTab
+                  ? "text-text-inverse border-text-inverse"
+                  : "text-text-default border-transparent"
+              }`}
+            >
+              {taskList.name}
+            </div>
+          ))}
           <div
-            key={taskList.id}
-            onClick={() => handleTabClick(taskList.id)}
-            className={`pb-1 text-lg font-medium border-b-2 cursor-pointer ${
-              taskList.id === activeTab
-                ? "text-text-inverse border-text-inverse"
-                : "text-text-default border-transparent"
-            }`}
+            className="flex items-center pb-2 cursor-pointer"
+            onClick={() => openModal("taskListTodo")}
           >
-            {taskList.name}
+            <Image
+              src="/icons/icon-plus-green.svg"
+              width={15}
+              height={15}
+              alt="plus"
+              className="mr-1"
+            />
+            <span className="text-md font-medium text-brand-primary">
+              새로운 목록 추가하기
+            </span>
           </div>
-        ))}
-        <div
-          className="flex items-center pb-2 cursor-pointer"
-          onClick={() => openModal("todo")}
-        >
-          <Image
-            src="/icons/icon-plus-green.svg"
-            width={15}
-            height={15}
-            alt="plus"
-            className="mr-1"
-          />
-          <span className="text-md font-medium text-brand-primary">
-            새로운 목록 추가하기
-          </span>
         </div>
       </div>
 
-      <TodoModal
+      <TaskListTodoModal
         value={todoTitle}
         onChange={(e) => setTodoTitle(e.target.value)}
         onSubmit={(e) => {
@@ -480,13 +489,19 @@ export default function TaskListPage() {
       />
 
       {/* 선택된 탭의 tasks 보여주기 */}
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-3 mx-4 sm:mx-0">
         {taskLoading ? (
-          <p>할 일 불러오는 중...</p>
+          <div className="flex justify-center items-center h-[50vh]">
+            <p className="text-gray-500">할 일 불러오는 중...</p>
+          </div>
         ) : taskError || !taskListData ? (
-          <p className="text-red-500">할 일을 불러오지 못했습니다.</p>
+          <div className="flex justify-center items-center h-[50vh]">
+            <p className="text-red-500">할 일을 불러오지 못했습니다.</p>
+          </div>
         ) : taskListData.tasks.length === 0 ? (
-          <p className="text-gray-500 mt-2">할 일이 없습니다.</p>
+          <div className="flex justify-center items-center h-[50vh]">
+            <p className="text-gray-500">할 일이 없습니다.</p>
+          </div>
         ) : (
           <ul className="flex flex-col gap-4">
             {taskListData.tasks.map((task) => (
@@ -517,7 +532,7 @@ export default function TaskListPage() {
           label="할 일 추가"
           variant="primary"
           size="floating-md"
-          className="w-[6.5rem]"
+          className="w-[6.5rem] fixed bottom-6 right-6 z-50"
           icon={
             <Image
               src="/icons/icon-plus.svg"
