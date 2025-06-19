@@ -112,7 +112,10 @@ export default function Header() {
                 </Link>
               )}
 
-              <Link href="/boards" className={"whitespace-nowrap text-lg"}>
+              <Link
+                href="/boards"
+                className={"whitespace-nowrap text-lg text-text-primary"}
+              >
                 모집게시판
               </Link>
             </div>
