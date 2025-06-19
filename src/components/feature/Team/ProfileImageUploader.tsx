@@ -44,7 +44,7 @@ export default function ProfileImageUploader() {
       onClick={handleBoxClick}
     >
       <div className="w-full h-full relative flex items-center justify-center bg-bg-secondary rounded-full overflow-hidden border-2 border-border-primary/10">
-        {preview ? (
+        {preview && preview !== "/icons/icon-img.svg" ? (
           <Image src={preview} alt="팀 프로필" className="object-cover" fill />
         ) : (
           <Image
