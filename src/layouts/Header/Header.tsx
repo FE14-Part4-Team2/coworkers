@@ -34,6 +34,24 @@ export default function Header() {
     }
   }, [teams, currentTeam, setCurrentTeam]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window === "undefined") return;
+
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(false);
+      }
+
+      if (window.innerWidth < 640) {
+        setIsTeamMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
   }, []);
