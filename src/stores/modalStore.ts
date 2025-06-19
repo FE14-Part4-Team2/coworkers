@@ -15,6 +15,7 @@ type ModalType =
   | "delete-article"
   | "delete-article-comment"
   | "no-token"
+  | "taskListTodo"
   | null;
 
 interface ModalState {
