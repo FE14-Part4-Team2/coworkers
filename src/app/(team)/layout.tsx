@@ -1,24 +1,14 @@
-"use client";
+// Server Component
+import { cookies } from "next/headers";
+import ClientLayout from "@/app/(team)/ClientTeamLayout";
 
-import { usePathname } from "next/navigation";
-import Header from "@/layouts/Header/Header";
-import AuthHeader from "@/layouts/Header/AuthHeader";
-import SimpleLayout from "@/layouts/SimpleLayout";
-
-export default function TeamLayout({
+export default async function TeamLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
 
-  const isAuthPage =
-    pathname?.includes("/create") || pathname?.includes("/join");
-
-  return (
-    <>
-      {isAuthPage ? <AuthHeader /> : <Header />}
-      <SimpleLayout>{children}</SimpleLayout>
-    </>
-  );
+  return <ClientLayout token={token}>{children}</ClientLayout>;
 }
