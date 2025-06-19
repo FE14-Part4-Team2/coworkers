@@ -10,6 +10,7 @@ import { useModalStore } from "@/stores/modalStore";
 import { useToastStore } from "@/stores/toastStore";
 import DeleteModal from "@/components/common/Modal/DeleteModal";
 import JoinButton from "./JoinButton";
+import NoAuthModal from "@/components/common/Modal/NoAuthModal";
 
 interface ArticleDetailProps {
   data: ArticleDetailType;
@@ -21,6 +22,7 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
   const { openModal, closeModal } = useModalStore();
   const { showToast } = useToastStore();
   const deleteArticleMutation = useDeleteArticle();
+  const { isAuthenticated } = useAuthStore();
 
   const isMyArticle = user?.id === data.writer.id;
 
@@ -123,11 +125,15 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
         </div>
         <div className="transform transition-all duration-300 hover:scale-110">
           <LikeButton
+            onRequireLogin={() => openModal("no-auth")}
+            isAuthenticated={isAuthenticated}
             isLiked={data.isLiked}
             articleId={data.id}
             likeCount={data.likeCount}
           />
         </div>
+
+        <NoAuthModal />
       </div>
     </>
   );
