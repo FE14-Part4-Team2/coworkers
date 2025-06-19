@@ -16,7 +16,7 @@ async function fetcher<T>(
   isRetry = false,
 ): Promise<T> {
   if (!isBrowser) {
-    throw new Error("fetcher는 클라이언트 환경에서만 사용 가능합니다.");
+    console.log("fetcher는 클라이언트 환경에서만 사용 가능합니다.");
   }
 
   const url = new URL(`${BASE_URL}${path}`, window.location.origin);
