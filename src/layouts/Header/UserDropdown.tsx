@@ -65,13 +65,19 @@ export default function UserDropdown({
         className="w-[8.5rem] absolute mt-2 right-0 text-center"
       >
         <DropDownItem>
-          <Link href="/myhistory">마이 히스토리</Link>
+          <Link href="/myhistory" onClick={onClose}>
+            마이 히스토리
+          </Link>
         </DropDownItem>
         <DropDownItem>
-          <Link href="/join">팀 참여</Link>
+          <Link href="/join" onClick={onClose}>
+            팀 참여
+          </Link>
         </DropDownItem>
         <DropDownItem>
-          <Link href="/user-setting">계정 설정</Link>
+          <Link href="/user-setting" onClick={onClose}>
+            계정 설정
+          </Link>
         </DropDownItem>
         <DropDownItem onClick={() => openModal("logout")}>
           로그아웃
