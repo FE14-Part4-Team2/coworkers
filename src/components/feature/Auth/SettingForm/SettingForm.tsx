@@ -29,8 +29,8 @@ function SettingForm({ userName }: { userName: string }) {
         onSuccess: () => {
           showToast("이름을 변경했습니다.", "success");
         },
-        onError: () => {
-          showToast("이름 변경을 실패했습니다.", "error");
+        onError: (error) => {
+          showToast(error.message, "error");
         },
       },
     );

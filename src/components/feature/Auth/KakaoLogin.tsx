@@ -13,20 +13,17 @@ const KAKAO_AUTH_URL = "https://kauth.kakao.com/oauth/authorize";
 
 export default function KakaoLogin({ message }: KaKaoLoginProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { showToast } = useToastStore();
 
   const handleKakaoLogin = () => {
     setIsLoading(true);
-    setError(null);
 
     const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
     if (!REST_API_KEY || !REDIRECT_URI) {
-      setError("환경 변수가 설정되지 않았습니다.");
       setIsLoading(false);
-      showToast(error as string);
+      showToast("환경 변수가 설정되지 않았습니다.");
       return;
     }
 
@@ -34,14 +31,7 @@ export default function KakaoLogin({ message }: KaKaoLoginProps) {
 
     const kakaoAuthUrl = `${KAKAO_AUTH_URL}?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${state}`;
 
-    try {
-      window.location.href = kakaoAuthUrl;
-    } catch (err) {
-      console.error("카카오 로그인 오류", err);
-      setError("카카오 로그인 페이지 이동 중 오류가 발생했습니다.");
-      setIsLoading(false);
-      showToast(error as string);
-    }
+    window.location.href = kakaoAuthUrl;
   };
 
   return (

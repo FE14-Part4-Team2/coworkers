@@ -97,6 +97,9 @@ export default function ResetPasswordPage() {
                   );
                 },
               },
+              onChange: (e) => {
+                e.target.value = e.target.value.replace(/\s/g, "");
+              },
             })}
             suffix={
               <PasswordToggle
@@ -116,6 +119,9 @@ export default function ResetPasswordPage() {
               required: "비밀번호 확인을 입력해주세요.",
               validate: (value) =>
                 value === password || "비밀번호가 일치하지 않습니다.",
+              onChange: (e) => {
+                e.target.value = e.target.value.replace(/\s/g, "");
+              },
             })}
             suffix={
               <PasswordToggle
@@ -131,6 +137,7 @@ export default function ResetPasswordPage() {
             variant="primary"
             size="md"
             className="mt-10 w-full"
+            disabled={resetPasswordMutation.isPending}
           />
         </form>
       </div>

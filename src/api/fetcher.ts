@@ -1,8 +1,12 @@
+"use client";
+
 const BASE_URL = "/api/proxy";
 
 type FetcherOptions = RequestInit & {
   params?: Record<string, string | number | boolean>;
 };
+
+const isBrowser = typeof window !== "undefined";
 
 async function fetcher<T>(
   path: string,
@@ -11,6 +15,10 @@ async function fetcher<T>(
   options?: FetcherOptions,
   isRetry = false,
 ): Promise<T> {
+  if (!isBrowser) {
+    throw new Error("fetcher는 클라이언트 환경에서만 사용 가능합니다.");
+  }
+
   const url = new URL(`${BASE_URL}${path}`, window.location.origin);
 
   if (options?.params) {

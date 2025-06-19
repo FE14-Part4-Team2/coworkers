@@ -70,6 +70,9 @@ export default function LoginForm() {
           error={!!errors.password}
           {...register("password", {
             required: "비밀번호는 필수 입력입니다.",
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\s/g, "");
+            },
           })}
           suffix={
             <PasswordToggle
@@ -88,9 +91,10 @@ export default function LoginForm() {
         </button>
         <Button
           type="submit"
-          label="로그인"
+          label={loginMutation.isPending ? "로그인 중.." : "로그인"}
           variant="primary"
           className="mt-[4.75rem] w-full"
+          disabled={loginMutation.isPending}
         />
       </form>
       <SendEmailModal />
