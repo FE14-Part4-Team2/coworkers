@@ -39,8 +39,11 @@ export const useUpdateGroup = (id: string) => {
   return useMutation({
     mutationFn: (body: UpdateGroupRequest) =>
       groupService.updateGroup(id, body),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["group", id] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["group", id] }),
+        queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() }),
+      ]);
     },
   });
 };
