@@ -36,14 +36,23 @@ export const useCreateGroup = () => {
 // 그룹 수정
 export const useUpdateGroup = (id: string) => {
   const queryClient = useQueryClient();
+  const { currentTeam, setCurrentTeam } = useTeamStore();
   return useMutation({
     mutationFn: (body: UpdateGroupRequest) =>
       groupService.updateGroup(id, body),
-    onSuccess: async () => {
+    onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["group", id] }),
         queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() }),
       ]);
+
+      if (currentTeam?.id === Number(id)) {
+        setCurrentTeam({
+          ...currentTeam,
+          name: variables.name ?? currentTeam.name,
+          image: variables.image ?? currentTeam.image,
+        });
+      }
     },
   });
 };
