@@ -11,7 +11,7 @@ import { useEffect } from "react";
 interface ImageUploaderProps {
   onChange?: (file: File | null) => void;
   disabled?: boolean;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 export default function ImageUploader({
@@ -28,7 +28,7 @@ export default function ImageUploader({
     handleFileChange,
     handleRemoveClick,
     dragHandlers,
-  } = useImageUploader(onChange, disabled, imageUrl);
+  } = useImageUploader(onChange, disabled, imageUrl ?? undefined);
 
   useEffect(() => {
     if (imageUrl && !preview) {

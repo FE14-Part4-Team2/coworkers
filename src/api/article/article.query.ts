@@ -90,6 +90,7 @@ export const useEditArticle = (articleId: string) => {
     mutationFn: (body) => articleService.updateArticle(articleId, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["article"] });
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 };

@@ -7,15 +7,25 @@ import { useRouter, useParams } from "next/navigation";
 import { useMemo } from "react";
 import { useImageUploadHandler } from "@/hooks/useImageUploadHandler";
 import { useToastStore } from "@/stores/toastStore";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 export default function BoardsEditPage() {
+  const { user, isAuthenticated } = useAuthStore();
   const { articleId } = useParams();
   const router = useRouter();
   const { showToast } = useToastStore();
-  const { data: article, isLoading } = useArticleDetail(articleId as string);
+  const { data: article } = useArticleDetail(articleId as string);
   const { mutate: editArticle, isPending: isSubmitting } = useEditArticle(
     articleId as string,
   );
+
+  useEffect(() => {
+    if (isAuthenticated === false || user === undefined) {
+      router.replace("/login");
+    }
+  }, [user, isAuthenticated, router]);
+
   const { imageUrl, isImageUploading, handleImageUpload } =
     useImageUploadHandler();
 
@@ -34,7 +44,7 @@ export default function BoardsEditPage() {
     };
   }, [article]);
 
-  if (isLoading || !article) return null;
+  if (user === undefined || !article) return null;
 
   function handleSubmit(data: FormValues) {
     const contentPayload: { content: string; token?: string } = {
@@ -48,7 +58,7 @@ export default function BoardsEditPage() {
     const payload = {
       title: data.title,
       content: JSON.stringify(contentPayload),
-      image: imageUrl ?? article?.image ?? undefined,
+      image: imageUrl === null ? null : (imageUrl ?? article?.image),
     };
 
     editArticle(payload, {

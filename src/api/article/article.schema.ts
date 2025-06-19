@@ -18,7 +18,7 @@ export type ArticleDetailType = ArticleType & {
 };
 
 export type CreateArticleRequest = {
-  image?: string;
+  image?: string | null;
   content: string;
   title: string;
 };

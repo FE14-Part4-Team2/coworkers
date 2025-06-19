@@ -16,7 +16,7 @@ export interface FormValues {
 export interface BoardsFormProps {
   isSubmitting: boolean;
   onSubmit: (data: FormValues) => void;
-  imageUrl?: string;
+  imageUrl?: string | null;
   onImageUpload: (file: File | null) => void;
   isImageUploading: boolean;
   mode: "create" | "edit";
@@ -58,6 +58,7 @@ export default function BoardsForm({
         isSubmitting ? (isEdit ? "수정중" : "등록중") : isEdit ? "수정" : "등록"
       }
       variant="primary"
+      state={isSubmitting ? "disabled" : "default"}
       type="submit"
       disabled={isSubmitting}
       className="
@@ -69,8 +70,15 @@ export default function BoardsForm({
     />
   );
 
+  const onValidSubmit = (data: FormValues) => {
+    onSubmit(data);
+  };
+
   return (
-    <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col w-full"
+      onSubmit={handleSubmit(onValidSubmit)}
+    >
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
         <h1 className="text-text-primary text-2lg sm:text-xl">
           {isEdit ? "게시글 수정" : "게시글 쓰기"}
