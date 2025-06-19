@@ -48,10 +48,26 @@ export const useUpdateGroup = (id: string) => {
 // 그룹 삭제
 export const useDeleteGroup = (id: string) => {
   const queryClient = useQueryClient();
+  const { currentTeam, setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: () => groupService.deleteGroup(id),
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["group"] });
+      queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() });
+
+      const updateGroups = await queryClient.fetchQuery({
+        queryKey: userQuery.myGroupsKey(),
+        queryFn: () => userService.getMyGroups(),
+      });
+
+      if (currentTeam?.id === Number(id)) {
+        if (updateGroups.length > 0) {
+          setCurrentTeam(updateGroups[0]);
+        } else {
+          setCurrentTeam(null);
+        }
+      }
     },
   });
 };
