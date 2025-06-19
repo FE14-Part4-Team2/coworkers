@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 7,
     });
     return res;
-  } catch (error) {
-    return `${error}:서버 오류가 발생했습니다.`;
+  } catch {
+    return NextResponse.json(
+      { error: "서버 오류가 발생했습니다." },
+      { status: 500 },
+    );
   }
 }
