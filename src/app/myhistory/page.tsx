@@ -2,6 +2,8 @@
 
 import { useMyHistory } from "@/api/user/user.query";
 import { TaskType } from "@/api/task/task.schema";
+import { useMemo } from "react";
+
 import Image from "next/image";
 
 // 히스토리를 날짜별로 그룹화하고, 최신 날짜 순으로 정렬
@@ -22,6 +24,9 @@ const groupHistoriesByDate = (rawHistories: TaskType[]) => {
 export default function MyHistoryPage() {
   const { data, isLoading } = useMyHistory();
 
+  const histories = useMemo(() => data?.tasksDone ?? [], [data]);
+  const grouped = useMemo(() => groupHistoriesByDate(histories), [histories]);
+
   if (isLoading) {
     return (
       <div className="w-full flex items-center justify-center h-[61.5vh] mt-12">
@@ -29,9 +34,6 @@ export default function MyHistoryPage() {
       </div>
     );
   }
-
-  const histories = data?.taskDone ?? [];
-  const grouped = groupHistoriesByDate(histories);
 
   return (
     <div className="w-full text-text-primary">
