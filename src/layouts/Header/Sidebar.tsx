@@ -25,7 +25,7 @@ export default function Sidebar({ groups, onClose }: SidebarProps) {
         </button>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 h-full overflow-auto pb-[5rem]">
         {groups?.map((team) => (
           <Link href={`/${team.teamId}`} key={team.teamId}>
             <span className="block">{team.name}</span>
