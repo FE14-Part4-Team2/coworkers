@@ -31,9 +31,7 @@ export default function LikeButton({
           height={28}
           className="hover:scale-110 transition-transform"
         />
-        <span className="text-text-primary text-base">
-          {likeCount}개의 좋아요
-        </span>
+        <span className="text-text-primary">{likeCount}개의 좋아요</span>
       </button>
     </>
   );

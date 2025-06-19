@@ -106,7 +106,7 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
         {parsedContent.content}
       </section>
 
-      <div className="flex items-center gap-4 border-b pb-6 mb-12 group">
+      <div className="flex items-center gap-4 border-b pb-6 mb-12">
         <div className="flex items-center gap-3 transition-all duration-300 hover:scale-105">
           <div className="relative">
             <Image
@@ -114,10 +114,10 @@ export default function ArticleDetail({ data }: ArticleDetailProps) {
               alt="댓글"
               width={28}
               height={28}
-              className="transition-transform duration-300 group-hover:rotate-12"
+              className="transition-transform duration-300 hover:rotate-12"
             />
           </div>
-          <span className="text-text-primary text-base font-medium">
+          <span className="text-text-primary font-medium">
             {data.commentCount}개의 댓글
           </span>
         </div>
