@@ -5,7 +5,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Link from "next/link";
 import TeamListItem from "./TeamListItem";
 
-interface Team {
+export interface Team {
   name: string;
   img: string;
   id: number;
@@ -13,11 +13,11 @@ interface Team {
 
 interface TeamDropdownProps {
   teams: Team[];
-  currentTeam: string | null;
+  currentTeam: Team | null;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
-  onTeamClick: (name: string) => void;
+  onTeamClick: (team: Team) => void;
 }
 
 export default function TeamDropdown({
@@ -34,7 +34,7 @@ export default function TeamDropdown({
     <div ref={ref} className="relative cursor-pointer">
       <div className="flex items-center gap-2.5" onClick={onToggle}>
         <span className="whitespace-nowrap text-text-primary text-lg">
-          {currentTeam}
+          {currentTeam?.name}
         </span>
         <Image
           src="/icons/icon-toggle-check.svg"

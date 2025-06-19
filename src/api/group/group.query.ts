@@ -7,6 +7,7 @@ import {
   UpdateGroupRequest,
 } from "./group.schema";
 import { groupService } from "./group.service";
+import { useTeamStore } from "@/stores/teamStore";
 
 // 그룹 정보 조회
 export const useGroupQuery = (groupId: string) => {
@@ -19,9 +20,12 @@ export const useGroupQuery = (groupId: string) => {
 // 그룹 생성
 export const useCreateGroup = () => {
   const queryClient = useQueryClient();
+  const { setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: (body: CreateGroupRequest) => groupService.createGroup(body),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setCurrentTeam(data);
       queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
   });
@@ -52,9 +56,20 @@ export const useDeleteGroup = (id: string) => {
 
 // 초대 수락
 export const useAcceptInvitation = () => {
+  const { setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: (body: AcceptInvitationRequest) =>
       groupService.acceptInvitation(body),
+    onSuccess: async (data) => {
+      const groupId = String(data.groupId);
+      const group = await groupService.getGroup(groupId);
+      setCurrentTeam({
+        name: group.name,
+        image: group.image ?? null,
+        id: group.id,
+      });
+    },
   });
 };
 

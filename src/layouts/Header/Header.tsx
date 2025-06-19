@@ -7,7 +7,7 @@ import UserDropdown from "./UserDropdown";
 import TeamDropdown from "./TeamDropdown";
 import { useAuthStore } from "@/stores/authStore";
 import { useMyGroups } from "@/api/user/user.query";
-import { useTeamStore } from "@/stores/teamStore";
+import { Team, useTeamStore } from "@/stores/teamStore";
 import useImageFallback from "@/hooks/useImageFallback";
 
 export default function Header() {
@@ -18,21 +18,6 @@ export default function Header() {
   const { user } = useAuthStore();
   const { currentTeam, setCurrentTeam } = useTeamStore();
   const userImg = useImageFallback(user?.image, "/icons/icon-avatar.svg");
-
-  useEffect(() => {
-    if (!teams) return;
-
-    if (
-      currentTeam === null ||
-      !teams.some((team) => team.name === currentTeam)
-    ) {
-      if (teams.length > 0) {
-        setCurrentTeam(teams[0].name);
-      } else {
-        setCurrentTeam(null);
-      }
-    }
-  }, [teams, currentTeam, setCurrentTeam]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -68,8 +53,8 @@ export default function Header() {
     setIsSidebarOpen(false);
   }, []);
 
-  const handleTeamClick = (name: string) => {
-    setCurrentTeam(name);
+  const handleTeamClick = (team: Team) => {
+    setCurrentTeam(team);
   };
 
   return (
