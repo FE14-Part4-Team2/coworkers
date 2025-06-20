@@ -12,15 +12,23 @@ import { useRouter, useParams } from "next/navigation";
 
 import { useToastStore } from "@/stores/toastStore";
 import { useTeamStore } from "@/stores/useTeamStore";
+import { useAuthStore } from "@/stores/authStore";
 
 import { useState, useEffect, useMemo } from "react";
 
 export default function TeamEditPage() {
   const { showToast } = useToastStore();
+  const { user } = useAuthStore();
   const { teamId } = useParams() as { teamId: string };
   const { data: groupData } = useGroupQuery(teamId);
   const { teamName, setTeamName, teamProfileUrl, setTeamProfileUrl } =
     useTeamStore();
+
+  const DEFAULT_TEAM_PROFILE_IMAGE = "/icons/icon-img.svg";
+
+  const isMember = groupData?.members?.some(
+    (member) => member.userName === user?.nickname,
+  );
 
   const router = useRouter();
   const groupId = groupData?.id;
@@ -30,13 +38,25 @@ export default function TeamEditPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!isMember) {
+      router.replace(`/${teamId}`);
+    }
+
     if (groupData) {
       setTeamName(groupData.name);
       setEditedTeamName(groupData.name);
-      setTeamProfileUrl(groupData.image ?? "");
+      setTeamProfileUrl(groupData.image ?? DEFAULT_TEAM_PROFILE_IMAGE);
       setIsTouched(false);
     }
-  }, [groupData, setTeamName, setTeamProfileUrl]);
+  }, [
+    groupData,
+    setTeamName,
+    setTeamProfileUrl,
+    isMember,
+    router,
+    showToast,
+    teamId,
+  ]);
 
   const isInputError = isTouched && editedTeamName.trim() === "";
 
