@@ -50,6 +50,7 @@ export const useMyInfoQuery = (enabled: boolean) => {
 export const useUpdateMyInfoMutation = () => {
   const queryClient = useQueryClient();
   const setAuth = useAuthStore((state) => state.setAuth);
+  const { showToast } = useToastStore();
 
   return useMutation<Message, Error, UpdateMyInfoRequest>({
     mutationFn: (body) => userService.updateMyInfo(body),
@@ -58,6 +59,11 @@ export const useUpdateMyInfoMutation = () => {
 
       const newUser = await userService.getMyInfo();
       setAuth(newUser);
+
+      showToast("이름을 변경했습니다.", "success");
+    },
+    onError: (error) => {
+      showToast(error.message, "error");
     },
   });
 };
@@ -116,18 +122,31 @@ export const useSendResetPasswordMutation = () => {
 // 비밀번호 초기화 뮤테이션
 export const useResetPassword = () => {
   const router = useRouter();
+  const { showToast } = useToastStore();
 
   return useMutation({
     mutationFn: userService.resetPassword,
     onSuccess: () => {
+      showToast("비밀번호가 변경되었습니다.", "success");
       router.push("/login");
+    },
+    onError: () => {
+      showToast("입력 값을 확인해주세요.", "error");
     },
   });
 };
 
 // 비밀번호 재설정 뮤테이션
 export const useUpdatePassword = () => {
+  const { showToast } = useToastStore();
+
   return useMutation({
     mutationFn: userService.updatePassword,
+    onSuccess: () => {
+      showToast("비밀번호가 변경되었습니다.", "success");
+    },
+    onError: () => {
+      showToast("비밀번호 변경을 실패했습니다.", "error");
+    },
   });
 };

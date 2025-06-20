@@ -35,20 +35,10 @@ function PasswordChanger() {
       return;
     }
 
-    updatePasswordMutation.mutate(
-      {
-        passwordConfirmation: data.confirmPassword,
-        password: data.newPassword,
-      },
-      {
-        onSuccess: () => {
-          showToast("비밀번호가 변경되었습니다.", "success");
-        },
-        onError: () => {
-          showToast("비밀번호 변경을 실패했습니다.", "error");
-        },
-      },
-    );
+    updatePasswordMutation.mutate({
+      passwordConfirmation: data.confirmPassword,
+      password: data.newPassword,
+    });
 
     closeModal();
     reset();
