@@ -6,7 +6,7 @@ export default function LoadingSpinner({
   title = "정보를 불러오는 중...",
 }: LoadingSpinnerProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+    <div className="flex flex-col items-center justify-center mt-[14rem]">
       <div className="relative mb-6">
         <div className="absolute inset-0 w-16 h-16 bg-brand-primary/10 rounded-full blur-md"></div>
 
