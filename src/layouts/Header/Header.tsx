@@ -5,9 +5,14 @@ import { useCallback, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import UserDropdown from "./UserDropdown";
 import TeamDropdown from "./TeamDropdown";
+import LogoutModal from "@/components/common/Modal/LogoutModal";
 import { useAuthStore } from "@/stores/authStore";
 import { useMyGroups } from "@/api/user/user.query";
+import { useSignOut } from "@/api/auth/auth.query";
 import { Team, useTeamStore } from "@/stores/teamStore";
+import { useModalStore } from "@/stores/modalStore";
+import { useToastStore } from "@/stores/toastStore";
+import { useRouter } from "next/navigation";
 import useImageFallback from "@/hooks/useImageFallback";
 
 export default function Header() {
@@ -18,6 +23,11 @@ export default function Header() {
   const { user } = useAuthStore();
   const { currentTeam, setCurrentTeam } = useTeamStore();
   const userImg = useImageFallback(user?.image, "/icons/icon-avatar.svg");
+
+  const signOutMutation = useSignOut();
+  const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+  const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,6 +65,24 @@ export default function Header() {
 
   const handleTeamClick = (team: Team) => {
     setCurrentTeam(team);
+  };
+
+  const handleSignOut = () => {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        closeModal();
+        showToast("로그아웃 되었습니다.", "success");
+        router.replace("/");
+      },
+      onError: (error) => {
+        console.error("로그아웃 실패:", error);
+        showToast("로그아웃에 실패했습니다.", "error");
+      },
+    });
+  };
+
+  const handleLogoutClick = () => {
+    openModal("logout");
   };
 
   return (
@@ -133,6 +161,7 @@ export default function Header() {
                   isOpen={isMenuOpen}
                   onToggle={toggleMenu}
                   onClose={() => setIsMenuOpen(false)}
+                  onLogoutClick={handleLogoutClick}
                 />
               ) : (
                 <Link
@@ -158,6 +187,8 @@ export default function Header() {
           }
         />
       )}
+
+      <LogoutModal onConfirm={handleSignOut} />
     </>
   );
 }
