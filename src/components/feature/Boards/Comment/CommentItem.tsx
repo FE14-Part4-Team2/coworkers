@@ -77,7 +77,7 @@ export default function CommentItem({ comment, articleId }: CommentItemProps) {
           </div>
         ) : (
           <>
-            <span className="text-md sm:text-lg text-text-primary flex-1">
+            <span className="text-md sm:text-lg text-text-primary flex-1 break-all">
               {comment.content}
             </span>
             {isMyComment && (
