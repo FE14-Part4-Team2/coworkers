@@ -101,6 +101,28 @@ export default function DashboardPage() {
     }
   }, [modalType, setDeleteList, setMemberToDelete]);
 
+  useEffect(() => {
+    if (!isLoading && !isMembershipLoading && memberships && groupData) {
+      const myMembership = memberships.find(
+        (m) => m.groupId === Number(teamId),
+      );
+
+      if (!myMembership) {
+        showToast("먼저 팀 참여가 필요합니다.", "error");
+        router.replace("/join");
+        return;
+      }
+    }
+  }, [
+    isLoading,
+    isMembershipLoading,
+    memberships,
+    groupData,
+    router,
+    showToast,
+    teamId,
+  ]);
+
   if (isLoading || isMembershipLoading || !groupData || !memberships) {
     return (
       <div className="w-full flex flex-col gap-12">
@@ -182,11 +204,20 @@ export default function DashboardPage() {
 
   const handleMemberDelete = () => {
     if (!memberToDelete) return;
+
+    const isSelf = memberToDelete.email === currentUserEmail;
+
     deleteGroupMember.mutate(undefined, {
       onSuccess: () => {
         setMemberToDelete(null);
         closeModal();
-        showToast("삭제 완료!", "success");
+
+        if (isSelf) {
+          showToast("팀 탈퇴 완료", "success");
+          router.replace("/");
+        } else {
+          showToast("삭제 완료!", "success");
+        }
       },
       onError: () => {
         closeModal();
