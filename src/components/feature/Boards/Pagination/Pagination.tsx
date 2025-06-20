@@ -23,7 +23,7 @@ export default function Pagination({
         variant="primary"
         onClick={() => setPage(page - 1)}
         disabled={page === 1}
-        className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-bg-tertiary text-bg-inverse border border-brand-primary hover:bg-brand-primary hover:text-text-inverse disabled:opacity-50"
+        className="w-9 h-[2rem] sm:w-[3rem] sm:h-[2.6rem] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-bg-tertiary text-bg-inverse border border-brand-primary hover:bg-brand-primary hover:text-text-inverse disabled:opacity-50"
       />
       {Array.from({ length: totalPages }, (_, idx) => {
         const p = idx + 1;
@@ -47,7 +47,7 @@ export default function Pagination({
         variant="primary"
         onClick={() => setPage(page + 1)}
         disabled={page === totalPages}
-        className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-bg-tertiary text-text-inverse border border-brand-primary hover:bg-brand-primary hover:text-text-inverse disabled:opacity-50"
+        className="w-9 h-[2rem] sm:w-[3rem] sm:h-[2.6rem] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-bg-tertiary text-text-inverse border border-brand-primary hover:bg-brand-primary hover:text-text-inverse disabled:opacity-50"
       />
     </nav>
   );

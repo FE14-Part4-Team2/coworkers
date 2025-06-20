@@ -58,20 +58,20 @@ export default function CommentItem({ comment, articleId }: CommentItemProps) {
               autoFocus
               rows={2}
             />
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 text-md">
               <Button
                 label="취소"
                 size="sm"
                 variant="secondary"
                 onClick={handleCancel}
-                className="border-none w-10"
+                className="border-none w-[5rem] h-8"
               />
               <Button
                 label="저장"
                 size="sm"
                 variant="primary"
                 onClick={handleSave}
-                className="border-none w-10"
+                className="border-none w-[5rem] h-8"
               />
             </div>
           </div>

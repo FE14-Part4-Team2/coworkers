@@ -12,7 +12,7 @@ export default async function ResetPasswordLayout({
   const token = cookieStore.get("accessToken")?.value;
 
   if (token) {
-    redirect("/");
+    redirect("/?from=password-usersetting");
   }
   return (
     <>

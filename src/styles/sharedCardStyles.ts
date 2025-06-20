@@ -7,8 +7,7 @@ export const sharedCardStyles = {
   profileImage:
     "rounded-full border-2 border-white shadow-sm w-6 h-6 sm:w-8 sm:h-8",
   authorName: "text-md text-text-Primary font-medium",
-  likesBadge:
-    "flex gap-1 items-center bg-text-primary px-2 py-1 sm:px-3 sm:py-1.5 rounded-full",
+  likesBadge: "flex gap-1 items-center",
   likesText: "text-sm text-text-disabled font-medium",
   cardBase:
     "border border-card-border bg-bg-secondary rounded-xl shadow-lg overflow-hidden cursor-pointer",

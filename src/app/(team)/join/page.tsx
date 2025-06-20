@@ -23,7 +23,7 @@ export default function TeamJoinPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const isInputError = isTouched && !!teamLink;
+  const isInputError = isTouched && teamLink.trim() === "";
 
   const validateTeamLink = (teamLink: string) =>
     teamLink.trim() === "" ? TEAM_ERROR_MESSAGES.JOIN_REQUIRED : "";
@@ -81,7 +81,6 @@ export default function TeamJoinPage() {
         token,
         userEmail: myInfo?.email || "",
       });
-
       window.location.href = `/${res.groupId}`;
     } catch (e: unknown) {
       let errorMessage = "";

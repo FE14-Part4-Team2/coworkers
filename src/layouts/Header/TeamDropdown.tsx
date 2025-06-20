@@ -5,7 +5,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Link from "next/link";
 import TeamListItem from "./TeamListItem";
 
-interface Team {
+export interface Team {
   name: string;
   img: string;
   id: number;
@@ -13,11 +13,11 @@ interface Team {
 
 interface TeamDropdownProps {
   teams: Team[];
-  currentTeam: string | null;
+  currentTeam: Team | null;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
-  onTeamClick: (name: string) => void;
+  onTeamClick: (team: Team) => void;
 }
 
 export default function TeamDropdown({
@@ -31,10 +31,10 @@ export default function TeamDropdown({
   const ref = useClickOutside(onClose);
 
   return (
-    <div ref={ref} className="relative cursor-pointer">
+    <div ref={ref} className="relative cursor-pointer ">
       <div className="flex items-center gap-2.5" onClick={onToggle}>
         <span className="whitespace-nowrap text-text-primary text-lg">
-          {currentTeam}
+          {currentTeam?.name}
         </span>
         <Image
           src="/icons/icon-toggle-check.svg"
@@ -47,18 +47,23 @@ export default function TeamDropdown({
 
       <DropDownMenu
         isOpen={isOpen}
-        className="absolute w-[13.5rem] text-center top-full mt-2 right-0"
+        className="absolute w-[13.5rem] text-center top-full mt-2 right-0 max-h-[19rem] overflow-auto bg-bg-secondary rounded-xl shadow-lg"
       >
         {teams.map((team) => (
-          <TeamListItem key={team.id} team={team} onTeamClick={onTeamClick} />
+          <TeamListItem
+            key={team.id}
+            team={team}
+            onTeamClick={onTeamClick}
+            currentTeam={currentTeam}
+          />
         ))}
-        <Link href="/create">
+        <Link href="/create" onClick={onClose}>
           <span className="inline-block py-3.5 mt-2 w-full text-center rounded-xl text-brand-secondary cursor-pointer bg-bg-secondary border border-text-primary hover:bg-bg-primary transition-colors">
             팀 생성하기
           </span>
         </Link>
 
-        <Link href="/join">
+        <Link href="/join" onClick={onClose}>
           <span className="inline-block py-3.5 mt-2 w-full text-center rounded-xl text-brand-tertiary cursor-pointer bg-bg-secondary border border-text-primary hover:bg-bg-primary transition-colors">
             팀 참여하기
           </span>

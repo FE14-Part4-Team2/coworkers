@@ -5,22 +5,37 @@ export interface LikeButtonProps {
   articleId: number;
   isLiked: boolean;
   likeCount: number;
+  isAuthenticated: boolean;
+  onRequireLogin?: () => void;
 }
 
 export default function LikeButton({
   articleId,
   isLiked,
   likeCount,
+  onRequireLogin,
+  isAuthenticated,
 }: LikeButtonProps) {
   const { mutate: addLike } = useLikeArticle("add");
   const { mutate: deleteLike } = useLikeArticle("delete");
+
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      onRequireLogin?.();
+      return;
+    }
+
+    if (isLiked) {
+      deleteLike(String(articleId));
+    } else {
+      addLike(String(articleId));
+    }
+  };
   return (
     <>
       <button
         className="flex items-center gap-3 hover:opacity-70 transition-opacity"
-        onClick={() =>
-          isLiked ? deleteLike(String(articleId)) : addLike(String(articleId))
-        }
+        onClick={handleClick}
       >
         <Image
           src={
@@ -31,9 +46,7 @@ export default function LikeButton({
           height={28}
           className="hover:scale-110 transition-transform"
         />
-        <span className="text-text-primary text-base">
-          {likeCount}개의 좋아요
-        </span>
+        <span className="text-text-primary">{likeCount}개의 좋아요</span>
       </button>
     </>
   );
