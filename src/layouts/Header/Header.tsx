@@ -7,7 +7,7 @@ import UserDropdown from "./UserDropdown";
 import TeamDropdown from "./TeamDropdown";
 import { useAuthStore } from "@/stores/authStore";
 import { useMyGroups } from "@/api/user/user.query";
-import { useTeamStore } from "@/stores/teamStore";
+import { Team, useTeamStore } from "@/stores/teamStore";
 import useImageFallback from "@/hooks/useImageFallback";
 
 export default function Header() {
@@ -20,19 +20,22 @@ export default function Header() {
   const userImg = useImageFallback(user?.image, "/icons/icon-avatar.svg");
 
   useEffect(() => {
-    if (!teams) return;
+    const handleResize = () => {
+      if (typeof window === "undefined") return;
 
-    if (
-      currentTeam === null ||
-      !teams.some((team) => team.name === currentTeam)
-    ) {
-      if (teams.length > 0) {
-        setCurrentTeam(teams[0].name);
-      } else {
-        setCurrentTeam(null);
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(false);
       }
-    }
-  }, [teams, currentTeam, setCurrentTeam]);
+
+      if (window.innerWidth < 640) {
+        setIsTeamMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -50,8 +53,8 @@ export default function Header() {
     setIsSidebarOpen(false);
   }, []);
 
-  const handleTeamClick = (name: string) => {
-    setCurrentTeam(name);
+  const handleTeamClick = (team: Team) => {
+    setCurrentTeam(team);
   };
 
   return (
@@ -112,7 +115,10 @@ export default function Header() {
                 </Link>
               )}
 
-              <Link href="/boards" className={"whitespace-nowrap text-lg"}>
+              <Link
+                href="/boards"
+                className={"whitespace-nowrap text-lg text-text-primary"}
+              >
                 모집게시판
               </Link>
             </div>

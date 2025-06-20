@@ -20,7 +20,7 @@ export const userQuery = {
       queryKey: userQuery.myInfoKey(),
       queryFn: () => userService.getMyInfo(),
     }),
-  myGroupsKey: () => ["group"],
+  myGroupsKey: () => ["group", "groups"],
   myGroups: () =>
     queryOptions({
       queryKey: userQuery.myGroupsKey(),

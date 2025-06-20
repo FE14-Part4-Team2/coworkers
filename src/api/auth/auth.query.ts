@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { userQuery } from "../user/user.query";
 import { userService } from "../user/user.service";
 import { useToastStore } from "@/stores/toastStore";
+import { useTeamStore } from "@/stores/teamStore";
 
 //회원가입 뮤테이션
 export const useSignUp = () => {
@@ -24,6 +25,7 @@ export const useSignIn = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToastStore();
   const router = useRouter();
+  const { setCurrentTeam } = useTeamStore();
 
   return useMutation({
     mutationFn: authService.signIn,
@@ -38,8 +40,8 @@ export const useSignIn = () => {
           queryKey: userQuery.myGroupsKey(),
           queryFn: () => userService.getMyGroups(),
         });
-
         if (groups.length > 0) {
+          setCurrentTeam(groups[0]);
           router.push(`/${groups[0].id}`);
         } else {
           router.push("/select");
@@ -60,11 +62,13 @@ export const useSignIn = () => {
 //로그아웃 뮤테이션
 export const useSignOut = () => {
   const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { setCurrentTeam } = useTeamStore();
 
   return useMutation({
     mutationFn: authService.signOut,
     onSuccess: () => {
       clearAuth();
+      setCurrentTeam(null);
     },
   });
 };
@@ -75,6 +79,7 @@ export const useKakaoOauth = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToastStore();
   const router = useRouter();
+  const { setCurrentTeam } = useTeamStore();
 
   return useMutation({
     mutationFn: authService.kakaoSignIn,
@@ -91,6 +96,7 @@ export const useKakaoOauth = () => {
         });
 
         if (groups.length > 0) {
+          setCurrentTeam(groups[0]);
           router.push(`/${groups[0].id}`);
         } else {
           router.push("/select");

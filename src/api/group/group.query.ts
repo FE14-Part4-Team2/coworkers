@@ -7,6 +7,9 @@ import {
   UpdateGroupRequest,
 } from "./group.schema";
 import { groupService } from "./group.service";
+import { useTeamStore } from "@/stores/teamStore";
+import { userQuery } from "../user/user.query";
+import { userService } from "../user/user.service";
 
 // 그룹 정보 조회
 export const useGroupQuery = (groupId: string) => {
@@ -19,9 +22,12 @@ export const useGroupQuery = (groupId: string) => {
 // 그룹 생성
 export const useCreateGroup = () => {
   const queryClient = useQueryClient();
+  const { setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: (body: CreateGroupRequest) => groupService.createGroup(body),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setCurrentTeam(data);
       queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
   });
@@ -30,11 +36,23 @@ export const useCreateGroup = () => {
 // 그룹 수정
 export const useUpdateGroup = (id: string) => {
   const queryClient = useQueryClient();
+  const { currentTeam, setCurrentTeam } = useTeamStore();
   return useMutation({
     mutationFn: (body: UpdateGroupRequest) =>
       groupService.updateGroup(id, body),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["group", id] });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["group", id] }),
+        queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() }),
+      ]);
+
+      if (currentTeam?.id === Number(id)) {
+        setCurrentTeam({
+          ...currentTeam,
+          name: variables.name ?? currentTeam.name,
+          image: variables.image ?? currentTeam.image,
+        });
+      }
     },
   });
 };
@@ -42,19 +60,46 @@ export const useUpdateGroup = (id: string) => {
 // 그룹 삭제
 export const useDeleteGroup = (id: string) => {
   const queryClient = useQueryClient();
+  const { currentTeam, setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: () => groupService.deleteGroup(id),
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["group"] });
+      queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() });
+
+      const updateGroups = await queryClient.fetchQuery({
+        queryKey: userQuery.myGroupsKey(),
+        queryFn: () => userService.getMyGroups(),
+      });
+
+      if (currentTeam?.id === Number(id)) {
+        if (updateGroups.length > 0) {
+          setCurrentTeam(updateGroups[0]);
+        } else {
+          setCurrentTeam(null);
+        }
+      }
     },
   });
 };
 
 // 초대 수락
 export const useAcceptInvitation = () => {
+  const { setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: (body: AcceptInvitationRequest) =>
       groupService.acceptInvitation(body),
+    onSuccess: async (data) => {
+      const groupId = String(data.groupId);
+      const group = await groupService.getGroup(groupId);
+      setCurrentTeam({
+        name: group.name,
+        image: group.image ?? null,
+        id: group.id,
+      });
+    },
   });
 };
 
@@ -73,10 +118,27 @@ export const useAddGroupMember = (id: string) => {
 // 멤버 삭제
 export const useDeleteGroupMember = (id: string, userId: number) => {
   const queryClient = useQueryClient();
+  const { currentTeam, setCurrentTeam } = useTeamStore();
+
   return useMutation({
     mutationFn: () => groupService.deleteMember(id, userId.toString()),
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["group", id] });
+
+      queryClient.invalidateQueries({ queryKey: userQuery.myGroupsKey() });
+
+      const updateGroups = await queryClient.fetchQuery({
+        queryKey: userQuery.myGroupsKey(),
+        queryFn: () => userService.getMyGroups(),
+      });
+
+      if (currentTeam?.id === Number(id)) {
+        if (updateGroups.length > 0) {
+          setCurrentTeam(updateGroups[0]);
+        } else {
+          setCurrentTeam(null);
+        }
+      }
     },
   });
 };
