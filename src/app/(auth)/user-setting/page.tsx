@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/common/AsyncBoundary/LoadingSpinner";
 import Input from "@/components/common/Input/Input";
 import PasswordChanger from "@/components/feature/Auth/SettingForm/PasswordChanger";
 import Secession from "@/components/feature/Auth/SettingForm/Secession";
@@ -9,7 +10,7 @@ import { useAuthStore } from "@/stores/authStore";
 export default function UserSettingPage() {
   const { user } = useAuthStore();
 
-  if (user === undefined) return <div>로그인 정보 확인 중...</div>;
+  if (user === undefined) return <LoadingSpinner />;
 
   if (user === null) return <div>로그인 정보가 없습니다.</div>;
 

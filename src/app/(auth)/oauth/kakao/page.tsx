@@ -24,22 +24,11 @@ export default function KakaoCallbackPage() {
         return;
       }
 
-      kakaoMutation.mutate(
-        {
-          state: state || "",
-          redirectUri: redirectUri,
-          token: code,
-        },
-        {
-          onSuccess: () => {
-            showToast("로그인 성공", "success");
-          },
-          onError: () => {
-            showToast("로그인 실패", "error");
-            router.push("/login");
-          },
-        },
-      );
+      kakaoMutation.mutate({
+        state: state || "",
+        redirectUri: redirectUri,
+        token: code,
+      });
     } else {
       showToast("카카오 로그인 취소 또는 실패", "error");
       router.replace("/login");

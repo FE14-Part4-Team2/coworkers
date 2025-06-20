@@ -10,11 +10,22 @@ import { useTeamStore } from "@/stores/teamStore";
 //회원가입 뮤테이션
 export const useSignUp = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+  const { showToast } = useToastStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: authService.signUp,
     onSuccess: (data) => {
+      showToast("회원가입을 성공했습니다", "success");
       setAuth(data.user);
+      if (typeof window !== "undefined") {
+        window.location.href = "/select";
+      } else {
+        router.push("/select");
+      }
+    },
+    onError: (error) => {
+      showToast(error.message, "error");
     },
   });
 };
@@ -107,6 +118,10 @@ export const useKakaoOauth = () => {
         showToast("그룹 정보를 불러오는 데 실패했습니다.", "error");
         router.push("/select");
       }
+    },
+    onError: () => {
+      showToast("로그인 실패", "error");
+      router.push("/login");
     },
   });
 };

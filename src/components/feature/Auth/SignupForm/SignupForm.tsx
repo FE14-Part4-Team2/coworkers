@@ -5,9 +5,6 @@ import Button from "@/components/common/Button";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
-import { useAuthStore } from "@/stores/authStore";
-import { useToastStore } from "@/stores/toastStore";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -22,8 +19,6 @@ export default function SignupForm() {
   const [showPassword, setShowPasword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const signupMutation = useSignUp();
-  const { setAuth } = useAuthStore();
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,7 +27,6 @@ export default function SignupForm() {
   } = useForm<SignupForm>({
     mode: "onBlur",
   });
-  const { showToast } = useToastStore();
 
   const handlePasswordToggle = () => {
     setShowPasword((prev) => !prev);
@@ -43,28 +37,12 @@ export default function SignupForm() {
   };
 
   const onSubmit = (data: SignupForm) => {
-    signupMutation.mutate(
-      {
-        nickname: data.name,
-        email: data.email,
-        password: data.password,
-        passwordConfirmation: data.confirmPassword,
-      },
-      {
-        onSuccess: (data) => {
-          showToast("회원가입을 성공했습니다", "success");
-          setAuth(data.user);
-          if (typeof window !== "undefined") {
-            window.location.href = "/select";
-          } else {
-            router.push("/select");
-          }
-        },
-        onError: (error) => {
-          showToast(error.message, "error");
-        },
-      },
-    );
+    signupMutation.mutate({
+      nickname: data.name,
+      email: data.email,
+      password: data.password,
+      passwordConfirmation: data.confirmPassword,
+    });
   };
 
   const password = watch("password");
