@@ -126,13 +126,22 @@ export default function Header() {
 
           <div className="ml-auto">
             <div className="relative">
-              <UserDropdown
-                userName={user?.nickname ?? ""}
-                userImg={userImg}
-                isOpen={isMenuOpen}
-                onToggle={toggleMenu}
-                onClose={() => setIsMenuOpen(false)}
-              />
+              {user ? (
+                <UserDropdown
+                  userName={user.nickname}
+                  userImg={userImg}
+                  isOpen={isMenuOpen}
+                  onToggle={toggleMenu}
+                  onClose={() => setIsMenuOpen(false)}
+                />
+              ) : (
+                <Link
+                  href="/login"
+                  className={"whitespace-nowrap text-lg text-text-primary"}
+                >
+                  로그인
+                </Link>
+              )}
             </div>
           </div>
         </div>

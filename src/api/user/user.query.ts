@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { UpdateMyInfoRequest } from "./user.schema";
 import { Message } from "../auth/auth.schema";
 import { useToastStore } from "@/stores/toastStore";
+import { useModalStore } from "@/stores/modalStore";
 
 export const userQuery = {
   all: ["user"],
@@ -49,6 +50,7 @@ export const useMyInfoQuery = (enabled: boolean) => {
 export const useUpdateMyInfoMutation = () => {
   const queryClient = useQueryClient();
   const setAuth = useAuthStore((state) => state.setAuth);
+  const { showToast } = useToastStore();
 
   return useMutation<Message, Error, UpdateMyInfoRequest>({
     mutationFn: (body) => userService.updateMyInfo(body),
@@ -57,6 +59,11 @@ export const useUpdateMyInfoMutation = () => {
 
       const newUser = await userService.getMyInfo();
       setAuth(newUser);
+
+      showToast("이름을 변경했습니다.", "success");
+    },
+    onError: (error) => {
+      showToast(error.message, "error");
     },
   });
 };
@@ -97,26 +104,49 @@ export const useMyHistory = () => {
 
 // 비밀번호 초기화 메일 전송 뮤테이션
 export const useSendResetPasswordMutation = () => {
+  const { closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+
   return useMutation({
     mutationFn: userService.sendResetPasswordEmail,
+    onSuccess: () => {
+      showToast("비밀번호 재설정 링크가 전송되었습니다.", "success");
+      closeModal();
+    },
+    onError: () => {
+      showToast("이메일을 확인해주세요.", "error");
+    },
   });
 };
 
 // 비밀번호 초기화 뮤테이션
 export const useResetPassword = () => {
   const router = useRouter();
+  const { showToast } = useToastStore();
 
   return useMutation({
     mutationFn: userService.resetPassword,
     onSuccess: () => {
+      showToast("비밀번호가 변경되었습니다.", "success");
       router.push("/login");
+    },
+    onError: () => {
+      showToast("입력 값을 확인해주세요.", "error");
     },
   });
 };
 
 // 비밀번호 재설정 뮤테이션
 export const useUpdatePassword = () => {
+  const { showToast } = useToastStore();
+
   return useMutation({
     mutationFn: userService.updatePassword,
+    onSuccess: () => {
+      showToast("비밀번호가 변경되었습니다.", "success");
+    },
+    onError: () => {
+      showToast("비밀번호 변경을 실패했습니다.", "error");
+    },
   });
 };

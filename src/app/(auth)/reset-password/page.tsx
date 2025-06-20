@@ -5,8 +5,7 @@ import Button from "@/components/common/Button";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
-import { useToastStore } from "@/stores/toastStore";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -19,8 +18,6 @@ export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   const resetPasswordMutation = useResetPassword();
-  const { showToast } = useToastStore();
-  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -33,22 +30,11 @@ export default function ResetPasswordPage() {
   } = useForm<ResetForm>({ mode: "onBlur" });
 
   const onSubmit = (data: ResetForm) => {
-    resetPasswordMutation.mutate(
-      {
-        passwordConfirmation: data.confirmPassword,
-        password: data.password,
-        token: token,
-      },
-      {
-        onSuccess: () => {
-          showToast("비밀번호가 변경되었습니다.", "success");
-          router.push("/login");
-        },
-        onError: () => {
-          showToast("입력 값을 확인해주세요.", "error");
-        },
-      },
-    );
+    resetPasswordMutation.mutate({
+      passwordConfirmation: data.confirmPassword,
+      password: data.password,
+      token: token,
+    });
   };
 
   const password = watch("password");
