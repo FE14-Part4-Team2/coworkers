@@ -59,8 +59,8 @@ export default function LongCard({ article }: CardProps) {
                       <Image
                         src="/icons/icon-heart.svg"
                         alt="하트"
-                        width={14}
-                        height={14}
+                        width={16}
+                        height={16}
                       />
                       <span className={sharedCardStyles.likesText}>
                         {article.likeCount}
@@ -94,8 +94,8 @@ export default function LongCard({ article }: CardProps) {
                     <Image
                       src="/icons/icon-heart.svg"
                       alt="하트"
-                      width={14}
-                      height={14}
+                      width={16}
+                      height={16}
                     />
                     <span className={sharedCardStyles.likesText}>
                       {article.likeCount}
@@ -146,8 +146,8 @@ export default function LongCard({ article }: CardProps) {
                 <Image
                   src="/icons/icon-heart.svg"
                   alt="하트"
-                  width={14}
-                  height={14}
+                  width={16}
+                  height={16}
                 />
                 <span className={sharedCardStyles.likesText}>
                   {article.likeCount}

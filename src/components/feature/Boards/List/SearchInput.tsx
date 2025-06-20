@@ -13,11 +13,11 @@ export default function SearchInput({ value, onChange }: SearchInputProps) {
 
   return (
     <>
-      <div className="flex items-center gap-10 mb-[2.5rem]">
+      <div className="flex items-center gap-6 sm:gap-10 mb-[2.5rem]">
         <span className="sm:text-2xl text-2lg text-text-primary">
           모집게시판
         </span>
-        <span className="text-md text-text-secondary">
+        <span className="text-sm sm:text-md text-text-secondary">
           팀원을 모집하고, 일정을 함께 관리해보세요.
         </span>
       </div>

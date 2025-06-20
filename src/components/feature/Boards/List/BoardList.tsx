@@ -46,7 +46,7 @@ export default function BoardList({ keyword }: BoardListProps) {
         <EmptyCard keyword={debouncedKeyword} />
       ) : (
         <>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-10">
+          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-10">
             {articleList.map((post: ArticleType) => (
               <li key={post.id}>
                 <LongCard article={post} />
