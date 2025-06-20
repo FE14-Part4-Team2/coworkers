@@ -10,11 +10,9 @@ import { useToastStore } from "@/stores/toastStore";
 import { useAcceptInvitation } from "@/api/group/group.query";
 import { useMyInfoQuery } from "@/api/user/user.query";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function TeamJoinPage() {
-  const router = useRouter();
   const { showToast } = useToastStore();
   const { mutateAsync } = useAcceptInvitation();
   const { data: myInfo } = useMyInfoQuery(true);
@@ -83,7 +81,7 @@ export default function TeamJoinPage() {
         token,
         userEmail: myInfo?.email || "",
       });
-      router.push(`/${res.groupId}`);
+      window.location.href = `/${res.groupId}`;
     } catch (e: unknown) {
       let errorMessage = "";
 
