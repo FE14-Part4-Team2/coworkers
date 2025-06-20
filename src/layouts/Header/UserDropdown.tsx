@@ -49,7 +49,7 @@ export default function UserDropdown({
         onClick={onToggle}
         className="flex gap-2 cursor-pointer items-center"
       >
-        <div className="relative w-6 h-6 sm:w-6 sm:h-6">
+        <div className="relative w-6 h-6">
           <Image
             src={userImg}
             alt="프로필"
