@@ -1,7 +1,7 @@
 import { TaskDetailType } from "@/api/task/task.schema";
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale/ko";
 import dayjs from "dayjs";
@@ -60,6 +60,7 @@ export default function TaskDetail({
     id: number | string;
   } | null>(null);
   const { openModal, closeModal, modalType } = useModalStore();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (deleteTarget) {
@@ -97,6 +98,15 @@ export default function TaskDetail({
     onToggle();
   };
 
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+    setComment(e.target.value);
+  };
+
   const { data: comments } = useGetComments(String(task.id));
   const createCommentMutation = useCreateComment(String(task.id));
   const updateCommentMutation = useUpdateComment(String(task.id));
@@ -111,6 +121,9 @@ export default function TaskDetail({
         onSuccess: () => {
           setComment("");
           onCommentChange();
+          if (textareaRef.current) {
+            textareaRef.current.style.height = "auto";
+          }
         },
       },
     );
@@ -321,11 +334,11 @@ export default function TaskDetail({
           )}
           <div className="relative mt-2">
             <textarea
-              className="w-full border-t border-b border-x-0 border-border-primary resize-none text-md p-2 pr-10 h-16 focus:outline-none bg-transparent"
-              rows={2}
+              ref={textareaRef}
+              className="w-full border-t border-b border-x-0 border-border-primary resize-none text-md p-2 pr-10 focus:outline-none bg-transparent"
               placeholder="댓글을 달아주세요."
               value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              onChange={handleInput}
             />
             <style jsx>{`
               textarea::-webkit-scrollbar {
@@ -336,7 +349,7 @@ export default function TaskDetail({
               }
             `}</style>
             <div
-              className={`absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer ${
+              className={`absolute right-2 bottom-2 -translate-y-1/2 cursor-pointer ${
                 comment ? "pointer-events-auto" : "pointer-events-none"
               }`}
               onClick={comment ? handleAddComment : undefined}
@@ -389,7 +402,7 @@ export default function TaskDetail({
                           <Textarea
                             value={editedContent}
                             onChange={(e) => setEditedContent(e.target.value)}
-                            className="border-none h-[100px]"
+                            height="h-[100px]"
                           />
                         ) : (
                           <span className="text-md whitespace-pre-line break-words">
