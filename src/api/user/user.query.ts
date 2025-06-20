@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { UpdateMyInfoRequest } from "./user.schema";
 import { Message } from "../auth/auth.schema";
 import { useToastStore } from "@/stores/toastStore";
+import { useModalStore } from "@/stores/modalStore";
 
 export const userQuery = {
   all: ["user"],
@@ -97,8 +98,18 @@ export const useMyHistory = () => {
 
 // 비밀번호 초기화 메일 전송 뮤테이션
 export const useSendResetPasswordMutation = () => {
+  const { closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+
   return useMutation({
     mutationFn: userService.sendResetPasswordEmail,
+    onSuccess: () => {
+      showToast("비밀번호 재설정 링크가 전송되었습니다.", "success");
+      closeModal();
+    },
+    onError: () => {
+      showToast("이메일을 확인해주세요.", "error");
+    },
   });
 };
 
