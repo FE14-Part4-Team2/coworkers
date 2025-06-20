@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 type ModalType =
   | "invite"
+  | "success-invite"
   | "todo"
   | "todo-create"
   | "todo-edit"

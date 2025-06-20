@@ -26,6 +26,7 @@ import {
 import TodoEditModal from "@/components/common/Modal/TodoEditModal";
 import { groupService } from "@/api/group/group.service";
 import Skeleton from "@/components/common/Skeleton/Skeleton";
+import SuccessInviteModal from "@/components/common/Modal/SuccessInviteModal";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -135,7 +136,19 @@ export default function DashboardPage() {
 
   const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!editList) return;
+    if (!editList || !groupData) return;
+
+    const isDuplicate = groupData.taskLists.some(
+      (list) =>
+        list.name.trim() === editList.name.trim() &&
+        list.id.toString() !== editList.id,
+    );
+
+    if (isDuplicate) {
+      showToast("이미 해당 목록이 존재합니다.", "error");
+      return;
+    }
+
     updateMutation.mutate(
       { name: editList.name },
       {
@@ -186,8 +199,8 @@ export default function DashboardPage() {
     groupService.getInvitationToken(teamId).then((token) => {
       const inviteUrl = `${window.location.origin}/invite?token=${token}`;
       navigator.clipboard.writeText(inviteUrl);
-      showToast("초대 링크 복사 완료!", "success");
       closeModal();
+      openModal("success-invite");
     });
   };
 
@@ -353,7 +366,18 @@ export default function DashboardPage() {
         onChange={(e) => setTodoTitle(e.target.value)}
         onSubmit={(e) => {
           e.preventDefault();
-          if (!todoTitle.trim()) return;
+          const trimmedTitle = todoTitle.trim();
+          if (!trimmedTitle || !groupData) return;
+
+          const isDuplicate = groupData.taskLists.some(
+            (list) => list.name.trim() === trimmedTitle,
+          );
+
+          if (isDuplicate) {
+            showToast("이미 해당 목록이 존재합니다.", "error");
+            return;
+          }
+
           createTaskList(
             { name: todoTitle.trim() },
             {
@@ -371,6 +395,7 @@ export default function DashboardPage() {
         }}
       />
       <InviteModal onCopy={handleCopyInviteLink} />
+      <SuccessInviteModal />
     </div>
   );
 }
