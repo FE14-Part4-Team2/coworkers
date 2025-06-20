@@ -94,7 +94,7 @@ export default function LoginForm() {
           label={loginMutation.isPending ? "로그인 중.." : "로그인"}
           variant="primary"
           className="mt-[4.75rem] w-full"
-          disabled={loginMutation.isPending}
+          state={loginMutation.isPending ? "disabled" : "default"}
         />
       </form>
       <SendEmailModal />

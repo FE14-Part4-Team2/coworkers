@@ -22,6 +22,10 @@ export default function Home() {
     if (from === "guest-only") {
       showToast("이미 로그인 되었습니다.");
     }
+
+    if (from === "password-usersetting") {
+      showToast("계정설정 페이지에서 시도해주세요.");
+    }
   }, [searchParams, showToast]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
