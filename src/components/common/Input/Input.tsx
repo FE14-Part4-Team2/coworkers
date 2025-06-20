@@ -1,4 +1,26 @@
 import React, { InputHTMLAttributes } from "react";
+import { cva } from "class-variance-authority";
+import cn from "@/utils/cn";
+
+const containerVariants = cva(
+  "relative flex items-center border rounded-xl bg-bg-secondary focus-within:border-interaction-focus hover:border-interaction-hover",
+  {
+    variants: {
+      error: {
+        true: "border-status-danger",
+        false: "border-border-primary/10",
+      },
+      disabled: {
+        true: "bg-bg-tertiary hover:!border-border-primary/10 cursor-not-allowed",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      error: false,
+      disabled: false,
+    },
+  },
+);
 
 export const containerStyle =
   "relative flex items-center border rounded-xl bg-bg-secondary";
@@ -27,17 +49,8 @@ export default function Input({
   disabled = false,
   ...props
 }: InputProps) {
-  const containerStyleclasses = [
-    containerStyle,
-    interactionStyle,
-    inputBorderStyle(error),
-    disabled && disabledStyle,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   return (
-    <div className={`w-full ${hasTopMargin && "mt-6"}`}>
+    <div className={cn("w-full", hasTopMargin && "mt-6")}>
       {label && (
         <label
           htmlFor={props.id}
@@ -46,7 +59,7 @@ export default function Input({
           {label}
         </label>
       )}
-      <div className={containerStyleclasses}>
+      <div className={containerVariants({ error, disabled })}>
         <input {...props} className={inputStyle} disabled={disabled} />
         {suffix && <div className="flex-shrink-0 px-4">{suffix}</div>}
       </div>
