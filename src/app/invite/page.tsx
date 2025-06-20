@@ -12,43 +12,57 @@ export default function InviteAcceptPage() {
   const { showToast } = useToastStore();
   const token = searchParams.get("token");
 
-  const { mutate: acceptInvitation } = useAcceptInvitation();
-  const { data: myInfo, refetch } = useMyInfoQuery(true);
+  const { mutateAsync: acceptInvitation } = useAcceptInvitation();
+  const { data: myInfo, isLoading: isUserLoading } = useMyInfoQuery(true);
 
   useEffect(() => {
     if (!token) {
       showToast("초대 토큰이 없습니다.", "error");
-      router.push("/");
+      router.replace("/");
       return;
     }
 
-    const accept = async () => {
-      acceptInvitation(
-        { token, userEmail: myInfo?.email || "" },
-        {
-          onSuccess: async () => {
-            const { data: updatedUser } = await refetch();
-            const memberships = updatedUser?.memberships ?? [];
+    if (isUserLoading || !myInfo?.email) return;
 
-            if (memberships.length > 0) {
-              const lastGroup = memberships[memberships.length - 1].group;
-              showToast("초대 수락 완료!", "success");
-              router.push(`/${lastGroup.id}`);
-            } else {
-              showToast("접근 가능한 그룹이 없습니다.", "error");
-              router.push("/");
-            }
-          },
-          onError: () => {
-            showToast("초대 수락에 실패했습니다.", "error");
-            router.push("/");
-          },
-        },
-      );
+    const accept = async () => {
+      try {
+        const res = await acceptInvitation({
+          token,
+          userEmail: myInfo.email,
+        });
+
+        const groupId = res.groupId;
+        if (!groupId) {
+          showToast("잘못된 초대 링크입니다.", "error");
+          router.replace("/");
+          return;
+        }
+
+        showToast("초대 수락 완료!", "success");
+        router.replace(`/${groupId}`);
+      } catch (err) {
+        if (
+          err instanceof Error &&
+          err.message === "이미 그룹에 소속된 유저입니다."
+        ) {
+          showToast("이미 소속된 팀은 헤더에서 확인해주세요.", "info");
+          router.replace("/");
+        } else {
+          showToast("잘못된 초대 링크입니다.", "error");
+          router.replace("/");
+        }
+      }
     };
 
     accept();
-  }, [acceptInvitation, myInfo?.email, refetch, router, showToast, token]);
+  }, [
+    token,
+    isUserLoading,
+    myInfo?.email,
+    acceptInvitation,
+    router,
+    showToast,
+  ]);
 
   return (
     <div className="w-full h-full flex justify-center pt-32 text-lg text-text-default">
