@@ -7,14 +7,23 @@ async function proxyHandler(req: NextRequest) {
   const path = pathname.replace(/^\/api\/proxy/, "");
   const url = `${BACKEND_URL}${path}${search}`;
 
-  const headers = Object.fromEntries(
-    [...req.headers.entries()].filter(([key]) => key.toLowerCase() !== "host"),
-  );
+  const headers = new Headers();
+
+  for (const [key, value] of req.headers.entries()) {
+    const lowerKey = key.toLowerCase();
+    if (
+      lowerKey !== "host" &&
+      lowerKey !== "connection" &&
+      lowerKey !== "content-length" &&
+      lowerKey !== "content-encoding"
+    ) {
+      headers.set(key, value);
+    }
+  }
 
   const accessToken = req.cookies.get("accessToken")?.value;
-
   if (accessToken) {
-    headers["Authorization"] = `Bearer ${accessToken}`;
+    headers.set("Authorization", `Bearer ${accessToken}`);
   }
 
   const backendRes = await fetch(url, {
@@ -23,7 +32,6 @@ async function proxyHandler(req: NextRequest) {
     body: req.body,
     duplex: "half",
   } as RequestInit);
-
   const responseHeaders = new Headers(backendRes.headers);
   responseHeaders.delete("content-encoding");
   responseHeaders.delete("content-length");
