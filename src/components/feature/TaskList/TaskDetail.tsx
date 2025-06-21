@@ -128,6 +128,14 @@ export default function TaskDetail({
       },
     );
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // 기본 줄바꿈 방지
+      if (comment.trim()) {
+        handleAddComment();
+      }
+    }
+  };
 
   const handleEdit = (comment: CommentType) => {
     setEditingCommentId(comment.id);
@@ -217,7 +225,18 @@ export default function TaskDetail({
         </div>
 
         <div className="h-[calc(100vh-72px)] overflow-y-auto pr-4 pb-8 scroll-custom">
-          <div className="flex items-center justify-between mt-4">
+          {task.doneAt && (
+            <div className="flex items-center mt-2 text-brand-primary">
+              <Image
+                src={"/icons/icon-check-green.svg"}
+                width={15}
+                height={15}
+                alt="완료"
+              />
+              <span className="ml-1">완료</span>
+            </div>
+          )}
+          <div className="flex items-center justify-between mt-1">
             <h2
               className={`text-xl ${task.doneAt ? "line-through text-gray-400" : ""}`}
             >
@@ -251,6 +270,7 @@ export default function TaskDetail({
                   alt="프로필 이미지"
                   width={32}
                   height={32}
+                  className="rounded-full"
                 />
               ) : (
                 <Image
@@ -258,6 +278,7 @@ export default function TaskDetail({
                   alt="기본 프로필 이미지"
                   width={32}
                   height={32}
+                  className="rounded-full"
                 />
               )}
               <span className="ml-2 text-md font-regular">
@@ -339,6 +360,8 @@ export default function TaskDetail({
               placeholder="댓글을 달아주세요."
               value={comment}
               onChange={handleInput}
+              onKeyDown={handleKeyDown}
+              maxLength={200}
             />
             <style jsx>{`
               textarea::-webkit-scrollbar {
@@ -349,7 +372,7 @@ export default function TaskDetail({
               }
             `}</style>
             <div
-              className={`absolute right-2 bottom-2 -translate-y-1/2 cursor-pointer ${
+              className={`absolute right-2 bottom-6 -translate-y-1/2 cursor-pointer ${
                 comment ? "pointer-events-auto" : "pointer-events-none"
               }`}
               onClick={comment ? handleAddComment : undefined}
@@ -366,21 +389,28 @@ export default function TaskDetail({
                 className={comment ? "opacity-100" : "opacity-50"}
               />
             </div>
+            <div className="text-sm text-text-default text-right mt-1">
+              {comment.length} / 200
+            </div>
           </div>
 
           {modalType === "delete" && deleteTarget && (
             <DeleteModal
-              title={deleteTarget.type === "task" ? "할 일 삭제" : "댓글 삭제"}
+              title={
+                deleteTarget.type === "task"
+                  ? `'${task?.name}'\n할 일을 정말 삭제하시겠어요?`
+                  : "댓글 삭제"
+              }
               description={
                 deleteTarget.type === "task"
-                  ? "할 일을 정말 삭제하시겠습니까?"
+                  ? "삭제 후에는 되돌릴 수 없습니다."
                   : "댓글을 정말 삭제하시겠습니까?"
               }
               onConfirm={handleConfirmDelete}
             />
           )}
 
-          <div>
+          <div className="mt-4">
             {comments
               ?.slice()
               .sort(
@@ -388,13 +418,15 @@ export default function TaskDetail({
                   new Date(b.createdAt).getTime() -
                   new Date(a.createdAt).getTime(),
               )
-              .map((comment) => {
+              .map((comment, index) => {
                 const isEditing = editingCommentId === comment.id;
 
                 return (
                   <div
                     key={comment.id}
-                    className="border-b border-x-0 border-border-primary pt-4 pb-4"
+                    className={`border-b border-x-0 border-border-primary pt-4 pb-4 ${
+                      index === 0 ? "border-t" : ""
+                    }`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
@@ -452,6 +484,7 @@ export default function TaskDetail({
                               alt="프로필 이미지"
                               width={32}
                               height={32}
+                              className="rounded-full"
                             />
                           ) : (
                             <Image
@@ -459,6 +492,7 @@ export default function TaskDetail({
                               alt="기본 프로필 이미지"
                               width={32}
                               height={32}
+                              className="rounded-full"
                             />
                           )}
                           <span className="ml-2 text-md font-regular">

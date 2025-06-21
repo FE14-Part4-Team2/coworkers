@@ -32,6 +32,9 @@ abbr:where([title]) {
 .react-calendar__navigation button:enabled:focus {
   @apply bg-transparent;
 }
+.react-calendar__navigation button:disabled {
+  @apply bg-transparent;
+}
 
 /* 선택된 날짜 */
 .react-calendar__tile--active {

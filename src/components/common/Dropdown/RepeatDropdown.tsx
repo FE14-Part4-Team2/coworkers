@@ -35,6 +35,7 @@ export default function RepeatDropdown({
       handleToggle={handleToggle}
       handleClose={handleClose}
       handleSelect={handleSelect}
+      triggerVariant="repeatDropdown"
     />
   );
 }

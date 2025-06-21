@@ -7,6 +7,7 @@ interface DropDownTriggerProps {
   children: ReactNode;
   onClick: () => void;
   isOpen: boolean;
+  variant?: "default" | "repeatDropdown";
 }
 
 const hoverAnimation = { scale: 1.02 };
@@ -17,13 +18,14 @@ export default function DropDownTrigger({
   children,
   onClick,
   isOpen,
+  variant = "default",
 }: DropDownTriggerProps) {
   return (
     <motion.button
       onClick={onClick}
       className={`flex justify-between items-center w-[7rem] sm:w-[7.5rem] px-4 py-3 rounded-xl text-text-primary text-md font-regular transition
-        ${isOpen ? "bg-bg-tertiary" : "bg-bg-secondary"}
-      `}
+  ${variant === "repeatDropdown" ? "bg-[#18212F]" : isOpen ? "bg-bg-tertiary" : "bg-bg-secondary"}
+`}
       whileHover={hoverAnimation}
       whileTap={tapAnimation}
       type="button"

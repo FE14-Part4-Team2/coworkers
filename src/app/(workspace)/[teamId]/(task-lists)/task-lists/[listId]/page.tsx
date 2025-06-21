@@ -76,13 +76,7 @@ export default function TaskListPage() {
     monthDay?: number;
     weekDays?: number[];
   }
-  const getTodayKoreaISOString = () => {
-    const now = new Date();
-    const koreaNow = new Date(now.getTime());
-
-    return koreaNow.toISOString();
-  };
-  const [formData, setFormData] = useState<FormData>({
+  const getInitialFormData = (): FormData => ({
     name: "",
     description: "",
     startDate: getTodayKoreaISOString(),
@@ -90,6 +84,13 @@ export default function TaskListPage() {
     monthDay: undefined,
     weekDays: [],
   });
+  const getTodayKoreaISOString = () => {
+    const now = new Date();
+    const koreaNow = new Date(now.getTime());
+
+    return koreaNow.toISOString();
+  };
+  const [formData, setFormData] = useState<FormData>(getInitialFormData());
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -126,7 +127,7 @@ export default function TaskListPage() {
     });
   };
 
-  const handleMonthDayChange = (value: number) => {
+  const handleMonthDayChange = (value: number | undefined) => {
     setFormData((prev) => ({
       ...prev,
       monthDay: value,
@@ -142,6 +143,14 @@ export default function TaskListPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const now = new Date();
+    const selectedStartDate = new Date(formData.startDate);
+
+    if (selectedStartDate < now) {
+      showToast("시작 날짜는 오늘 이후여야 합니다.", "error");
+      return;
+    }
 
     let body: CreateTaskRequest;
 
@@ -466,7 +475,16 @@ export default function TaskListPage() {
         onChange={(e) => setTodoTitle(e.target.value)}
         onSubmit={(e) => {
           e.preventDefault();
-          if (!todoTitle.trim()) return;
+          const trimmedTitle = todoTitle.trim();
+          if (!trimmedTitle) return;
+
+          const isDuplicate = group?.taskLists.some(
+            (list) => list.name === trimmedTitle,
+          );
+          if (isDuplicate) {
+            showToast("이미 존재하는 목록입니다", "error");
+            return;
+          }
           createTaskList(
             { name: todoTitle.trim() },
             {
