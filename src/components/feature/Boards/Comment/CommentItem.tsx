@@ -13,7 +13,7 @@ import { useToastStore } from "@/stores/toastStore";
 
 interface CommentItemProps {
   comment: ArticleComment;
-  articleId: number;
+  articleId: string;
 }
 
 export default function CommentItem({ comment, articleId }: CommentItemProps) {

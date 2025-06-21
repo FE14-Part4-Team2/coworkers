@@ -1,29 +1,33 @@
 "use client";
 import {
-  useGetArticleComment,
   useCreateArticleComment,
   useEditArticleComment,
   useDeleteArticleComment,
 } from "@/api/article-comment/article-comment.query";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // 게시글 댓글 CRUD 훅
 export default function useArticleComments(articleId: string) {
   const [comment, setComment] = useState("");
-  const { data: comments } = useGetArticleComment(articleId as string, {
-    limit: 10,
-  });
   const { mutate: createComment } = useCreateArticleComment();
   const { mutate: editComment } = useEditArticleComment();
   const { mutate: deleteComment } = useDeleteArticleComment();
+  const router = useRouter();
 
   return {
-    comments: comments?.list || [],
     comment,
     setComment,
     createComment: (content: string) => {
-      createComment({ articleId, body: { content } });
-      setComment("");
+      createComment(
+        { articleId, body: { content } },
+        {
+          onSuccess: () => {
+            setComment("");
+            router.refresh();
+          },
+        },
+      );
     },
     editComment: (commentId: number, content: string) =>
       editComment({ commentId: commentId.toString(), body: { content } }),

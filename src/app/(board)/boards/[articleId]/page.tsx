@@ -1,29 +1,29 @@
-"use client";
 import ArticleDetail from "@/components/feature/Boards/Article/ArticleDetail";
+import { ArticleDetailType } from "@/api/article/article.schema";
 import CommentList from "@/components/feature/Boards/Comment/CommentList";
 import CommentForm from "@/components/feature/Boards/Comment/CommentForm";
-import { useArticleDetail } from "@/api/article/article.query";
-import { useParams } from "next/navigation";
-import useArticleComments from "@/hooks/useArticleComments";
-import { useAuthStore } from "@/stores/authStore";
 import NoAuthModal from "@/components/common/Modal/NoAuthModal";
 
-export default function ArticlePage() {
-  const { articleId } = useParams();
-  const { data: article } = useArticleDetail(articleId as string);
-  const { comments } = useArticleComments(articleId as string);
-  const { isAuthenticated } = useAuthStore();
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ articleId: string }>;
+}) {
+  const { articleId } = await params;
 
-  if (!article) return null;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+  const result = await fetch(`${baseUrl}/articles/${articleId}`, {
+    cache: "force-cache",
+  });
+
+  const data = (await result.json()) as ArticleDetailType;
 
   return (
     <article className="w-full">
-      <ArticleDetail data={article} />
-      <CommentForm
-        articleId={articleId as string}
-        disabled={!isAuthenticated}
-      />
-      <CommentList articleId={article.id} comments={comments} />
+      <ArticleDetail data={data} />
+      <CommentForm articleId={articleId} />
+      <CommentList articleId={articleId} />
       <NoAuthModal />
     </article>
   );

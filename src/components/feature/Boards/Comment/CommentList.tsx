@@ -1,15 +1,24 @@
-import { ArticleComment } from "@/types/article";
 import CommentItem from "./CommentItem";
+import { GetArticleCommentResponse } from "@/api/article-comment/article-comment.schema";
 
 interface ArticleCommentProps {
-  comments: ArticleComment[];
-  articleId: number;
+  articleId: string;
 }
 
-export default function CommentList({
-  comments,
-  articleId,
-}: ArticleCommentProps) {
+export default async function CommentList({ articleId }: ArticleCommentProps) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+  const commentsResult = await fetch(
+    `${baseUrl}/articles/${articleId}/comments?limit=10`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  const commentsData =
+    (await commentsResult.json()) as GetArticleCommentResponse;
+  const comments = commentsData.list;
+
   if (comments.length === 0) {
     return (
       <section aria-label="댓글 목록" className="flex flex-col">
