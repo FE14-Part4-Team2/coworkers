@@ -1,18 +1,17 @@
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/constants/regex";
 import { z } from "zod";
+import { nicknameSchema } from "./nicknameSchema";
 
 export const signupSchema = z
   .object({
-    name: z
-      .string()
-      .min(1, "이름은 필수 입력입니다.")
-      .max(20, "이름은 최대 20자까지 가능합니다."),
+    name: nicknameSchema,
     email: z
       .string()
       .min(1, "이메일은 필수 입력입니다.")
       .regex(EMAIL_REGEX, "이메일 형식으로 작성해 주세요."),
     password: z
       .string()
+      .nonempty("비밀번호는 필수 입력입니다.")
       .min(8, "비밀번호는 최소 8자 이상입니다.")
       .regex(PASSWORD_REGEX, "비밀번호는 숫자, 영문, 특수문자로만 가능합니다.")
       .refine(

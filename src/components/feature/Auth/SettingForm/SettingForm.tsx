@@ -7,20 +7,21 @@ import Button from "@/components/common/Button";
 import { useForm } from "react-hook-form";
 import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import { useUpdateMyInfoMutation } from "@/api/user/user.query";
-
-interface SettingForm {
-  name: string;
-}
+import { NicknameForm, nicknameFormSchema } from "@/lib/schemas/nicknameSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function SettingForm({ userName }: { userName: string }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SettingForm>({ mode: "onBlur" });
+  } = useForm<NicknameForm>({
+    resolver: zodResolver(nicknameFormSchema),
+    mode: "onBlur",
+  });
   const updateMyInfoMutation = useUpdateMyInfoMutation();
 
-  const onSubmit = (data: SettingForm) => {
+  const onSubmit = (data: NicknameForm) => {
     updateMyInfoMutation.mutate({ nickname: data.name });
   };
 
@@ -32,13 +33,7 @@ function SettingForm({ userName }: { userName: string }) {
           id="name"
           label="이름"
           defaultValue={userName}
-          {...register("name", {
-            required: "이름을 입력해주세요.",
-            maxLength: {
-              value: 20,
-              message: "이름은 최대 20자까지 가능합니다.",
-            },
-          })}
+          {...register("name")}
           error={!!errors.name?.message}
           hasTopMargin
           suffix={
