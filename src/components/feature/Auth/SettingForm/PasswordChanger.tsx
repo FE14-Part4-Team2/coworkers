@@ -4,15 +4,12 @@ import { useUpdatePassword } from "@/api/user/user.query";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input/Input";
 import PasswordChangeModal from "@/components/common/Modal/PasswordChangeModal";
+import { PasswordForm, passwordSchema } from "@/lib/schemas/passwordSchema";
 import { useModalStore } from "@/stores/modalStore";
 import { useToastStore } from "@/stores/toastStore";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-interface FormValues {
-  newPassword: string;
-  confirmPassword: string;
-}
 
 function PasswordChanger() {
   const { openModal, closeModal } = useModalStore();
@@ -22,22 +19,22 @@ function PasswordChanger() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({ mode: "onBlur" });
+  } = useForm<PasswordForm>({
+    resolver: zodResolver(passwordSchema),
+    mode: "onBlur",
+  });
 
-  const newPassword = watch("newPassword");
-
-  const onSubmit = (data: FormValues) => {
-    if (data.newPassword !== data.confirmPassword) {
+  const onSubmit = (data: PasswordForm) => {
+    if (data.password !== data.confirmPassword) {
       showToast("비밀번호가 일치하지 않습니다.", "error");
       return;
     }
 
     updatePasswordMutation.mutate({
       passwordConfirmation: data.confirmPassword,
-      password: data.newPassword,
+      password: data.password,
     });
 
     closeModal();
@@ -72,7 +69,6 @@ function PasswordChanger() {
         register={register}
         errors={errors}
         onSubmit={handleSubmit(onSubmit)}
-        newPassword={newPassword}
       />
     </>
   );

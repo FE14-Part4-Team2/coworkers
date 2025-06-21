@@ -8,12 +8,9 @@ import React, { useState } from "react";
 import SendEmailModal from "./SendEmailModal";
 import { useForm } from "react-hook-form";
 import { useSignIn } from "@/api/auth/auth.query";
-import ErrorMsg from "@/components/common/Input/ErrorMsg";
-
-type LoginForm = {
-  email: string;
-  password: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/lib/schemas/loginSchema";
+import type { LoginForm } from "@/lib/schemas/loginSchema";
 
 export default function LoginForm() {
   const { openModal } = useModalStore();
@@ -26,6 +23,7 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
     mode: "onBlur",
   });
 
@@ -52,15 +50,9 @@ export default function LoginForm() {
           label="이메일"
           placeholder="이메일을 입력해주세요."
           error={!!errors.email}
-          {...register("email", {
-            required: "이메일은 필수 입력입니다.",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "이메일 형식으로 작성해 주세요.",
-            },
-          })}
+          errorMessage={errors.email?.message || ""}
+          {...register("email")}
         />
-        <ErrorMsg message={errors.email?.message} />
         <Input
           id="password"
           type={showPassword ? "text" : "password"}
@@ -68,8 +60,8 @@ export default function LoginForm() {
           placeholder="비밀번호를 입력해주세요."
           hasTopMargin
           error={!!errors.password}
+          errorMessage={errors.password?.message || ""}
           {...register("password", {
-            required: "비밀번호는 필수 입력입니다.",
             onChange: (e) => {
               e.target.value = e.target.value.replace(/\s/g, "");
             },
@@ -81,7 +73,6 @@ export default function LoginForm() {
             />
           }
         />
-        <ErrorMsg message={errors.password?.message} />
         <button
           type="button"
           className="absolute right-0 mt-3 text-brand-primary font-medium underline text-md sm:text-lg"
