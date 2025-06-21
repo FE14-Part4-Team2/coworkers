@@ -68,7 +68,7 @@ export default function MyHistoryPage() {
                       height={16}
                     />
                   </span>
-                  <span className="font-regular text-md line-through">
+                  <span className="font-regular text-md">
                     {history.description}
                   </span>
                 </li>
