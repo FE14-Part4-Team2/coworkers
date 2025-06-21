@@ -17,6 +17,7 @@ import { useDeleteGroupMember, useGroupQuery } from "@/api/group/group.query";
 import { TaskDetailType } from "@/api/task/task.schema";
 import { useMyMemberships } from "@/api/user/user.query";
 import { useToastStore } from "@/stores/toastStore";
+import { useMyInfoQuery } from "@/api/user/user.query";
 import DeleteModal from "@/components/common/Modal/DeleteModal";
 import {
   useCreateTaskList,
@@ -56,9 +57,13 @@ export default function DashboardPage() {
     name: string;
   } | null>(null);
 
+  const { isLoading: isUserLoading } = useMyInfoQuery(true);
   const { data: groupData, isLoading } = useGroupQuery(teamId as string);
-  const { data: memberships, isLoading: isMembershipLoading } =
-    useMyMemberships();
+  const {
+    data: memberships,
+    isLoading: isMembershipLoading,
+    isFetching: isMembershipFetching,
+  } = useMyMemberships();
   const { mutate: createTaskList } = useCreateTaskList(teamId as string);
   const updateMutation = useUpdateTaskList(teamId, editList ? editList.id : "");
   const deleteMutation = useDeleteTaskList(
@@ -102,25 +107,28 @@ export default function DashboardPage() {
   }, [modalType, setDeleteList, setMemberToDelete]);
 
   useEffect(() => {
-    if (!isLoading && !isMembershipLoading && memberships && groupData) {
-      const myMembership = memberships.find(
-        (m) => m.groupId === Number(teamId),
-      );
+    if (
+      isLoading ||
+      isUserLoading ||
+      isMembershipLoading ||
+      isMembershipFetching
+    )
+      return;
 
-      if (!myMembership) {
-        showToast("먼저 팀 참여가 필요합니다.", "error");
-        router.replace("/join");
-        return;
-      }
+    const isMember = memberships?.some((m) => m.groupId === Number(teamId));
+    if (!isMember) {
+      showToast("먼저 팀 참여가 필요합니다.", "error");
+      router.replace("/join");
     }
   }, [
     isLoading,
+    isUserLoading,
     isMembershipLoading,
+    isMembershipFetching,
     memberships,
-    groupData,
+    teamId,
     router,
     showToast,
-    teamId,
   ]);
 
   if (isLoading || isMembershipLoading || !groupData || !memberships) {
@@ -213,6 +221,7 @@ export default function DashboardPage() {
         closeModal();
 
         if (isSelf) {
+          sessionStorage.removeItem("processedInviteTokens");
           showToast("팀 탈퇴 완료", "success");
           router.replace("/");
         } else {

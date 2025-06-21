@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   const token = cookieStore.get("accessToken")?.value;
 
   if (!token) {
-    redirect("/login");
+    redirect("/login?from=auth-only");
   }
 
   return (
