@@ -6,6 +6,9 @@ import { useAcceptInvitation } from "@/api/group/group.query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMyInfoQuery } from "@/api/user/user.query";
 import { useToastStore } from "@/stores/toastStore";
+import AsyncBoundary from "@/components/common/AsyncBoundary/AsyncBoundary";
+import LoadingSpinner from "@/components/common/AsyncBoundary/LoadingSpinner";
+import ErrorFallback from "@/components/common/AsyncBoundary/ErrorFallback";
 
 export default function InviteAcceptPage() {
   const searchParams = useSearchParams();
@@ -65,8 +68,19 @@ export default function InviteAcceptPage() {
   }, [isUserLoading, myInfo?.email, token]);
 
   return (
-    <div className="w-full h-full flex justify-center pt-32 text-lg text-text-default">
-      초대 수락 중...
-    </div>
+    <AsyncBoundary
+      fallback={<LoadingSpinner />}
+      errorFallback={({ error, resetErrorBoundary }) => (
+        <ErrorFallback
+          error={error}
+          onRetry={resetErrorBoundary}
+          title="초대 수락 중 오류"
+        />
+      )}
+    >
+      <div className="w-full h-full flex justify-center pt-32 text-lg text-text-default">
+        초대 수락 중...
+      </div>
+    </AsyncBoundary>
   );
 }
