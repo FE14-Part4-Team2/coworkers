@@ -25,6 +25,11 @@ export default function TeamEditPage() {
     useTeamStore();
 
   const DEFAULT_TEAM_PROFILE_IMAGE = "/icons/icon-img.svg";
+  const ABSOLUTE_DEFAULT_IMAGE_URL = `${process.env.NEXT_PUBLIC_API_URL}${DEFAULT_TEAM_PROFILE_IMAGE}`;
+
+  const imageUrlToSend = teamProfileUrl?.startsWith("/")
+    ? `${process.env.NEXT_PUBLIC_API_URL}${teamProfileUrl}`
+    : (teamProfileUrl ?? ABSOLUTE_DEFAULT_IMAGE_URL);
 
   const isMember = groupData?.members?.some(
     (member) => member.userName === user?.nickname,
@@ -45,7 +50,16 @@ export default function TeamEditPage() {
     if (groupData) {
       setTeamName(groupData.name);
       setEditedTeamName(groupData.name);
-      setTeamProfileUrl(groupData.image ?? DEFAULT_TEAM_PROFILE_IMAGE);
+
+      const rawImage = groupData.image;
+      const isDefaultImage = rawImage?.includes("/icons/icon-img.svg");
+
+      setTeamProfileUrl(
+        isDefaultImage
+          ? "/icons/icon-img.svg"
+          : (rawImage ?? DEFAULT_TEAM_PROFILE_IMAGE),
+      );
+
       setIsTouched(false);
     }
   }, [
@@ -75,7 +89,7 @@ export default function TeamEditPage() {
     try {
       await updateGroupMutation.mutateAsync({
         name: editedTeamName,
-        image: teamProfileUrl?.trim() ? teamProfileUrl : undefined,
+        image: imageUrlToSend,
       });
 
       showToast("팀 정보가 성공적으로 수정되었습니다.", "success");

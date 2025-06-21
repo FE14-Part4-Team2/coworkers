@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "@/layouts/Header/Header";
 import InnerLayout from "@/layouts/InnerLayout";
 import { Metadata } from "next";
