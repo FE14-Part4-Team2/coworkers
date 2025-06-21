@@ -37,6 +37,7 @@ export const inputBorderStyle = (error: boolean) =>
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: boolean;
+  errorMessage?: string | null;
   suffix?: React.ReactElement | null;
   hasTopMargin?: boolean;
 }
@@ -44,6 +45,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export default function Input({
   label = "",
   error = false,
+  errorMessage = null,
   suffix = null,
   hasTopMargin = false,
   disabled = false,
@@ -63,6 +65,11 @@ export default function Input({
         <input {...props} className={inputStyle} disabled={disabled} />
         {suffix && <div className="flex-shrink-0 px-4">{suffix}</div>}
       </div>
+      {errorMessage && (
+        <p className="mt-2 text-sm font-medium text-status-danger">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }

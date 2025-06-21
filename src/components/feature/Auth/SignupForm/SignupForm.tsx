@@ -2,7 +2,6 @@
 
 import { useSignUp } from "@/api/auth/auth.query";
 import Button from "@/components/common/Button";
-import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import Input from "@/components/common/Input/Input";
 import PasswordToggle from "@/components/common/Input/PasswordToggle";
 import React, { useState } from "react";
@@ -49,24 +48,25 @@ export default function SignupForm() {
           label="이름"
           placeholder="이름을 입력해주세요."
           error={!!errors.name}
+          errorMessage={errors.name?.message || ""}
           {...register("name")}
         />
-        <ErrorMsg message={errors.name?.message || ""} />
         <Input
           id="email"
           label="이메일"
           placeholder="이메일을 입력해주세요."
           error={!!errors.email}
+          errorMessage={errors.email?.message || ""}
           {...register("email")}
           hasTopMargin
         />
-        <ErrorMsg message={errors.email?.message || ""} />
         <Input
           id="password"
           type={showPassword ? "text" : "password"}
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요."
           error={!!errors.password}
+          errorMessage={errors.password?.message || ""}
           {...register("password", {
             onChange: (e) => {
               e.target.value = e.target.value.replace(/\s/g, "");
@@ -80,13 +80,13 @@ export default function SignupForm() {
             />
           }
         />
-        <ErrorMsg message={errors.password?.message || ""} />
         <Input
           id="confirmPassword"
           type={showConfirm ? "text" : "password"}
           label="비밀번호 확인"
           placeholder="비밀번호를 다시 한 번 입력해주세요."
           error={!!errors.confirmPassword}
+          errorMessage={errors.confirmPassword?.message || ""}
           {...register("confirmPassword", {
             onChange: (e) => {
               e.target.value = e.target.value.replace(/\s/g, "");
@@ -100,7 +100,6 @@ export default function SignupForm() {
             />
           }
         />
-        <ErrorMsg message={errors.confirmPassword?.message || ""} />
         <Button
           type="submit"
           label="회원가입"

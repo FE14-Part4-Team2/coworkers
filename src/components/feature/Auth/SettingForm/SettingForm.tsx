@@ -5,7 +5,6 @@ import ProfileImageUploader from "./ProfileImageUploader";
 import Input from "@/components/common/Input/Input";
 import Button from "@/components/common/Button";
 import { useForm } from "react-hook-form";
-import ErrorMsg from "@/components/common/Input/ErrorMsg";
 import { useUpdateMyInfoMutation } from "@/api/user/user.query";
 import { NicknameForm, nicknameFormSchema } from "@/lib/schemas/nicknameSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,6 +34,7 @@ function SettingForm({ userName }: { userName: string }) {
           defaultValue={userName}
           {...register("name")}
           error={!!errors.name?.message}
+          errorMessage={errors.name?.message || ""}
           hasTopMargin
           suffix={
             <Button
@@ -46,7 +46,6 @@ function SettingForm({ userName }: { userName: string }) {
             />
           }
         />
-        <ErrorMsg message={errors.name?.message} />
       </form>
     </>
   );
