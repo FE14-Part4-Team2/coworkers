@@ -30,7 +30,7 @@ interface TodoCreateModalProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onFrequencyChange: (value: FrequencyType) => void;
   onWeekDaysChange: (days: number[]) => void;
-  onMonthDayChange: (day: number) => void;
+  onMonthDayChange: (day: number | undefined) => void;
 }
 
 dayjs.extend(utc);
@@ -42,9 +42,17 @@ const formatDateToKSTString = (date: Date) => {
 
 const handleMonthDayChange = (
   value: string,
-  onMonthDayChange: (day: number) => void,
+  onMonthDayChange: (day: number | undefined) => void,
   onDateChange: (date: string) => void,
 ) => {
+  if (value === "") {
+    onMonthDayChange(undefined);
+    return;
+  }
+
+  // 숫자가 아닌 경우 무시
+  if (!/^\d+$/.test(value)) return;
+
   const day = Number(value);
 
   if (day < 1 || day > 31) return;
@@ -146,7 +154,7 @@ export default function TodoCreateModal({
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 repaet-dropdown">
         <label className="block mb-3">반복 설정</label>
         <RepeatDropdown
           value={formData.frequencyType}
@@ -157,7 +165,7 @@ export default function TodoCreateModal({
       {formData.frequencyType === "WEEKLY" && (
         <div className="mb-4">
           <label>반복 요일 선택</label>
-          <div className="flex gap-2 mt-1">
+          <div className="flex justify-between mt-2">
             {["일", "월", "화", "수", "목", "금", "토"].map((day, i) => (
               <button
                 type="button"
@@ -197,15 +205,18 @@ export default function TodoCreateModal({
             />
           </div>
         ) : (
-          <Calendar
-            value={calendarValue}
-            onChange={(date) => {
-              if (date instanceof Date) {
-                handleCalendarChange(date, onDateChange);
-              }
-            }}
-            formatDay={(locale, date) => String(date.getDate())}
-          />
+          <>
+            <label>시작 날짜</label>
+            <Calendar
+              value={calendarValue}
+              onChange={(date) => {
+                if (date instanceof Date) {
+                  handleCalendarChange(date, onDateChange);
+                }
+              }}
+              formatDay={(locale, date) => String(date.getDate())}
+            />
+          </>
         )}
       </div>
 

@@ -145,7 +145,7 @@ export default function Modal({
                 />
               </button>
             )}
-            <h2 className="text-lg text-center text-text-primary font-medium mb-2">
+            <h2 className="text-lg text-center text-text-primary font-medium mb-2 whitespace-pre-line">
               {title}
             </h2>
             {description && (
@@ -175,7 +175,7 @@ export default function Modal({
             {headerImage && (
               <div className="flex justify-center mb-4">{headerImage}</div>
             )}
-            <h2 className="text-lg text-center text-text-primary font-medium mb-2">
+            <h2 className="text-lg text-center text-text-primary font-medium mb-2 whitespace-pre-line">
               {title}
             </h2>
             {description && (

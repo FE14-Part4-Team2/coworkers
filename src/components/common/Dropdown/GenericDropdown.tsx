@@ -16,6 +16,7 @@ interface GenericDropdownProps {
   handleClose: () => void;
   handleSelect: (value: string) => void;
   className?: string;
+  triggerVariant?: "default" | "repeatDropdown";
 }
 
 function createSelectHandler(
@@ -33,6 +34,7 @@ export default function GenericDropdown({
   handleClose,
   handleSelect,
   className,
+  triggerVariant = "default",
 }: GenericDropdownProps) {
   const selectedLabel =
     options.find((opt) => opt.value === selected)?.label ?? selected;
@@ -40,7 +42,11 @@ export default function GenericDropdown({
   return (
     <div className={`relative inline-block ${className ?? ""}`}>
       <DropDown onClose={handleClose}>
-        <DropDown.Trigger onClick={handleToggle} isOpen={isOpen}>
+        <DropDown.Trigger
+          onClick={handleToggle}
+          isOpen={isOpen}
+          variant={triggerVariant}
+        >
           {selectedLabel}
         </DropDown.Trigger>
         <DropDown.Menu isOpen={isOpen} className="w-[7rem] sm:w-[7.5rem]">
