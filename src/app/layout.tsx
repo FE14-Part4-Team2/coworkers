@@ -16,6 +16,22 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "Coworkers",
   description: "업무 배정 및 현황 공유 서비스 코워커스",
+  icons: {
+    icon: "/favicon.png",
+  },
+  openGraph: {
+    type: "website",
+    title: "Coworkers",
+    description: "업무 배정 및 현황 공유 서비스 코워커스",
+    url: "https://coworkers.site/",
+    images: [
+      {
+        url: "/metadata.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default async function RootLayout({
