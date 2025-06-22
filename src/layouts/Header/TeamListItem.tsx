@@ -8,14 +8,16 @@ interface Props {
   team: Team;
   onTeamClick: (team: Team) => void;
   currentTeam: Team | null;
+  onClose?: () => void;
 }
 
-function TeamListItem({ team, onTeamClick, currentTeam }: Props) {
+function TeamListItem({ team, onTeamClick, currentTeam, onClose }: Props) {
   const teamImg = useImageFallback(team.img, "/icons/icon-avatar.svg");
   const router = useRouter();
 
   const handleClick = () => {
     onTeamClick(team);
+    onClose?.();
     router.push(`/${team.id}`);
   };
 

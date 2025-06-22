@@ -1,49 +1,45 @@
 "use client";
 import { ArticleComment } from "@/types/article";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import CommentDropdown from "./CommentDropdown";
 import Image from "next/image";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Button from "@/components/common/Button";
 import { useAuthStore } from "@/stores/authStore";
-import { useModalStore } from "@/stores/modalStore";
-import DeleteModal from "@/components/common/Modal/DeleteModal";
-import useArticleComments from "@/hooks/useArticleComments";
 import { useToastStore } from "@/stores/toastStore";
 
 interface CommentItemProps {
   comment: ArticleComment;
-  articleId: number;
+  editComment: (commentId: number, content: string) => void;
+  onDeleteRequest: (commentId: number) => void;
 }
 
-export default function CommentItem({ comment, articleId }: CommentItemProps) {
+export default function CommentItem({
+  comment,
+  editComment,
+  onDeleteRequest,
+}: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const { openModal, closeModal } = useModalStore();
   const { showToast } = useToastStore();
-  const { editComment } = useArticleComments(articleId.toString());
-  const { deleteComment } = useArticleComments(comment.id.toString());
   const user = useAuthStore((state) => state.user);
   const isMyComment = user?.id === comment.writer.id;
 
   const handleEdit = () => setIsEditing(true);
-  const handleSave = () => {
+
+  const handleSave = useCallback(() => {
     editComment(comment.id, editContent);
     setIsEditing(false);
     showToast("댓글 수정 완료!", "success");
-  };
+  }, [comment.id, editContent, editComment, showToast]);
+
   const handleCancel = () => {
     setEditContent(comment.content);
     setIsEditing(false);
   };
-  const handleDeleteClick = () => {
-    openModal("delete-article-comment");
-  };
 
-  const handleConfirmDelete = () => {
-    deleteComment(comment.id);
-    closeModal();
-    showToast("댓글 삭제 완료!", "success");
+  const handleDeleteClick = () => {
+    onDeleteRequest(comment.id);
   };
 
   return (
@@ -117,13 +113,6 @@ export default function CommentItem({ comment, articleId }: CommentItemProps) {
           </span>
         </div>
       )}
-
-      <DeleteModal
-        title="댓글을 삭제하시겠습니까?"
-        description="삭제된 댓글은 복구할 수 없습니다."
-        onConfirm={handleConfirmDelete}
-        modalType="delete-article-comment"
-      />
     </div>
   );
 }

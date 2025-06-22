@@ -10,6 +10,7 @@ import { useModalStore } from "@/stores/modalStore";
 interface CommentFormProps {
   articleId: string;
   disabled?: boolean;
+  createComment: (content: string) => void;
 }
 
 export default function CommentForm({ articleId, disabled }: CommentFormProps) {

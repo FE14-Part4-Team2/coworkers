@@ -1,15 +1,39 @@
 import { ArticleComment } from "@/types/article";
 import CommentItem from "./CommentItem";
+import { useState } from "react";
+import { useModalStore } from "@/stores/modalStore";
+import { useToastStore } from "@/stores/toastStore";
+import DeleteModal from "@/components/common/Modal/DeleteModal";
 
 interface ArticleCommentProps {
   comments: ArticleComment[];
-  articleId: number;
+  editComment: (commentId: number, content: string) => void;
+  deleteComment: (commentId: number) => void;
 }
 
 export default function CommentList({
   comments,
-  articleId,
+  editComment,
+  deleteComment,
 }: ArticleCommentProps) {
+  const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
+  const { openModal, closeModal } = useModalStore();
+  const { showToast } = useToastStore();
+
+  const handleDeleteRequest = (commentId: number) => {
+    setCommentToDelete(commentId);
+    openModal("delete-article-comment");
+  };
+
+  const handleConfirmDelete = () => {
+    if (commentToDelete) {
+      deleteComment(commentToDelete);
+      setCommentToDelete(null);
+      closeModal();
+      showToast("댓글 삭제 완료!", "success");
+    }
+  };
+
   if (comments.length === 0) {
     return (
       <section aria-label="댓글 목록" className="flex flex-col">
@@ -40,6 +64,7 @@ export default function CommentList({
       </section>
     );
   }
+
   return (
     <section aria-label="댓글 목록" className="flex flex-col">
       <div className="flex flex-col gap-4">
@@ -47,10 +72,18 @@ export default function CommentList({
           <CommentItem
             key={comment.id}
             comment={comment}
-            articleId={articleId}
+            editComment={editComment}
+            onDeleteRequest={handleDeleteRequest}
           />
         ))}
       </div>
+
+      <DeleteModal
+        title="댓글을 삭제하시겠습니까?"
+        description="삭제된 댓글은 복구할 수 없습니다."
+        onConfirm={handleConfirmDelete}
+        modalType="delete-article-comment"
+      />
     </section>
   );
 }
