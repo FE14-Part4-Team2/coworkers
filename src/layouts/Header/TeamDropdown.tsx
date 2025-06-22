@@ -55,6 +55,7 @@ export default function TeamDropdown({
             team={team}
             onTeamClick={onTeamClick}
             currentTeam={currentTeam}
+            onClose={onClose}
           />
         ))}
         <Link href="/create" onClick={onClose}>

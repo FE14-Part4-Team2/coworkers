@@ -11,7 +11,8 @@ import NoAuthModal from "@/components/common/Modal/NoAuthModal";
 export default function ArticlePage() {
   const { articleId } = useParams();
   const { data: article } = useArticleDetail(articleId as string);
-  const { comments } = useArticleComments(articleId as string);
+  const { comments, editComment, deleteComment, createComment } =
+    useArticleComments(articleId as string);
   const { isAuthenticated } = useAuthStore();
 
   if (!article) return null;
@@ -22,8 +23,13 @@ export default function ArticlePage() {
       <CommentForm
         articleId={articleId as string}
         disabled={!isAuthenticated}
+        createComment={createComment}
       />
-      <CommentList articleId={article.id} comments={comments} />
+      <CommentList
+        comments={comments}
+        editComment={editComment}
+        deleteComment={deleteComment}
+      />
       <NoAuthModal />
     </article>
   );
