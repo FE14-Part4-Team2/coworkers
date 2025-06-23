@@ -321,9 +321,9 @@ $ pnpm run dev
       <a href="https://github.com/kim-1997">GitHub</a>
     </td>
     <td align="center">
-      <img src="https://github.com/almighty5555.png" width="100" /><br />
+      <img src="https://github.com/almighty55555.png" width="100" /><br />
       <b>오수빈</b><br />FE<br />
-      <a href="https://github.com/almighty5555">GitHub</a>
+      <a href="https://github.com/almighty55555">GitHub</a>
     </td>
     <td align="center">
       <img src="https://github.com/yujin0408.png" width="100" /><br />
