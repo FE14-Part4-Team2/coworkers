@@ -1,7 +1,6 @@
 "use client";
-import BoardsForm, {
-  FormValues,
-} from "@/components/feature/Boards/New/BoardsForm";
+import BoardsForm from "@/components/feature/Boards/New/BoardsForm";
+import { FormValues } from "@/lib/schemas/formSchema";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useCreateArticle } from "@/api/article/article.query";
@@ -12,7 +11,6 @@ import { useModalStore } from "@/stores/modalStore";
 import { useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
-import { useMemo } from "react";
 
 export default function BoardsNewPage() {
   const router = useRouter();
@@ -28,7 +26,6 @@ export default function BoardsNewPage() {
   const { mutate: createArticle, isPending: isCreatingArticle } =
     useCreateArticle({
       onSuccess: () => {
-        // reset();
         setImageUrl(undefined);
       },
     });
@@ -38,24 +35,6 @@ export default function BoardsNewPage() {
       router.replace("/login");
     }
   }, [isAuthenticated, user, router]);
-
-  const handleSubmit = useCallback(
-    (data: FormValues) => {
-      if (isImageUploading) {
-        showToast("이미지 업로드 중입니다.", "info");
-        return;
-      }
-
-      if (!data.token) {
-        setPendingFormData(data);
-        openModal("no-token");
-        return;
-      }
-
-      submitForm(data);
-    },
-    [isImageUploading, openModal, imageUrl],
-  );
 
   const submitForm = useCallback(
     (data: FormValues) => {
@@ -73,10 +52,31 @@ export default function BoardsNewPage() {
     [createArticle, imageUrl],
   );
 
-  const isSubmitting = useMemo(
-    () => isCreatingArticle || isImageUploading,
-    [isCreatingArticle, isImageUploading],
+  const handleSubmit = useCallback(
+    (data: FormValues) => {
+      if (isImageUploading) {
+        showToast("이미지 업로드 중입니다.", "info");
+        return;
+      }
+
+      if (!data.token) {
+        setPendingFormData(data);
+        openModal("no-token");
+        return;
+      }
+
+      submitForm(data);
+    },
+    [isImageUploading, openModal, submitForm, showToast],
   );
+
+  const isSubmitting = isCreatingArticle || isImageUploading;
+
+  const handleConfirmModal = useCallback(() => {
+    if (pendingFormData) {
+      submitForm(pendingFormData);
+    }
+  }, [pendingFormData, submitForm]);
 
   if (user === undefined) return null;
 
@@ -90,13 +90,7 @@ export default function BoardsNewPage() {
         isImageUploading={isImageUploading}
         mode="create"
       />
-      <NoTokenModal
-        onConfirm={() => {
-          if (pendingFormData) {
-            submitForm(pendingFormData);
-          }
-        }}
-      />
+      <NoTokenModal onConfirm={handleConfirmModal} />
     </>
   );
 }

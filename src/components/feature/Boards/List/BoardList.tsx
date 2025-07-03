@@ -9,7 +9,7 @@ import Pagination from "@/components/feature/Boards/Pagination/Pagination";
 import { useArticleList } from "@/api/article/article.query";
 import EmptyCard from "../Card/EmptyCard";
 import useDebounce from "@/hooks/useDebounce";
-import IfElse from "./IfElse";
+import IfElse from "../../../common/IfElse/IfElse";
 
 interface BoardListProps {
   keyword: string;
