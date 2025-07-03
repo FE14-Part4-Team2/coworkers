@@ -9,6 +9,7 @@ import Pagination from "@/components/feature/Boards/Pagination/Pagination";
 import { useArticleList } from "@/api/article/article.query";
 import EmptyCard from "../Card/EmptyCard";
 import useDebounce from "@/hooks/useDebounce";
+import IfElse from "./IfElse";
 
 interface BoardListProps {
   keyword: string;
@@ -42,27 +43,28 @@ export default function BoardList({ keyword }: BoardListProps) {
         />
       </div>
 
-      {debouncedKeyword.trim() !== "" && articleList.length === 0 ? (
-        <EmptyCard keyword={debouncedKeyword} />
-      ) : (
-        <>
-          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-10">
-            {articleList.map((post: ArticleType) => (
-              <li key={post.id}>
-                <LongCard article={post} />
-              </li>
-            ))}
-          </ul>
+      <IfElse
+        condition={debouncedKeyword.trim() !== "" && articleList.length === 0}
+        then={<EmptyCard keyword={debouncedKeyword} />}
+        else={
+          <>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-10">
+              {articleList.map((post: ArticleType) => (
+                <li key={post.id}>
+                  <LongCard article={post} />
+                </li>
+              ))}
+            </ul>
 
-          <Pagination
-            page={page}
-            setPage={setPage}
-            total={totalCount}
-            pageSize={pageSize}
-          />
-        </>
-      )}
-
+            <Pagination
+              page={page}
+              setPage={setPage}
+              total={totalCount}
+              pageSize={pageSize}
+            />
+          </>
+        }
+      />
       <WriteButton onClick={() => router.push("/boards/new")} />
     </div>
   );
