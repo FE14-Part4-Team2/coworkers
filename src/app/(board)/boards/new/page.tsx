@@ -12,17 +12,19 @@ import { useModalStore } from "@/stores/modalStore";
 import { useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
+import { useMemo } from "react";
 
 export default function BoardsNewPage() {
-  const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
-    useImageUploadHandler();
   const router = useRouter();
+  const { isAuthenticated, user } = useAuthStore();
   const { showToast } = useToastStore();
   const { openModal } = useModalStore();
   const [pendingFormData, setPendingFormData] = useState<FormValues | null>(
     null,
   );
-  const { isAuthenticated, user } = useAuthStore();
+  const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
+    useImageUploadHandler();
+
   const { mutate: createArticle, isPending: isCreatingArticle } =
     useCreateArticle({
       onSuccess: () => {
@@ -71,9 +73,12 @@ export default function BoardsNewPage() {
     [createArticle, imageUrl],
   );
 
-  if (user === undefined) return null;
+  const isSubmitting = useMemo(
+    () => isCreatingArticle || isImageUploading,
+    [isCreatingArticle, isImageUploading],
+  );
 
-  const isSubmitting = isCreatingArticle || isImageUploading;
+  if (user === undefined) return null;
 
   return (
     <>

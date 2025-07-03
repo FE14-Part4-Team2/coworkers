@@ -1,17 +1,13 @@
 "use client";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import Button from "@/components/common/Button";
 import LabeledField from "./LabeledField";
 import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-
-export interface FormValues {
-  title: string;
-  content: string;
-  token?: string;
-}
+import { formSchema, FormValues } from "@/lib/schemas/formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export interface BoardsFormProps {
   isSubmitting: boolean;
@@ -39,6 +35,7 @@ export default function BoardsForm({
     formState: { errors },
     reset,
   } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: defaultValues ?? { title: "", content: "" },
     shouldFocusError: false,
@@ -48,7 +45,7 @@ export default function BoardsForm({
     if (defaultValues) reset(defaultValues);
   }, [defaultValues, reset]);
 
-  const isEdit = mode == "edit";
+  const isEdit = mode === "edit";
 
   const errorStyle = "block mt-2 text-status-danger text-sm";
 
@@ -90,14 +87,8 @@ export default function BoardsForm({
         <Input
           id="title"
           placeholder="제목을 입력해주세요."
-          {...register("title", {
-            required: "제목은 필수 입력입니다.",
-            minLength: {
-              value: 5,
-              message: "제목은 최소 5자 이상 입력해주세요.",
-            },
-          })}
-          error={!!errors.title}
+          {...register("title")}
+          error={!errors.title}
           maxLength={30}
           className={!!errors.title ? "hover:border-status-danger" : ""}
         />
@@ -132,10 +123,7 @@ export default function BoardsForm({
         <Textarea
           id="content"
           placeholder="내용을 입력해주세요."
-          {...register("content", {
-            required: "내용은 필수 입력입니다.",
-            minLength: { value: 10, message: "10자 이상 입력해주세요." },
-          })}
+          {...register("content")}
           error={!!errors.content}
           maxLength={500}
           className={!!errors.content ? "hover:border-status-danger" : ""}
