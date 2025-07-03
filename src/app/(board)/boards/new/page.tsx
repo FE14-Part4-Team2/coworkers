@@ -14,16 +14,22 @@ import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
 export default function BoardsNewPage() {
-  const router = useRouter();
-  const createArticleMutation = useCreateArticle();
-  const { showToast } = useToastStore();
   const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
     useImageUploadHandler();
+  const router = useRouter();
+  const { showToast } = useToastStore();
   const { openModal } = useModalStore();
   const [pendingFormData, setPendingFormData] = useState<FormValues | null>(
     null,
   );
   const { isAuthenticated, user } = useAuthStore();
+  const { mutate: createArticle, isPending: isCreatingArticle } =
+    useCreateArticle({
+      onSuccess: () => {
+        // reset();
+        setImageUrl(undefined);
+      },
+    });
 
   useEffect(() => {
     if (isAuthenticated === false || user === undefined) {
@@ -49,28 +55,25 @@ export default function BoardsNewPage() {
     [isImageUploading, openModal, imageUrl],
   );
 
+  const submitForm = useCallback(
+    (data: FormValues) => {
+      const payload = {
+        title: data.title,
+        content: JSON.stringify({
+          content: data.content,
+          token: data.token,
+        }),
+        ...(imageUrl && { image: imageUrl }),
+      };
+
+      createArticle(payload);
+    },
+    [createArticle, imageUrl],
+  );
+
   if (user === undefined) return null;
 
-  const submitForm = (data: FormValues) => {
-    const payload = {
-      title: data.title,
-      content: JSON.stringify({
-        content: data.content,
-        token: data.token,
-      }),
-      ...(imageUrl && { image: imageUrl }),
-    };
-
-    createArticleMutation.mutate(payload, {
-      onSuccess: () => {
-        setImageUrl(undefined);
-        showToast("게시글 등록 완료!", "success");
-        router.push("/boards");
-      },
-    });
-  };
-
-  const isSubmitting = createArticleMutation.isPending || isImageUploading;
+  const isSubmitting = isCreatingArticle || isImageUploading;
 
   return (
     <>

@@ -9,20 +9,33 @@ import {
   UpdateArticleResponse,
 } from "./article.schema";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const STALE_TIME_5_MIN = 1000 * 60 * 5;
 const GC_TIME_10_MIN = 1000 * 60 * 10;
 type LikeAction = "add" | "delete";
 
 // 게시글 작성
-export const useCreateArticle = () => {
+export const useCreateArticle = (options?: {
+  onSuccess: () => void;
+  onError?: (error: Error) => void;
+}) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation<CreateArticleResponse, Error, CreateArticleRequest>({
     mutationFn: (body) => articleService.createArticle(body),
 
     onSuccess: () => {
+      options?.onSuccess();
+      router.push("/boards");
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+    },
+
+    onError: (error) => {
+      const errorMessage =
+        error instanceof Error ? error.message : "게시글 등록에 실패했습니다.";
+      alert(errorMessage);
     },
   });
 };
