@@ -1,17 +1,13 @@
 "use client";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import Button from "@/components/common/Button";
 import LabeledField from "./LabeledField";
 import Input from "@/components/common/Input/Input";
 import Textarea from "../../../common/TextArea/TextArea";
 import ImageUploader from "./ImageUploader";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-
-export interface FormValues {
-  title: string;
-  content: string;
-  token?: string;
-}
+import { formSchema, FormValues } from "@/lib/schemas/formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export interface BoardsFormProps {
   isSubmitting: boolean;
@@ -39,6 +35,7 @@ export default function BoardsForm({
     formState: { errors },
     reset,
   } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: defaultValues ?? { title: "", content: "" },
     shouldFocusError: false,
@@ -48,9 +45,42 @@ export default function BoardsForm({
     if (defaultValues) reset(defaultValues);
   }, [defaultValues, reset]);
 
-  const isEdit = mode == "edit";
+  const isEdit = mode === "edit";
 
   const errorStyle = "block mt-2 text-status-danger text-sm";
+
+  const formFields = [
+    {
+      id: "title",
+      label: "제목",
+      required: true,
+      placeholder: "제목을 입력해주세요.",
+      component: Input,
+      maxLength: 30,
+    },
+    {
+      id: "token",
+      label: (
+        <>
+          팀 참여 링크{" "}
+          <span className="ml-1 text-sm text-text-secondary">
+            (팀 페이지에서 복사할 수 있습니다.)
+          </span>
+        </>
+      ),
+      required: false,
+      placeholder: "팀 참여 링크를 입력해주세요.",
+      component: Input,
+    },
+    {
+      id: "content",
+      label: "내용",
+      required: true,
+      placeholder: "내용을 입력해주세요",
+      component: Textarea,
+      maxLength: 500,
+    },
+  ];
 
   const submitButton = (
     <Button
@@ -70,15 +100,8 @@ export default function BoardsForm({
     />
   );
 
-  const onValidSubmit = (data: FormValues) => {
-    onSubmit(data);
-  };
-
   return (
-    <form
-      className="flex flex-col w-full"
-      onSubmit={handleSubmit(onValidSubmit)}
-    >
+    <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center mb-[2.5rem] mt-[1.5rem] sm:mt-0">
         <h1 className="text-text-primary text-2lg sm:text-xl">
           {isEdit ? "게시글 수정" : "게시글 쓰기"}
@@ -86,64 +109,35 @@ export default function BoardsForm({
         <div className="hidden sm:block">{submitButton}</div>
       </div>
       <hr className="w-full border-t border-border-primary opacity-10" />
-      <LabeledField id="title" label="제목" required>
-        <Input
-          id="title"
-          placeholder="제목을 입력해주세요."
-          {...register("title", {
-            required: "제목은 필수 입력입니다.",
-            minLength: {
-              value: 5,
-              message: "제목은 최소 5자 이상 입력해주세요.",
-            },
-          })}
-          error={!!errors.title}
-          maxLength={30}
-          className={!!errors.title ? "hover:border-status-danger" : ""}
-        />
-        {errors.title && (
-          <span className={errorStyle}>{errors.title.message}</span>
-        )}
-      </LabeledField>
-      <LabeledField
-        id="token"
-        label={
-          <>
-            팀 참여 링크{" "}
-            <span className="ml-1 text-sm text-text-secondary">
-              (팀 참여 링크는 팀페이지에서 복사할 수 있습니다.)
-            </span>
-          </>
-        }
-      >
-        <Input
-          id="token"
-          placeholder="팀 참여 링크를 입력해주세요."
-          {...register("token")}
-          error={!!errors.token}
-          className={!!errors.token ? "hover:border-status-danger" : ""}
-        />
-        {errors.token && (
-          <span className={errorStyle}>{errors.token.message}</span>
-        )}
-      </LabeledField>
 
-      <LabeledField id="content" label="내용" required>
-        <Textarea
-          id="content"
-          placeholder="내용을 입력해주세요."
-          {...register("content", {
-            required: "내용은 필수 입력입니다.",
-            minLength: { value: 10, message: "10자 이상 입력해주세요." },
-          })}
-          error={!!errors.content}
-          maxLength={500}
-          className={!!errors.content ? "hover:border-status-danger" : ""}
-        />
-        {errors.content && (
-          <span className={errorStyle}>{errors.content.message}</span>
-        )}
-      </LabeledField>
+      {formFields.map(
+        ({
+          id,
+          label,
+          required,
+          placeholder,
+          component: Component,
+          maxLength,
+        }) => {
+          const fieldError = errors[id as keyof FormValues];
+
+          return (
+            <LabeledField key={id} id={id} label={label} required={required}>
+              <Component
+                id={id}
+                placeholder={placeholder}
+                {...register(id as keyof FormValues)}
+                error={!!fieldError}
+                maxLength={maxLength}
+                className={fieldError ? "hover:border-status-danger" : ""}
+              />
+              {fieldError && (
+                <span className={errorStyle}>{fieldError.message}</span>
+              )}
+            </LabeledField>
+          );
+        },
+      )}
       <section aria-label="이미지 등록">
         <ImageUploader
           onChange={onImageUpload}

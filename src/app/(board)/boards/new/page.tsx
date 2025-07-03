@@ -1,7 +1,6 @@
 "use client";
-import BoardsForm, {
-  FormValues,
-} from "@/components/feature/Boards/New/BoardsForm";
+import BoardsForm from "@/components/feature/Boards/New/BoardsForm";
+import { FormValues } from "@/lib/schemas/formSchema";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useCreateArticle } from "@/api/article/article.query";
@@ -15,21 +14,43 @@ import { useEffect } from "react";
 
 export default function BoardsNewPage() {
   const router = useRouter();
-  const createArticleMutation = useCreateArticle();
+  const { isAuthenticated, user } = useAuthStore();
   const { showToast } = useToastStore();
-  const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
-    useImageUploadHandler();
   const { openModal } = useModalStore();
   const [pendingFormData, setPendingFormData] = useState<FormValues | null>(
     null,
   );
-  const { isAuthenticated, user } = useAuthStore();
+  const { imageUrl, setImageUrl, isImageUploading, handleImageUpload } =
+    useImageUploadHandler();
+
+  const { mutate: createArticle, isPending: isCreatingArticle } =
+    useCreateArticle({
+      onSuccess: () => {
+        setImageUrl(undefined);
+      },
+    });
 
   useEffect(() => {
     if (isAuthenticated === false || user === undefined) {
       router.replace("/login");
     }
   }, [isAuthenticated, user, router]);
+
+  const submitForm = useCallback(
+    (data: FormValues) => {
+      const payload = {
+        title: data.title,
+        content: JSON.stringify({
+          content: data.content,
+          token: data.token,
+        }),
+        ...(imageUrl && { image: imageUrl }),
+      };
+
+      createArticle(payload);
+    },
+    [createArticle, imageUrl],
+  );
 
   const handleSubmit = useCallback(
     (data: FormValues) => {
@@ -46,31 +67,18 @@ export default function BoardsNewPage() {
 
       submitForm(data);
     },
-    [isImageUploading, openModal, imageUrl],
+    [isImageUploading, openModal, submitForm, showToast],
   );
 
+  const isSubmitting = isCreatingArticle || isImageUploading;
+
+  const handleConfirmModal = useCallback(() => {
+    if (pendingFormData) {
+      submitForm(pendingFormData);
+    }
+  }, [pendingFormData, submitForm]);
+
   if (user === undefined) return null;
-
-  const submitForm = (data: FormValues) => {
-    const payload = {
-      title: data.title,
-      content: JSON.stringify({
-        content: data.content,
-        token: data.token,
-      }),
-      ...(imageUrl && { image: imageUrl }),
-    };
-
-    createArticleMutation.mutate(payload, {
-      onSuccess: () => {
-        setImageUrl(undefined);
-        showToast("게시글 등록 완료!", "success");
-        router.push("/boards");
-      },
-    });
-  };
-
-  const isSubmitting = createArticleMutation.isPending || isImageUploading;
 
   return (
     <>
@@ -82,13 +90,7 @@ export default function BoardsNewPage() {
         isImageUploading={isImageUploading}
         mode="create"
       />
-      <NoTokenModal
-        onConfirm={() => {
-          if (pendingFormData) {
-            submitForm(pendingFormData);
-          }
-        }}
-      />
+      <NoTokenModal onConfirm={handleConfirmModal} />
     </>
   );
 }
