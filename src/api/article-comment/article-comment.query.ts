@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   CreateArticleCommentRequest,
   UpdateArticleCommentRequest,
@@ -6,8 +6,8 @@ import {
 import { CreateArticleCommentResponse } from "./article-comment.schema";
 import { articleCommentService } from "./article-comment.service";
 import { UpdateArticleCommentResponse } from "./article-comment.schema";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-// 댓글 불러오기 params
 type GetArticleCommentParams = {
   limit: number;
   cursor?: number;
@@ -46,14 +46,20 @@ export const useCreateArticleComment = () => {
   });
 };
 
-// 게시글 댓글 불러오기
-export const useGetArticleComment = (
+// 게시글 댓글 무한스크롤
+export const useInfiniteArticleComments = (
   articleId: string,
   params: GetArticleCommentParams,
 ) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["articleComment", articleId, params],
-    queryFn: () => articleCommentService.getArticleComment(articleId, params),
+    queryFn: ({ pageParam }: { pageParam?: number }) =>
+      articleCommentService.getArticleComment(articleId, {
+        ...params,
+        cursor: pageParam,
+      }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: undefined,
     enabled: !!articleId,
   });
 };

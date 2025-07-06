@@ -1,6 +1,6 @@
 "use client";
 import {
-  useGetArticleComment,
+  useInfiniteArticleComments,
   useCreateArticleComment,
   useEditArticleComment,
   useDeleteArticleComment,
@@ -10,7 +10,7 @@ import { useState } from "react";
 // 게시글 댓글 CRUD 훅
 export default function useArticleComments(articleId: string) {
   const [comment, setComment] = useState("");
-  const { data: comments } = useGetArticleComment(articleId as string, {
+  const { data: comments } = useInfiniteArticleComments(articleId as string, {
     limit: 10,
   });
   const { mutate: createComment } = useCreateArticleComment();
