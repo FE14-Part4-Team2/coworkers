@@ -8,6 +8,7 @@ import { articleCommentService } from "./article-comment.service";
 import { UpdateArticleCommentResponse } from "./article-comment.schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
+// 댓글 불러오기 params
 type GetArticleCommentParams = {
   limit: number;
   cursor?: number;
@@ -58,7 +59,7 @@ export const useInfiniteArticleComments = (
         ...params,
         cursor: pageParam,
       }),
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: undefined,
     enabled: !!articleId,
   });
