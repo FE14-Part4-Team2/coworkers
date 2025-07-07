@@ -58,7 +58,7 @@ export const useInfiniteArticleComments = (
         ...params,
         cursor: pageParam,
       }),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined,
     enabled: !!articleId,
   });

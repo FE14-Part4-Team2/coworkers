@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Textarea from "@/components/common/TextArea/TextArea";
 import Button from "@/components/common/Button";
-import useArticleComments from "@/hooks/useArticleComments";
 import { useToastStore } from "@/stores/toastStore";
 import { useModalStore } from "@/stores/modalStore";
 
@@ -13,9 +12,11 @@ interface CommentFormProps {
   createComment: (content: string) => void;
 }
 
-export default function CommentForm({ articleId, disabled }: CommentFormProps) {
+export default function CommentForm({
+  disabled,
+  createComment,
+}: CommentFormProps) {
   const [comment, setComment] = useState("");
-  const { createComment } = useArticleComments(articleId);
   const { showToast } = useToastStore();
   const { openModal } = useModalStore();
 
