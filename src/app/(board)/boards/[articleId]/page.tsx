@@ -1,17 +1,23 @@
-"use client";
-
 import ArticleDetail from "@/components/feature/Boards/Article/ArticleDetail";
 import CommentSection from "@/components/feature/Boards/Comment/CommentSection";
-import { useArticleDetail } from "@/api/article/article.query";
-import { useParams } from "next/navigation";
+import { ArticleDetailType } from "@/api/article/article.schema";
 
-export default function ArticlePage() {
-  const { articleId } = useParams();
-  const { data: article } = useArticleDetail(articleId as string);
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ articleId: string }>;
+}) {
+  const { articleId } = await params;
+
+  const result = await fetch(`${baseUrl}/articles/${articleId}`, {
+    cache: "force-cache",
+  });
+
+  const data = (await result.json()) as ArticleDetailType;
 
   return (
     <article className="w-full">
-      {article && <ArticleDetail data={article} />}
+      <ArticleDetail data={data} />
       <CommentSection articleId={articleId as string} />
     </article>
   );
