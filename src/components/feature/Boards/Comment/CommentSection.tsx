@@ -25,6 +25,8 @@ export default function CommentSection({ articleId }: CommentSectionProps) {
       limit: 10,
     });
 
+  console.log("Comments", data);
+
   const { mutate: createComment } = useCreateArticleComment();
   const { mutate: editComment } = useEditArticleComment();
   const { mutate: deleteComment } = useDeleteArticleComment();
@@ -56,7 +58,7 @@ export default function CommentSection({ articleId }: CommentSectionProps) {
 
   const handleCreateComment = (content: string) => {
     if (articleId) {
-      createComment({ articleId: articleId.toString(), body: { content } });
+      createComment({ articleId, body: { content } });
     }
   };
 
